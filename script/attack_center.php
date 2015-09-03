@@ -213,6 +213,55 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
          ?>
    </table>
 
+   <font size="4"><b>Twoje wojska w drodze</b></font><br/>
+
+   <table border=1>
+      <tr bgcolor=<?php Bg_Color_Three();?>>
+         <td><center><b>Typ</b></center></td>         
+         <td><center><b>Cel</b></center></td>
+         <td><center><b>Godzina przybycia</b></center></td>
+         <td><center><b>Szczegóły</b></center></td>
+      </tr>
+         <?php
+         $No_Attacks = 1;
+         $SQL_String = "SELECT * FROM gs_moves WHERE id_source=$ID_Campus AND id_destination != $ID_Campus";
+         $Query = $Connect->query($SQL_String);
+         while ($Record = $Query->fetch_assoc())
+         {
+            $No_Attacks = 0;
+            $Type = $Record['strike'];
+            $ID_Destination = $Record['id_destination'];
+            $SQL_String_2 = "SELECT x_coord, y_coord, name FROM gs_campuses WHERE id_campus=$ID_Destination";
+            $Query_2 = $Connect->query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo '<tr';
+            echo ' bgcolor=';
+            echo Bg_Color_Three();
+            echo '>';
+            echo '<td><center>'; 
+            if ($Type == 1) echo 'Atak';
+            if ($Type == 0) echo 'Wsparcie';
+            echo '</center></td>';
+            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Destination; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
+            echo '<td><center>'; echo $Record['arrival_time']; echo '</center></td>';
+            echo '<td><center>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></center>';
+            echo '</tr>';
+         }
+         if ($No_Attacks == 1)
+         {
+            echo '<tr';
+            echo ' bgcolor=';
+            echo Bg_Color_Three();
+            echo '>';
+            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '</tr>';
+         }
+         ?>
+   </table>
+
    <font size="4"><b>Powracające twoje wojska</b></font><br/>
 
    <table border=1>
