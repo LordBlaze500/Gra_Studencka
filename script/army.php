@@ -159,7 +159,7 @@ if (!defined('__ARMY_PHP__'))
          $Record = $Query->fetch_assoc();
          $this->ID_Campus = $Record['id_homecampus'];
          $this->Maximum = 2000;
-         if ($this->Name == 'drunkard' || $this->Name == 'clochard')
+         if ($Name == 'drunkard' || $Name == 'clochard')
          {
             $SQL_String = "SELECT bench FROM gs_campuses WHERE id_campus=$this->ID_Campus";
             $Query = self::$Connect->Query($SQL_String);
@@ -168,7 +168,7 @@ if (!defined('__ARMY_PHP__'))
             if ($Bench == 1) $this->Maximum = 2000;
             else $this->Maximum = 1000;
          }
-         if ($this->Name == 'master' || $this->Name == 'doctor')
+         if ($Name == 'master' || $Name == 'doctor')
          {
             $SQL_String = "SELECT parking FROM gs_campuses WHERE id_campus=$this->ID_Campus";
             $Query = self::$Connect->Query($SQL_String);
@@ -177,7 +177,7 @@ if (!defined('__ARMY_PHP__'))
             if ($Parking == 1) $this->Maximum = 2000;
             else $this->Maximum = 1000;
          }
-         if ($this->Name == 'inspector' || $this->Name == 'veteran')
+         if ($Name == 'inspector' || $Name == 'veteran')
          {
             $SQL_String = "SELECT terminus FROM gs_campuses WHERE id_campus=$this->ID_Campus";
             $Query = self::$Connect->Query($SQL_String);
@@ -201,13 +201,17 @@ if (!defined('__ARMY_PHP__'))
       {
          return $this->Number;
       }
+      public function Number_In_Total_Getter()
+      {
+         return $this->Number_In_Total;
+      }
       public function Maximum_Getter()
       {
          return $this->Maximum;
       }
       public function Maximum_Possible()
       {
-         $Maximum_Possible = $this->Maximum - $this->Number;
+         $Maximum_Possible = $this->Maximum - $this->Number_In_Total;
          $Vodka = new Resource('vodka', $this->ID_Campus);
          $Kebab = new Resource('kebab', $this->ID_Campus);
          $Wifi = new Resource('wifi', $this->ID_Campus);
@@ -603,7 +607,7 @@ if (!defined('__ARMY_PHP__'))
    {
       private static $Connect;
       private static $Object_Counter;
-      private $ID_Update_Flag;
+      private $Update_Flag;
       private $ID_Move;
       private $Army;
       private $ID_Source;

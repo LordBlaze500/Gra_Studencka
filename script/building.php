@@ -63,7 +63,7 @@ if (!defined('__BUILDING_PHP__'))
          $Record = $Query->fetch_assoc();
          $this->Production = $Record['income'];
          $Next_Level = ($this->Level)+1;
-         if ($Next_Level < 10)
+         if ($Next_Level <= 10)
          {
             $SQL_String = "SELECT vodka, kebab, wifi FROM gs_mines_costs WHERE name='$this->Name' AND level=$Next_Level";
             $Query = self::$Connect->query($SQL_String);

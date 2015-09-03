@@ -4,6 +4,7 @@ include "resource.php";
 include "style.php";
 
 $ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
 
 $Dormitory = new Recrutation_Building('dormitory', $ID_Campus);
 $Transit = new Recrutation_Building('transit', $ID_Campus);
@@ -65,9 +66,21 @@ if(isset($_GET['tobuild']))
 function Builder($Building)
 {
    $Result = $Building->Build();
-   if ($Result == 0) header('Location: http://grastudencka.cba.pl/index.php?l=rektorat&info=built');
-   if ($Result == 1) header('Location: http://grastudencka.cba.pl/index.php?l=rektorat&info=alreadybuilt');
-   if ($Result == 2) header('Location: http://grastudencka.cba.pl/index.php?l=rektorat&info=noresources');
+   if ($Result == 0)
+   {
+      $_POST['info'] = "built";
+      header('Location: index.php?l=rektorat');
+   } 
+   if ($Result == 1)
+   {
+      $_POST['info'] = "alreadybuilt";
+      header('Location: index.php?l=rektorat');
+   } 
+   if ($Result == 2)
+   {
+      $_POST['info'] = "noresources";
+      header('Location: index.php?l=rektorat');
+   } 
 }
 ?>
 
@@ -91,9 +104,9 @@ function Builder($Building)
    </table>
 
    <?php
-   if (isset($_GET['info']))
+   if (isset($_POST['info']))
    {
-      switch ($_GET['info'])
+      switch ($_POST['info'])
       {
       case 'built':
          echo '<b><font size=5 color="yellow"> Zbudowane </font></b>';

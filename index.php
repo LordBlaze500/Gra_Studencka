@@ -83,6 +83,12 @@ else:
             
             break;
 
+            case "settings":
+
+                require "script/settings.php";
+
+            break;
+
             case "dormitory":
 
                 require "script/dormitory.php";        

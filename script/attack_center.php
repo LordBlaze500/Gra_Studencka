@@ -2,14 +2,15 @@
 include "db_connect.php";
 include "style.php";
 include "army.php";
-
+$ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
-$ID_Campus = $_SESSION["id_campus"];
 
-if ($_GET['strike'])
+
+if (isset($_POST['strike']))
 {
-   $X = $_GET['X'];
-   $Y = $_GET['Y'];
+   $X = $_POST['X'];
+   $Y = $_POST['Y'];
    $SQL_String = "SELECT id_campus FROM gs_campuses WHERE x_coord=$X AND y_coord=$Y";
    $Query = $Connect->Query($SQL_String);
    $Record = $Query->fetch_assoc();
@@ -19,13 +20,18 @@ if ($_GET['strike'])
       echo 'Taki kampus nie istnieje!';
       echo '</b></font></center>';
    }
-   if ($Record && $X > 0 && $Y > 0) header('Location: http://grastudencka.cba.pl/index.php?l=send_attack&X='.$X.'&Y='.$Y);
+   if ($Record && $X > 0 && $Y > 0) 
+   {
+      $_SESSION['X'] = $X;
+      $_SESSION['Y'] = $Y;
+      header('Location: index.php?l=send_attack');
+   }
 }
 
-if ($_GET['help'])
+if (isset($_POST['help']))
 {
-   $X = $_GET['X'];
-   $Y = $_GET['Y'];
+   $X = $_POST['X'];
+   $Y = $_POST['Y'];
    $SQL_String = "SELECT id_campus FROM gs_campuses WHERE x_coord=$X AND y_coord=$Y";
    $Query = $Connect->Query($SQL_String);
    $Record = $Query->fetch_assoc();
@@ -35,12 +41,17 @@ if ($_GET['help'])
       echo 'Taki kampus nie istnieje!';
       echo '</b></font></center>';
    }
-   if ($Record && $X > 0 && $Y > 0) header('Location: http://grastudencka.cba.pl/index.php?l=send_help&X='.$X.'&Y='.$Y);
+   if ($Record && $X > 0 && $Y > 0) 
+   {
+      $_SESSION['X'] = $X;
+      $_SESSION['Y'] = $Y;
+      header('Location: index.php?l=send_help');
+   }
 }
 
-if ($_GET['return'] && $_GET['id_army'])
+if (isset($_POST['return']) && isset($_POST['id_army']))
 {
-   $ID_Army = $_GET['id_army'];
+   $ID_Army = $_POST['id_army'];
    $SQL_String_2 = "SELECT id_army, id_stayingcampus FROM gs_armies WHERE id_army=$ID_Army AND id_homecampus=$ID_Campus AND id_stayingcampus != id_homecampus AND id_stayingcampus != 0";
    $Query_2 = $Connect->Query($SQL_String_2);
    $Record_2 = $Query_2->fetch_assoc();
@@ -59,9 +70,9 @@ if ($_GET['return'] && $_GET['id_army'])
    }
 }
 
-if ($_GET['sendback'] && $_GET['id_army'])
+if (isset($_POST['sendback']) && isset($_POST['id_army']))
 {
-   $ID_Army = $_GET['id_army'];
+   $ID_Army = $_POST['id_army'];
    $SQL_String_2 = "SELECT id_army, id_homecampus FROM gs_armies WHERE id_army=$ID_Army AND id_stayingcampus=$ID_Campus AND id_stayingcampus != id_homecampus AND id_stayingcampus != 0";
    $Query_2 = $Connect->Query($SQL_String_2);
    $Record_2 = $Query_2->fetch_assoc();
@@ -273,7 +284,7 @@ if ($_GET['sendback'] && $_GET['id_army'])
             echo '>';
             echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Stayingcampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
             echo '<td>';
-            echo '<form method="GET">';
+            echo '<form method="POST">';
             echo '<input type="hidden" name="l" value="attacks">';
             echo '<input type="hidden" name="id_army" value="';
             echo $Record['id_army'];
@@ -325,7 +336,7 @@ if ($_GET['sendback'] && $_GET['id_army'])
             echo '>';
             echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Homecampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
             echo '<td>';
-            echo '<form method="GET">';
+            echo '<form method="POST">';
             echo '<input type="hidden" name="l" value="attacks">';
             echo '<input type="hidden" name="id_army" value="';
             echo $Record['id_army'];
@@ -357,7 +368,7 @@ if ($_GET['sendback'] && $_GET['id_army'])
       <tr bgcolor=<?php Bg_Color_Three();?>>
          <td>
             <center>
-            <form method="GET">
+            <form method="POST">
             <input type="hidden" name="l" value="attacks">
             X: 
             <input type="text" name="X" value="0" style="width: 60px">

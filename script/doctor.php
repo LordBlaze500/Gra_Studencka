@@ -1,5 +1,3 @@
-
-
 <?php
 include "army.php";
 include "style.php";

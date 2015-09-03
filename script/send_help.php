@@ -3,15 +3,17 @@ include "db_connect.php";
 include "style.php";
 include "army.php";
 
-if (!$_GET['X'] || !$_GET['Y'])
+$ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
+
+if (!isset($_SESSION['X']) || !isset($_SESSION['Y']))
 {
-   header('Location: http://grastudencka.cba.pl/index.php?l=main');
+   header('Location: index.php?l=main');
 }
 
-$X = $_GET['X'];
-$Y = $_GET['Y'];
+$X = $_SESSION['X'];
+$Y = $_SESSION['Y'];
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
-$ID_Campus = $_SESSION["id_campus"];
 $SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus AND id_stayingcampus=$ID_Campus";
 $Query = $Connect->Query($SQL_String);
 $Record = $Query->fetch_assoc();
@@ -29,7 +31,7 @@ $Query = $Connect->Query($SQL_String);
 $Record = $Query->fetch_assoc();
 $Login = $Record['login'];
 
-if ($_POST['send'])
+if (isset($_POST['send']))
 {
    $Result = $Army->Split($_POST['student'], $_POST['parachute'], $_POST['nerd'], $_POST['stooley'], $_POST['drunkard'], $_POST['clochard'], $_POST['master'], $_POST['doctor'], $_POST['inspector'], $_POST['veteran']);
    if ($Result == 0)

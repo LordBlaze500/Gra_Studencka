@@ -11,42 +11,42 @@ if(!defined('__LIST_PHP__'))
 
    class My_List
    {
-      public $Head;
+    public $Head;
 	  public function __construct()
 	  {
-	     $this->Head = 0;
+	     $this->Head = NULL;
 	  }
 	  public function Insert($Arg_Data)
 	  {
-         if ($this->Head == 0)
+         if (!$this->Head)
          {
        	    $this->Head = new Element;
        	    $this->Head->Data = $Arg_Data;
-       	    $this->Head->Next = 0;
+       	    $this->Head->Next = NULL;
          	echo "added head";
          }
          else
          {
        	    $Temp = &$this->Head;
-       	    while ($Temp->Next != 0)
+       	    while ($Temp->Next != NULL)
        	    {
        	    	$Temp = &$Temp->Next;
        	    }
        	    $Temp->Next = new Element;
        	    $Temp->Next->Data = $Arg_Data;
-       	    $Temp->Next->Next = 0;
+       	    $Temp->Next->Next = NULL;
          	echo "added another";
          }
 	  }
 	  public function At($Arg_Position)
 	  {
-	  	 if ($this->Head == 0) return 0;
+	  	 if (!$this->Head) return 0;
          if ($Arg_Position == 0) return $this->Head->Data;
          $Temp = &$this->Head;
          $i = 0;
          while ($i < $Arg_Position)
          {
-            if ($Temp->Next == 0) return 0;
+            if ($Temp->Next == NULL) return 0;
             else 
             {
             	$i = $i + 1;

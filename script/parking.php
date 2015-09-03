@@ -1,7 +1,8 @@
 <?php
 include "building.php";
 include "style.php";
-$ID_Campus = $_SESSION["id_campus"];
+$ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
 $Parking = new Special_Building("parking", $ID_Campus);
 ?>
 

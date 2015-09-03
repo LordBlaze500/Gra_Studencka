@@ -2,7 +2,7 @@
 include "db_connect.php";
 include "army.php";
 include "list.php";
-include "raport.php";
+//include "raport.php";
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $Arrival_Time = new DateTime();
 $Date_String = $Arrival_Time->format('Y-m-d H:i:00');

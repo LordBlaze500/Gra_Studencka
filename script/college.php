@@ -5,9 +5,10 @@ include "army.php";
 include "resource.php";
 include "style.php";
 
-$ID_Campus = $_SESSION["id_campus"];
+$ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
-$SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus";
+$SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus AND id_stayingcampus=$ID_Campus";
 $Query = $Connect->Query($SQL_String);
 $Record = $Query->fetch_assoc();
 $ID_Army = $Record['id_army'];
@@ -21,20 +22,32 @@ $Wifi = new Resource('wifi', $ID_Campus);
 function Recruiter($Troop, $Number)
 {
    $Result = $Troop->Recruit($Number);
-   if ($Result == 1) header('Location: http://grastudencka.cba.pl/index.php?l=college&info=recruited');
-   if ($Result == 2) header('Location: http://grastudencka.cba.pl/index.php?l=college&info=noresources');
-   if ($Result == 3) header('Location: http://grastudencka.cba.pl/index.php?l=college&info=nospace');
+   if ($Result == 1) 
+   {
+      $_POST['info'] = "recruited";
+      header('Location: index.php?l=college');
+   }
+   if ($Result == 2) 
+   {
+      $_POST['info'] = "noresources";
+      header('Location: index.php?l=college');
+   }
+   if ($Result == 3) 
+   {
+      $_POST['info'] = "nospace";
+      header('Location: index.php?l=college');
+   }
 }
 
-if ($_GET['master_number'] && $College->Status_Getter() > 0)
+if (isset($_POST['master_number']) && $College->Status_Getter() > 0)
 {
-   $Number = $_GET['master_number'];
+   $Number = $_POST['master_number'];
    Recruiter($Master, $Number);
 }
 
-if ($_GET['doctor_number'] && $College->Status_Getter() > 1)
+if (isset($_POST['doctor_number']) && $College->Status_Getter() > 1)
 {
-   $Number = $_GET['doctor_number'];
+   $Number = $_POST['doctor_number'];
    Recruiter($Doctor, $Number);
 }
 ?>
@@ -77,9 +90,9 @@ if ($_GET['doctor_number'] && $College->Status_Getter() > 1)
    </table>
 
    <?php 
-   if ($_GET['info'])
+   if (isset($_POST['info']))
    {
-      $Info = $_GET['info'];
+      $Info = $_POST['info'];
       switch ($Info)
       {
       case "recruited": echo '<b><font size="5" color="yellow">Jednostki zrekrutowane</font></b>'; break;
@@ -123,7 +136,9 @@ if ($_GET['doctor_number'] && $College->Status_Getter() > 1)
          <td><b><center>
             <?php
             echo $Master->Number_Getter(); 
-            echo '/';
+            echo ' (';
+            echo $Master->Number_In_Total_Getter();
+            echo ')/';
             echo $Master->Maximum_Getter();
             ?>
             </center></b>
@@ -132,7 +147,7 @@ if ($_GET['doctor_number'] && $College->Status_Getter() > 1)
             <?php
             if ($College->Status_Getter() > 0)
             { 
-               echo '<form method="GET">';
+               echo '<form method="POST">';
                echo '<input type="hidden" name="l" value="college">';
                echo '<input type="text" name="master_number">';
                echo '<input type="submit" value="Rekrutuj">';
@@ -166,7 +181,9 @@ if ($_GET['doctor_number'] && $College->Status_Getter() > 1)
          <td><b><center>
             <?php
             echo $Doctor->Number_Getter();
-            echo '/';
+            echo ' (';
+            echo $Doctor->Number_In_Total_Getter();
+            echo ')/';
             echo $Doctor->Maximum_Getter();
             ?>
             </center></b>
@@ -175,7 +192,7 @@ if ($_GET['doctor_number'] && $College->Status_Getter() > 1)
             <?php
             if ($College->Status_Getter() > 1)
             { 
-               echo '<form method="GET">';
+               echo '<form method="POST">';
                echo '<input type="hidden" name="l" value="college">';
                echo '<input type="text" name="doctor_number">';
                echo '<input type="submit" value="Rekrutuj">';

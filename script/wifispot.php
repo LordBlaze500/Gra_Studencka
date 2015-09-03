@@ -3,6 +3,7 @@ include "db_connect.php";
 include "style.php";
 include "building.php";
 $ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $Wifispot = new Mining_Building('wifispot', $ID_Campus);
 ?>

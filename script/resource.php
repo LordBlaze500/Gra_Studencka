@@ -56,7 +56,7 @@ if (!defined('__RESOURCE_PHP__'))
             $SQL_String = "UPDATE gs_campuses SET amount_"."$this->Name="."$this->Amount WHERE id_campus=$this->ID_Campus";
             $Query = self::$Connect->Query($SQL_String);
          }
-         $this->Object_Counter = $this->Object_Counter - 1;
+         self::$Object_Counter = self::$Object_Counter - 1;
          if (self::$Object_Counter == 0) self::$Connect->close();
       }
    }

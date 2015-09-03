@@ -5,9 +5,10 @@ include "army.php";
 include "resource.php";
 include "style.php";
 
-$ID_Campus = $_SESSION["id_campus"];
+$ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
-$SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus";
+$SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus AND id_stayingcampus=$ID_Campus";
 $Query = $Connect->Query($SQL_String);
 $Record = $Query->fetch_assoc();
 $ID_Army = $Record['id_army'];
@@ -21,20 +22,32 @@ $Wifi = new Resource('wifi', $ID_Campus);
 function Recruiter($Troop, $Number)
 {
    $Result = $Troop->Recruit($Number);
-   if ($Result == 1) header('Location: http://grastudencka.cba.pl/index.php?l=transit&info=recruited');
-   if ($Result == 2) header('Location: http://grastudencka.cba.pl/index.php?l=transit&info=noresources');
-   if ($Result == 3) header('Location: http://grastudencka.cba.pl/index.php?l=transit&info=nospace');
+   if ($Result == 1) 
+   {
+      $_POST['info'] = "recruited";
+      header('Location: index.php?l=transit');
+   }
+   if ($Result == 2) 
+   {
+      $_POST['info'] = "noresources";
+      header('Location: index.php?l=transit');
+   }
+   if ($Result == 3) 
+   {
+      $_POST['info'] = "nospace";
+      header('Location: index.php?l=transit');
+   }
 }
 
-if ($_GET['inspector_number'] && $Transit->Status_Getter() > 0)
+if (isset($_POST['inspector_number']) && $Transit->Status_Getter() > 0)
 {
-   $Number = $_GET['inspector_number'];
+   $Number = $_POST['inspector_number'];
    Recruiter($Inspector, $Number);
 }
 
-if ($_GET['veteran_number'] && $Transit->Status_Getter() > 1)
+if (isset($_POST['veteran_number']) && $Transit->Status_Getter() > 1)
 {
-   $Number = $_GET['veteran_number'];
+   $Number = $_POST['veteran_number'];
    Recruiter($Veteran, $Number);
 }
 ?>
@@ -77,9 +90,9 @@ if ($_GET['veteran_number'] && $Transit->Status_Getter() > 1)
    </table>
 
    <?php 
-   if ($_GET['info'])
+   if (isset($_POST['info']))
    {
-      $Info = $_GET['info'];
+      $Info = $_POST['info'];
       switch ($Info)
       {
       case "recruited": echo '<b><font size="5" color="yellow">Jednostki zrekrutowane</font></b>'; break;
@@ -123,7 +136,9 @@ if ($_GET['veteran_number'] && $Transit->Status_Getter() > 1)
          <td><b><center>
             <?php
             echo $Inspector->Number_Getter(); 
-            echo '/';
+            echo ' (';
+            echo $Inspector->Number_In_Total_Getter();
+            echo ')/';
             echo $Inspector->Maximum_Getter();
             ?>
             </center></b>
@@ -132,7 +147,7 @@ if ($_GET['veteran_number'] && $Transit->Status_Getter() > 1)
             <?php
             if ($Transit->Status_Getter() > 0)
             { 
-               echo '<form method="GET">';
+               echo '<form method="POST">';
                echo '<input type="hidden" name="l" value="transit">';
                echo '<input type="text" name="inspector_number">';
                echo '<input type="submit" value="Rekrutuj">';
@@ -166,7 +181,9 @@ if ($_GET['veteran_number'] && $Transit->Status_Getter() > 1)
          <td><b><center>
             <?php
             echo $Veteran->Number_Getter();
-            echo '/';
+            echo ' (';
+            echo $Veteran->Number_In_Total_Getter();
+            echo ')/';
             echo $Veteran->Maximum_Getter();
             ?>
             </center></b>
@@ -175,7 +192,7 @@ if ($_GET['veteran_number'] && $Transit->Status_Getter() > 1)
             <?php
             if ($Transit->Status_Getter() > 1)
             { 
-               echo '<form method="GET">';
+               echo '<form method="POST">';
                echo '<input type="hidden" name="l" value="transit">';
                echo '<input type="text" name="veteran_number">';
                echo '<input type="submit" value="Rekrutuj">';

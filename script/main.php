@@ -5,8 +5,9 @@ include "building.php";
 include "resource.php";
 include "army.php";
 
-$Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $ID_Campus = $_SESSION['id_campus'];
+if (!$ID_Campus) header('Location: index.php');
+$Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
       
 $z = "SELECT * FROM gs_messages WHERE seen = 0 AND addressee = (SELECT id_user FROM gs_users WHERE login = '".$_SESSION["login"]."')";
 $q = $Connect->query($z);
@@ -130,7 +131,7 @@ $Army = new Army($ID_Army);
             <img src="img/noraport.png" alt="Raporty" width="50" height="50">
             <a href="script/messages.php" target="window_iframe" onClick="javascript:Window_('#window', '500', 'Wiadomości', 'on')"><img src="<?php echo ($nowe_wiadomosci == 0) ? "img/nomsg.png" : "img/newmsg.png"; ?>" alt="Wiadomosci" style="width:50px;height:50px;"></a>
             <a href="?l=campus_select"><img src="img/switch.png" alt="Zmien kampus" width="50" height="50"></a>
-            <img src="img/ustawienia.png" alt="Ustawienia" width="50" height="50">
+            <a href="?l=settings"><img src="img/ustawienia.png" alt="Ustawienia" width="50" height="50"></a>
             <a href="?logout=true"><img src="img/logout.png" alt="Wyloguj" width="50" height="50"></a>
          </td>
       </tr>
@@ -140,43 +141,93 @@ $Army = new Army($ID_Army);
          <td>
             <a href="?l=student">
             <img src="img/student.png" alt="Student" width="50" height="50">
-            <?php echo $Army->Student_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(student) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=parachute">
             <img src="img/spadochroniarz.png" alt="Spadochroniarz" width="50" height="50">
-            <?php echo $Army->Parachute_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(parachute) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=drunkard">
             <img src="img/menel.png" alt="Menel" width="50" height="50">
-            <?php echo $Army->Drunkard_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(drunkard) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=clochard">
             <img src="img/kloszard.png" alt="Kloszard" width="50" height="50">
-            <?php echo $Army->Clochard_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(clochard) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=nerd">
             <img src="img/nerd.png" alt="Nerd" width="50" height="50">
-            <?php echo $Army->Nerd_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(nerd) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=stooley">
             <img src="img/stulejarz.png" alt="Stulejarz" width="50" height="50">
-            <?php echo $Army->Stooley_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(stooley) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=master">
             <img src="img/magister.png" alt="Magister" width="50" height="50">
-            <?php echo $Army->Master_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(master) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=doctor">
             <img src="img/doktor.png" alt="Doktor" width="50" height="50">
-            <?php echo $Army->Doctor_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(doctor) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=inspector">
             <img src="img/kanar.png" alt="Kanar" width="50" height="50">
-            <?php echo $Army->Inspector_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(inspector) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
             <a href="?l=veteran">
             <img src="img/weteran.png" alt="Kanar weteran" width="50" height="50">
-            <?php echo $Army->Veteran_Getter()->Number_Getter(); ?>
+            <?php
+            $SQL_String_2 = "SELECT sum(veteran) AS sum FROM gs_armies WHERE id_stayingcampus=$ID_Campus";
+            $Query_2 = $Connect->Query($SQL_String_2);
+            $Record_2 = $Query_2->fetch_assoc();
+            echo $Record_2['sum'];
+            ?>
             </a>
          </td>
       </tr>
