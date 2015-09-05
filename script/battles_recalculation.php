@@ -2,7 +2,7 @@
 include "db_connect.php";
 include "army.php";
 include "list.php";
-//include "raport.php";
+include "raport.php";
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $Arrival_Time = new DateTime();
 $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
@@ -12,47 +12,85 @@ while ($Record = $Query->fetch_assoc())
 {
 	if ($Record['strike'] == 1)
 	{
+    $Raport = new Battle_Raport();
 		echo "dupxo";
-		$Luck = rand(-20, 20);
+		$Luck = rand(0, 20);
+    $Raport->Luck_Setter($Luck);
+    echo '<br>Luck:';
+    echo $Luck;
 		$Move = new Move($Record['id_move']);
+    $Raport->Aggressor_Army_Before_Setter($Move->Army_Getter());
 		$Destination = $Move->ID_Destination_Getter();
+    $Raport->Source_Setter($Move->ID_Source_Getter());
+    $Raport->Destination_Setter($Destination);
 		$SQL_String_2 = "SELECT id_army FROM gs_armies WHERE id_stayingcampus=$Destination";
 		$Query_2 = $Connect->Query($SQL_String_2);
 		$i = 0;
 		$Defending_Armies = new My_List();
-		//$Raport = new Battle_Raport($Luck, $Move, $Defending_Armies);
 		while ($Record_2 = $Query_2->fetch_assoc())
 		{
 			$Defending_Armies->Insert(new Army($Record_2['id_army']));
 			$i = $i + 1;
 		}
+    $Raport->Defending_Armies_Before_Setter($Defending_Armies);
+    echo '<br>i:';
+    echo $i;
 		$Defenders_Attack_Light = 0;
 		$Defenders_Attack_Heavy = 0;
 		$Defenders_Attack_Cavalry = 0;
 		$Defenders_Status = 0;
 		while ($Move->Army_Getter()->Exterminated() == 0 && $Defenders_Status < $i)
 		{
+      $Defenders_Attack_Light = 0;
+      $Defenders_Attack_Heavy = 0;
+      $Defenders_Attack_Cavalry = 0;
 			for ($j = 0; $j < $i; $j = $j + 1)
 		    {
 	            $Defenders_Attack_Light = $Defenders_Attack_Light + $Defending_Armies->At($j)->Total_Attack_Light_Getter();
-                $Defenders_Attack_Heavy = $Defenders_Attack_Heavy + $Defending_Armies->At($j)->Total_Attack_Heavy_Getter();
-                $Defenders_Attack_Cavalry = $Defenders_Attack_Cavalry + $Defending_Armies->At($j)->Total_Attack_Cavalry_Getter();
+              $Defenders_Attack_Heavy = $Defenders_Attack_Heavy + $Defending_Armies->At($j)->Total_Attack_Heavy_Getter();
+              $Defenders_Attack_Cavalry = $Defenders_Attack_Cavalry + $Defending_Armies->At($j)->Total_Attack_Cavalry_Getter();
 	    	}
+        echo 'next iteration';
+        echo '<br>Def Attack Light: ';
+        echo $Defenders_Attack_Light;
+        echo '<br>Def Attack Heavy:';
+        echo $Defenders_Attack_Heavy;
+        echo '<br>Def_Attack_Cavalry:';
+        echo $Defenders_Attack_Cavalry;
 		    $Aggressor_Attack_Light = ($Move->Army_Getter()->Total_Attack_Light_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Heavy = ($Move->Army_Getter()->Total_Attack_Heavy_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Cavalry = ($Move->Army_Getter()->Total_Attack_Cavalry_Getter())*(1+($Luck/100));
+        echo '<br>Aggressor Attack Light: ';
+        echo $Aggressor_Attack_Light;
+        echo '<br>Aggressor Attack Heavy:';
+        echo $Aggressor_Attack_Heavy;
+        echo '<br>Aggressor_Attack_Cavalry:';
+        echo $Aggressor_Attack_Cavalry;
+        $Aggressor_Attack_Light_In_Total = $Aggressor_Attack_Light;
+        $Aggressor_Attack_Heavy_In_Total = $Aggressor_Attack_Heavy;
+        $Aggressor_Attack_Cavalry_In_Total = $Aggressor_Attack_Cavalry;
             for ($j = 0; $j < $i; $j = $j + 1)
             {        
-                $Light_Fraction = floor($Aggressor_Attack_Light/$i);
-                $Aggressor_Attack_Light = $Aggressor_Attack_Light - $Light_Fraction;
-                $Aggressor_Attack_Light = $Aggressor_Attack_Light + $Defending_Armies->At($j)->Hit_Light($Light_Fraction);
-                $Heavy_Fraction = floor($Aggressor_Attack_Heavy/$i);
-                $Aggressor_Attack_Heavy = $Aggressor_Attack_Heavy - $Heavy_Fraction;
-                $Aggressor_Attack_Heavy = $Aggressor_Attack_Heavy + $Defending_Armies->At($j)->Hit_Heavy($Heavy_Fraction);
-                $Cavalry_Fraction = floor($Aggressor_Attack_Cavalry/$i);
-                $Aggressor_Attack_Cavalry = $Aggressor_Attack_Cavalry - $Cavalry_Fraction;
-                $Aggressor_Attack_Cavalry = $Aggressor_Attack_Cavalry + $Defending_Armies->At($j)->Hit_Cavalry($Cavalry_Fraction);
+                if ($j+1 == $i)
+                {
+                   $Defending_Armies->At($j)->Hit_Light($Aggressor_Attack_Light);
+                   $Defending_Armies->At($j)->Hit_Heavy($Aggressor_Attack_Heavy);
+                   $Defending_Armies->At($j)->Hit_Cavalry($Aggressor_Attack_Cavalry);
+                }
+                else
+                {
+                   $Light_Fraction = floor($Aggressor_Attack_Light_In_Total/$i);
+                   $Aggressor_Attack_Light = $Aggressor_Attack_Light - $Light_Fraction;
+                   $Aggressor_Attack_Light = $Aggressor_Attack_Light + $Defending_Armies->At($j)->Hit_Light($Light_Fraction);
+                   $Heavy_Fraction = floor($Aggressor_Attack_Heavy_In_Total/$i);
+                   $Aggressor_Attack_Heavy = $Aggressor_Attack_Heavy - $Heavy_Fraction;
+                   $Aggressor_Attack_Heavy = $Aggressor_Attack_Heavy + $Defending_Armies->At($j)->Hit_Heavy($Heavy_Fraction);
+                   $Cavalry_Fraction = floor($Aggressor_Attack_Cavalry_In_Total/$i);
+                   $Aggressor_Attack_Cavalry = $Aggressor_Attack_Cavalry - $Cavalry_Fraction;
+                   $Aggressor_Attack_Cavalry = $Aggressor_Attack_Cavalry + $Defending_Armies->At($j)->Hit_Cavalry($Cavalry_Fraction);
+                }
             }
+
             $Move->Army_Getter()->Hit_Light($Defenders_Attack_Light);
             $Move->Army_Getter()->Hit_Heavy($Defenders_Attack_Heavy);
             $Move->Army_Getter()->Hit_Cavalry($Defenders_Attack_Cavalry);
@@ -62,6 +100,8 @@ while ($Record = $Query->fetch_assoc())
                 $Defenders_Status = $Defenders_Status + $Defending_Armies->At($j)->Exterminated();
             }
 		}
+    echo '<br>Def status:';
+    echo $Defenders_Status;
 		if ($Defenders_Status > 0)
 		{
 			for ($j = 0; $j < $i; $j = $j + 1)
@@ -76,12 +116,30 @@ while ($Record = $Query->fetch_assoc())
 		}
         if ($Defenders_Status == $i)
         {
+           $SQL_String_3 = "SELECT amount_vodka, amount_kebab, amount_wifi FROM gs_campuses WHERE id_campus=$Destination";
+           $Query_3 = $Connect->Query($SQL_String_3);
+           $Record_3 = $Query_3->fetch_assoc();
+           $Vodka_Before = $Record_3['amount_vodka'];
+           $Kebab_Before = $Record_3['amount_kebab'];
+           $Wifi_Before = $Record_3['amount_wifi'];
            $Move->Steal();
+           $SQL_String_3 = "SELECT amount_vodka, amount_kebab, amount_wifi FROM gs_campuses WHERE id_campus=$Destination";
+           $Query_3 = $Connect->Query($SQL_String_3);
+           $Record_3 = $Query_3->fetch_assoc();
+           $Vodka_After = $Record_3['amount_vodka'];
+           $Kebab_After = $Record_3['amount_kebab'];
+           $Wifi_After = $Record_3['amount_wifi'];
+           $Raport->Stolen_Setter($Vodka_Before - $Vodka_After, $Kebab_Before - $Kebab_After, $Wifi_Before - $Wifi_After);
            $Move->Returning();
+           $Raport->Result_Setter(2);
+           $Raport->Defending_Armies_After_Setter(NULL);
+           $Raport->Aggressor_Army_After_Setter($Move->Army_Getter());
            $SQL_String_3 = "SELECT obedience FROM gs_campuses WHERE id_campus=$Destination";
            $Query_3 = $Connect->Query($SQL_String_3);
            $Record_3 = $Query_3->fetch_assoc();
-           $New_Obedience = $Record_3['obedience'] - rand(10,20);
+           $Obedience_Decrease = rand(10,20);
+           $Raport->Obedience_Loss_Setter($Obedience_Decrease, $Record_3['obedience']);
+           $New_Obedience = $Record_3['obedience'] - $Obedience_Decrease;
            if ($New_Obedience <= 0)
            {
            	  $Source = $Move->ID_Source_Getter();
@@ -100,6 +158,9 @@ while ($Record = $Query->fetch_assoc())
         }
         if ($Move->Army_Getter()->Exterminated() == 1)
         {
+           $Raport->Result_Setter(1);
+           $Raport->Defending_Armies_After_Setter($Defending_Armies);
+           $Raport->Aggressor_Army_After_Setter(NULL);
            $ID_Army = $Move->Army_Getter()->ID_Army_Getter();
            $SQL_String_3 = "DELETE FROM gs_armies WHERE id_army=$ID_Army";
            $Query_3 = $Connect->Query($SQL_String_3);
@@ -107,6 +168,7 @@ while ($Record = $Query->fetch_assoc())
            $SQL_String_3 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
            $Query_3 = $Connect->Query($SQL_String_3);
         }
+        $Raport->Send();
 	}
 	if ($Record['strike'] == 2)
 	{

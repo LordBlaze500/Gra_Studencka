@@ -81,7 +81,7 @@ if (isset($_POST['veteran_number']) && $Transit->Status_Getter() > 1)
             <center>
             </br><i>
             <?php
-            if ($Transit->Status_Getter() == 2) echo 'Tramwaje pozwalą rekrutować kanarów i kanarów weteranów.';
+            if ($Transit->Status_Getter() == 2) echo 'Tramwaje pozwalają rekrutować kanarów i kanarów weteranów.';
             else echo 'Autobusy pozwalają rekrutować kanarów.';?>
             </i></br></br>
             </center>

@@ -44,7 +44,8 @@ if (isset($_POST['send']))
       $SQL_String = "UPDATE gs_armies SET id_stayingcampus=0 WHERE id_army=$ID_New_Army";
       $Query = $Connect->Query($SQL_String);
       $Arrival_Time = new DateTime(); 
-      $Arrival_Time->add(new DateInterval('PT'.$New_Army->Speed_Getter().'M'));
+      $Arrival_Time->add(new DateInterval('PT'.Calculate_Travel_Time($Connect, $New_Army->ID_Homecampus_Getter(),$ID_Target,$New_Army->Speed_Getter()).'M'));
+      //$Arrival_Time->add(new DateInterval('PT'.$New_Army->Speed_Getter().'M'));
       $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
       $SQL_String = "INSERT INTO gs_moves (id_army, id_source, id_destination, arrival_time, strike) VALUES ($ID_New_Army, $ID_Campus, $ID_Target, '$Date_String', 1)";
       $Query = $Connect->Query($SQL_String);

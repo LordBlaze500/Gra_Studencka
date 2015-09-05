@@ -60,7 +60,7 @@ if (isset($_POST['return']) && isset($_POST['id_army']))
       $Army = new Army($Record_2['id_army']);
       $Old_Destination = $Record_2['id_stayingcampus'];
       $Arrival_Time = new DateTime(); 
-      $Arrival_Time->add(new DateInterval('PT'.$Army->Speed_Getter().'M'));
+      $Arrival_Time->add(new DateInterval('PT'.Calculate_Travel_Time($Connect, $Army->ID_Homecampus_Getter(),$Army->ID_Stayingcampus_Getter(),$Army->Speed_Getter()).'M'));
       $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
       $ID_Army = $Record_2['id_army'];
       $SQL_String_3 = "INSERT INTO gs_moves (id_army, id_source, id_destination, arrival_time, strike, old_id_destination) VALUES ($ID_Army, $ID_Campus, $ID_Campus, '$Date_String', 2, $Old_Destination)";
@@ -81,7 +81,7 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
       $Army = new Army($Record_2['id_army']);
       $Old_Destination = $ID_Campus;
       $Arrival_Time = new DateTime(); 
-      $Arrival_Time->add(new DateInterval('PT'.$Army->Speed_Getter().'M'));
+      $Arrival_Time->add(new DateInterval('PT'.Calculate_Travel_Time($Connect, $Army->ID_Homecampus_Getter(),$Army->ID_Stayingcampus_Getter(),$Army->Speed_Getter()).'M'));
       $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
       $ID_Army = $Record_2['id_army'];
       $ID_Homecampus = $Record_2['id_homecampus'];

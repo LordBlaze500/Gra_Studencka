@@ -603,6 +603,26 @@ if (!defined('__ARMY_PHP__'))
       }
    }
 
+   function Calculate_Travel_Time($Arg_Connect, $Arg_A_Point_ID, $Arg_B_Point_ID, $Arg_Speed)
+   {
+      $SQL_String = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus=$Arg_A_Point_ID";
+      $Query = $Arg_Connect->Query($SQL_String);
+      $Record = $Query->fetch_assoc();
+      $A_X_Coord = $Record['x_coord'];
+      $A_Y_Coord = $Record['y_coord'];
+      $SQL_String = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus=$Arg_B_Point_ID";
+      $Query = $Arg_Connect->Query($SQL_String);
+      $Record = $Query->fetch_assoc();
+      $B_X_Coord = $Record['x_coord'];
+      $B_Y_Coord = $Record['y_coord'];
+      $a = abs($A_X_Coord - $B_X_Coord);
+      $b = abs($A_Y_Coord - $B_Y_Coord);
+      $Distance = sqrt($a*$a + $b*$b);
+      $Distance = ceil($Distance);
+      $Distance = $Distance * $Arg_Speed;
+      return $Distance;
+   }
+
    class Move
    {
       private static $Connect;
@@ -669,7 +689,7 @@ if (!defined('__ARMY_PHP__'))
          $this->Old_ID_Destination = $this->ID_Destination;
          $this->ID_Destination = $this->ID_Source;
          $this->Arrival_Time = new DateTime(); 
-         $this->Arrival_Time->add(new DateInterval('PT'.$this->Army->Speed_Getter().'M'));
+         $this->Arrival_Time->add(new DateInterval('PT'.Calculate_Travel_Time(self::$Connect, $this->Old_ID_Destination, $this->ID_Source, $this->Army->Speed_Getter()).'M'));
       }
       public function Steal()
       {
