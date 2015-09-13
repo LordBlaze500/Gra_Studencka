@@ -1,23 +1,4 @@
 <?php
-//OGOLNIE POTRZEBNE DANE:
- // pochodzenie ataku
- // cel ataku
- // wynik
- // szczescie
- // wojo agresora przed atakiem
- // wojo agresora po ataku
- // suma wojsk def przed atakiem
- // suma wojsk def po ataku
- // ile ukradziono surki
- // ile spadlo poparcie
-
-// raport o ataku - dla agresora
- // jesli all wojo off zginelo to wstawic brak danych o wojskach def
-
-// raport o ataku - dla obroncy
-// raport o ataku - dla wspierajacego
- // suma wojsk jego woja przed atakiem
- // suma wojsk jego woja po ataku
 if (!defined('__RAPORT_PHP__'))
 {
    define('__RAPORT_PHP__',1);
@@ -308,8 +289,206 @@ if (!defined('__RAPORT_PHP__'))
    }
 }
 
-// raport o wycofaniu woja
-// raport o odeslaniu woja
-// raport o dotarciu wsparcia
+class Retreat_Raport
+{
+   private static $Connect;
+   private static $Object_Counter;
+   private $ID_Move;
+   public function __construct($Arg_ID_Move)
+   {
+      if (self::$Object_Counter == 0) self::$Connect = new mysqli($GLOBALS['db_host'], $GLOBALS['db_user'], $GLOBALS['db_password'], $GLOBALS['db_name']);
+      self::$Object_Counter = self::$Object_Counter + 1;
+      $this->ID_Move = $Arg_ID_Move;
+   }
+   public function Send()
+   {
+      $SQL_String = "SELECT id_army, id_source, old_id_destination FROM gs_moves WHERE id_move=$this->ID_Move";
+      $Query = self::$Connect->Query($SQL_String);
+      $Record = $Query->fetch_assoc();
+      $ID_Source = $Record['id_source'];
+      $ID_Destination = $Record['old_id_destination'];
+      $ID_Army = $Record['id_army'];
+      $SQL_String = "SELECT id_owner, name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Source";
+      $Query_2 = self::$Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $ID_User = $Record_2['id_owner'];
+      $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_User";
+      $Query_3 = self::$Connect->Query($SQL_String);
+      $Record_3 = $Query_3->fetch_assoc();
+      $SQL_String = "SELECT id_owner, name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Destination";
+      $Query_4 = self::$Connect->Query($SQL_String);
+      $Record_4 = $Query_4->fetch_assoc();
+      $SQL_String = "SELECT * FROM gs_armies WHERE id_army=$ID_Army";
+      $Query_5 = self::$Connect->Query($SQL_String);
+      $Record_5 = $Query_5->fetch_assoc();
+      $Content = "<font size=5><b>Wycofano wsparcie</b></font></br></br>";
+      $Content = $Content."Gracz ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord']).") wycofał wsparcie z twojego kampusu:<br/>";
+      $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
+      $Content = $Content.'<table border=1><tr>';
+      $Content = $Content.'<td><img src="img/student.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/spadochroniarz.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/menel.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/kloszard.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/nerd.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/stulejarz.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/magister.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/doktor.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/kanar.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/weteran.png" width="25" height="25"></td></tr><tr>';
+      $Content = $Content.'<td>'.($Record_5['student']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['parachute']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['drunkard']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['clochard']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['nerd']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['stooley']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['master']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['doctor']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
+      $ID_Player = $Record_4['id_owner'];
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Player, '$Content', 0)";
+      $Query = self::$Connect->Query($SQL_String);
+   }
+   public function __destruct()
+   {
+      self::$Object_Counter = self::$Object_Counter - 1;
+      if (self::$Object_Counter == 0) self::$Connect->close();
+   }
+}
 
+class Sendback_Raport
+{
+   private static $Connect;
+   private static $Object_Counter;
+   private $ID_Move;
+   public function __construct($Arg_ID_Move)
+   {
+      if (self::$Object_Counter == 0) self::$Connect = new mysqli($GLOBALS['db_host'], $GLOBALS['db_user'], $GLOBALS['db_password'], $GLOBALS['db_name']);
+      self::$Object_Counter = self::$Object_Counter + 1;
+      $this->ID_Move = $Arg_ID_Move;
+   }
+   public function Send()
+   {
+      $SQL_String = "SELECT id_army, id_source, old_id_destination FROM gs_moves WHERE id_move=$this->ID_Move";
+      $Query = self::$Connect->Query($SQL_String);
+      $Record = $Query->fetch_assoc();
+      $ID_Source = $Record['id_source'];
+      $ID_Destination = $Record['old_id_destination'];
+      $ID_Army = $Record['id_army'];
+      $SQL_String = "SELECT id_owner, name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Destination";
+      $Query_2 = self::$Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $ID_User = $Record_2['id_owner'];
+      $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_User";
+      $Query_3 = self::$Connect->Query($SQL_String);
+      $Record_3 = $Query_3->fetch_assoc();
+      $SQL_String = "SELECT id_owner, name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Source";
+      $Query_4 = self::$Connect->Query($SQL_String);
+      $Record_4 = $Query_4->fetch_assoc();
+      $SQL_String = "SELECT * FROM gs_armies WHERE id_army=$ID_Army";
+      $Query_5 = self::$Connect->Query($SQL_String);
+      $Record_5 = $Query_5->fetch_assoc();
+      $Content = "<font size=5><b>Odesłano wsparcie</b></font></br></br>";
+      $Content = $Content."Gracz ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord']).") odesłał wsparcie z twojego kampusu:<br/>";
+      $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
+      $Content = $Content.'<table border=1><tr>';
+      $Content = $Content.'<td><img src="img/student.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/spadochroniarz.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/menel.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/kloszard.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/nerd.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/stulejarz.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/magister.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/doktor.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/kanar.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/weteran.png" width="25" height="25"></td></tr><tr>';
+      $Content = $Content.'<td>'.($Record_5['student']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['parachute']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['drunkard']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['clochard']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['nerd']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['stooley']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['master']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['doctor']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
+      $ID_Player = $Record_4['id_owner'];
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Player, '$Content', 0)";
+      $Query = self::$Connect->Query($SQL_String);
+   }
+   public function __destruct()
+   {
+      self::$Object_Counter = self::$Object_Counter - 1;
+      if (self::$Object_Counter == 0) self::$Connect->close();
+   }
+}
+
+class Support_Raport
+{
+   private static $Connect;
+   private static $Object_Counter;
+   private $ID_Move;
+   public function __construct($Arg_ID_Move)
+   {
+      if (self::$Object_Counter == 0) self::$Connect = new mysqli($GLOBALS['db_host'], $GLOBALS['db_user'], $GLOBALS['db_password'], $GLOBALS['db_name']);
+      self::$Object_Counter = self::$Object_Counter + 1;
+      $this->ID_Move = $Arg_ID_Move;
+   }
+   public function Send()
+   {
+      $SQL_String = "SELECT id_source, id_destination, id_army FROM gs_moves WHERE id_move=$this->ID_Move";
+      $Query = self::$Connect->Query($SQL_String);
+      $Record = $Query->fetch_assoc();
+      $ID_Source = $Record['id_source'];
+      $ID_Destination = $Record['id_destination'];
+      $ID_Army = $Record['id_army'];
+      $SQL_String = "SELECT id_owner, name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Source";
+      $Query_2 = self::$Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $ID_Owner = $Record_2['id_owner'];
+      $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_Owner";
+      $Query_3 = self::$Connect->Query($SQL_String);
+      $Record_3 = $Query_3->fetch_assoc();
+      $SQL_String = "SELECT id_owner, name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Destination";
+      $Query_4 = self::$Connect->Query($SQL_String);
+      $Record_4 = $Query_4->fetch_assoc();
+      $ID_Player = $Record_4['id_owner'];
+      $SQL_String = "SELECT * FROM gs_armies WHERE id_army=$ID_Army";
+      $Query_5 = self::$Connect->Query($SQL_String);
+      $Record_5 = $Query_5->fetch_assoc();
+      $Content = "<font size=5><b>Wsparcie dotarło</b></font></br></br>";
+      $Content = $Content."Wsparcie od ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord'])." dotarło do kampusu";
+      $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
+      $Content = $Content.'<table border=1><tr>';
+      $Content = $Content.'<td><img src="img/student.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/spadochroniarz.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/menel.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/kloszard.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/nerd.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/stulejarz.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/magister.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/doktor.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/kanar.png" width="25" height="25"></td>';
+      $Content = $Content.'<td><img src="img/weteran.png" width="25" height="25"></td></tr><tr>';
+      $Content = $Content.'<td>'.($Record_5['student']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['parachute']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['drunkard']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['clochard']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['nerd']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['stooley']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['master']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['doctor']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
+      $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Player, '$Content', 0)";
+      $Query = self::$Connect->Query($SQL_String);
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Owner, '$Content', 0)";
+      $Query = self::$Connect->Query($SQL_String);
+   }
+   public function __destruct()
+   {
+      self::$Object_Counter = self::$Object_Counter - 1;
+      if (self::$Object_Counter == 0) self::$Connect->close();
+   }
+}
 ?>

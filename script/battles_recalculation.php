@@ -13,11 +13,8 @@ while ($Record = $Query->fetch_assoc())
 	if ($Record['strike'] == 1)
 	{
     $Raport = new Battle_Raport();
-		echo "dupxo";
 		$Luck = rand(0, 20);
     $Raport->Luck_Setter($Luck);
-    echo '<br>Luck:';
-    echo $Luck;
 		$Move = new Move($Record['id_move']);
     $Raport->Aggressor_Army_Before_Setter($Move->Army_Getter());
 		$Destination = $Move->ID_Destination_Getter();
@@ -33,8 +30,6 @@ while ($Record = $Query->fetch_assoc())
 			$i = $i + 1;
 		}
     $Raport->Defending_Armies_Before_Setter($Defending_Armies);
-    echo '<br>i:';
-    echo $i;
 		$Defenders_Attack_Light = 0;
 		$Defenders_Attack_Heavy = 0;
 		$Defenders_Attack_Cavalry = 0;
@@ -50,22 +45,9 @@ while ($Record = $Query->fetch_assoc())
               $Defenders_Attack_Heavy = $Defenders_Attack_Heavy + $Defending_Armies->At($j)->Total_Attack_Heavy_Getter();
               $Defenders_Attack_Cavalry = $Defenders_Attack_Cavalry + $Defending_Armies->At($j)->Total_Attack_Cavalry_Getter();
 	    	}
-        echo 'next iteration';
-        echo '<br>Def Attack Light: ';
-        echo $Defenders_Attack_Light;
-        echo '<br>Def Attack Heavy:';
-        echo $Defenders_Attack_Heavy;
-        echo '<br>Def_Attack_Cavalry:';
-        echo $Defenders_Attack_Cavalry;
 		    $Aggressor_Attack_Light = ($Move->Army_Getter()->Total_Attack_Light_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Heavy = ($Move->Army_Getter()->Total_Attack_Heavy_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Cavalry = ($Move->Army_Getter()->Total_Attack_Cavalry_Getter())*(1+($Luck/100));
-        echo '<br>Aggressor Attack Light: ';
-        echo $Aggressor_Attack_Light;
-        echo '<br>Aggressor Attack Heavy:';
-        echo $Aggressor_Attack_Heavy;
-        echo '<br>Aggressor_Attack_Cavalry:';
-        echo $Aggressor_Attack_Cavalry;
         $Aggressor_Attack_Light_In_Total = $Aggressor_Attack_Light;
         $Aggressor_Attack_Heavy_In_Total = $Aggressor_Attack_Heavy;
         $Aggressor_Attack_Cavalry_In_Total = $Aggressor_Attack_Cavalry;
@@ -100,8 +82,6 @@ while ($Record = $Query->fetch_assoc())
                 $Defenders_Status = $Defenders_Status + $Defending_Armies->At($j)->Exterminated();
             }
 		}
-    echo '<br>Def status:';
-    echo $Defenders_Status;
 		if ($Defenders_Status > 0)
 		{
 			for ($j = 0; $j < $i; $j = $j + 1)
@@ -172,12 +152,10 @@ while ($Record = $Query->fetch_assoc())
 	}
 	if ($Record['strike'] == 2)
 	{
-		echo "dupapaa";
         $Move = new Move($Record['id_move']);
         $Move->Delivery();
         $Destination = $Move->ID_Destination_Getter();
         $SQL_String_2 = "SELECT id_army FROM gs_armies WHERE id_homecampus=$Destination AND id_stayingcampus=$Destination";
-        echo $SQL_String_2;
         $Query_2 = $Connect->Query($SQL_String_2);
         $Record_2 = $Query_2->fetch_assoc();
         $ID_Army = $Record_2['id_army'];
@@ -195,8 +173,10 @@ while ($Record = $Query->fetch_assoc())
 		$SQL_String_2 = "UPDATE gs_armies SET id_stayingcampus=$Destination WHERE id_army=$ID_Army";
 		$Query_2 = $Connect->Query($SQL_String_2);
 		$ID_Move = $Record['id_move'];
-        $SQL_String_2 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
-        $Query_2 = $Connect->Query($SQL_String_2);
+    $Raport = new Support_Raport($ID_Move);
+    $Raport->Send();
+    $SQL_String_2 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
+    $Query_2 = $Connect->Query($SQL_String_2);
 	}
 }
 

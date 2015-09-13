@@ -2,6 +2,7 @@
 include "db_connect.php";
 include "style.php";
 include "army.php";
+include "raport.php";
 $ID_Campus = $_SESSION['id_campus'];
 if (!$ID_Campus) header('Location: index.php');
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
@@ -49,7 +50,7 @@ if (isset($_POST['help']))
    }
 }
 
-if (isset($_POST['return']) && isset($_POST['id_army']))
+if (isset($_POST['retreat']) && isset($_POST['id_army']))
 {
    $ID_Army = $_POST['id_army'];
    $SQL_String_2 = "SELECT id_army, id_stayingcampus FROM gs_armies WHERE id_army=$ID_Army AND id_homecampus=$ID_Campus AND id_stayingcampus != id_homecampus AND id_stayingcampus != 0";
@@ -67,6 +68,11 @@ if (isset($_POST['return']) && isset($_POST['id_army']))
       $Query_3 = $Connect->Query($SQL_String_3);
       $SQL_String_3 = "UPDATE gs_armies SET id_stayingcampus=0 WHERE id_army=$ID_Army";
       $Query_3 = $Connect->Query($SQL_String_3);
+      $SQL_String = "SELECT id_move FROM gs_moves WHERE id_army=$ID_Army";
+      $Query_2 = $Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $Raport = new Retreat_Raport($Record_2['id_move']);
+      $Raport->Send();
    }
 }
 
@@ -89,6 +95,11 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
       $Query_3 = $Connect->Query($SQL_String_3);
       $SQL_String_3 = "UPDATE gs_armies SET id_stayingcampus=0 WHERE id_army=$ID_Army";
       $Query_3 = $Connect->Query($SQL_String_3);
+      $SQL_String = "SELECT id_move FROM gs_moves WHERE id_army=$ID_Army";
+      $Query_2 = $Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $Raport = new Sendback_Raport($Record_2['id_move']);
+      $Raport->Send();
    }
 }
 
@@ -338,7 +349,7 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo '<input type="hidden" name="id_army" value="';
             echo $Record['id_army'];
             echo '"">';
-            echo '<input type="submit" name="return" value=Wycofaj>';
+            echo '<input type="submit" name="retreat" value=Wycofaj>';
             echo '</form>';
             echo '</td>';
             echo '<td>';

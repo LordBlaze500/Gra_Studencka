@@ -21,7 +21,7 @@ $Veteran = new Troops_Type('veteran');
       <tr align="center" bgcolor=<?php Bg_Color_Two();?>>
          <td>
             <center></br><i>
-            Mając kilkanaście lat stażu kanar weteran jednym spojrzeniem ze współczynnikiem trafień 100% identyfikuje </br>
+            Mając kilkadziesiąt lat stażu kanar weteran jednym spojrzeniem ze współczynnikiem trafień 100% identyfikuje </br>
             każdego gapowicza. Ze względu na przekroczenie magicznej liczby miliona wystawionych mandatów dostał on </br>
             sporą podwyżkę - dlatego też może pozwolić sobie na większe niż dotychczas zaopatrzenie w wóde i kebsy. </br> 
             </i></center></br>
