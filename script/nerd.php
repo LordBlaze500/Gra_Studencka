@@ -24,7 +24,7 @@ $Nerd = new Troops_Type('nerd');
             Wg naukowców nerd spędza w internecie dokładnie 27 h na dobę. Zawsze ubrany jest w gęstą koszulę w kratę </br>
             oraz posiada przy sobie laptopa, tablet, ładowarkę i całą tonę innego sprzętu elektronicznego. Z tego powodu </br> 
             należy on do ciężkiej piechoty. Jest postrachem magistrów, ponieważ zdaje wszystkie egzaminy na 5,0 nawet, gdy </br>
-            pytania są inne niż rok temu. Nerd może za to odpłacić się soczystymi 1 na ankiecie o wykładowach. </br>
+            pytania są inne niż rok temu. Nerd może za to odpłacić się soczystymi jedynkami na ankiecie o wykładowcach. </br>
             Unikają go też kanary, ponieważ zawsze ma przy sobie bilety. Realizuje on powiedzenie "kozak w necie ci*a w świecie", </br>
             dlatego unika on konfliktu ze studentami w świecie rzeczywistym. </br>
             Nerd bez wifi nie ma prawa istnieć. Ale nie samymi internetami człowiek żyje - potrzebne też kebsy do </br>

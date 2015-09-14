@@ -3,6 +3,7 @@ include "db_connect.php";
 include "army.php";
 include "list.php";
 include "raport.php";
+include "resource.php";
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $Arrival_Time = new DateTime();
 $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
@@ -135,6 +136,7 @@ while ($Record = $Query->fetch_assoc())
            $New_Obedience = $Record_3['obedience'] - $Obedience_Decrease;
            if ($New_Obedience <= 0)
            {
+              $Raport->Send();
            	  $Source = $Move->ID_Source_Getter();
            	  $SQL_String_3 = "SELECT id_owner FROM gs_campuses WHERE id_campus=$Source";
            	  $Query_3 = $Connect->Query($SQL_String_3);
@@ -160,8 +162,9 @@ while ($Record = $Query->fetch_assoc())
            $ID_Move = $Record['id_move'];
            $SQL_String_3 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
            $Query_3 = $Connect->Query($SQL_String_3);
+           $Raport->Send();
         }
-        $Raport->Send();
+        
 	}
 	if ($Record['strike'] == 2)
 	{
@@ -191,6 +194,59 @@ while ($Record = $Query->fetch_assoc())
     $SQL_String_2 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
     $Query_2 = $Connect->Query($SQL_String_2);
 	}
+}
+
+$SQL_String = "SELECT id_trading_move, id_source, id_destination, traders, vodka, kebab, wifi, going_back FROM gs_trading_moves WHERE arrival_time <= '$Date_String'";
+$Query = $Connect->Query($SQL_String);
+while ($Record = $Query->fetch_assoc())
+{  
+   if ($Record['going_back'] == 0)
+   {
+      $ID_Move = $Record['id_trading_move'];
+      $Source = $Record['id_source'];
+      $Destination = $Record['id_destination'];
+      $Traders = $Record['traders'];
+      $Vodka = new Resource('vodka', $Destination);
+      $Kebab = new Resource('kebab', $Destination);
+      $Wifi = new Resource('wifi', $Destination);
+      $Vodka->Increase($Record['vodka']);
+      $Kebab->Increase($Record['kebab']);
+      $Wifi->Increase($Record['wifi']);
+      $SQL_String = "DELETE FROM gs_trading_moves WHERE id_trading_move=$ID_Move";
+      $Query_2 = $Connect->Query($SQL_String);
+      $SQL_String = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus=$Source";
+      $Query_3 = $Connect->Query($SQL_String);
+      $Record_3 = $Query_3->fetch_assoc();
+      $X_Source = $Record_3['x_coord'];
+      $Y_Source = $Record_3['y_coord'];
+      $SQL_String = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus=$Destination";
+      $Query_4 = $Connect->Query($SQL_String);
+      $Record_4 = $Query_4->fetch_assoc();
+      $X_Destination = $Record_4['x_coord'];
+      $Y_Destination = $Record_4['y_coord'];
+      $Distance = abs($X_Source - $X_Destination) + abs($Y_Source - $Y_Destination);
+      $Arrival_Time = new DateTime(); 
+      $Arrival_Time->add(new DateInterval('PT'.(10*$Distance).'M'));
+      $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
+      $SQL_String = "INSERT INTO gs_trading_moves (id_source, id_destination, traders, vodka, kebab, wifi, arrival_time, going_back) VALUES ($Destination, $Source, $Traders, 0, 0, 0, '$Date_String', 1)";
+      $Query_5 = $Connect->Query($SQL_String);
+   }
+   else
+   {
+      $ID_Move = $Record['id_trading_move'];
+      $Traders = $Record['traders'];
+      $Destination = $Record['id_destination'];
+      $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$Destination";
+      $Query_2 = $Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $Old_Traders = $Record_2['traders'];
+      $New_Traders = $Old_Traders + $Traders;
+      $SQL_String = "UPDATE gs_campuses SET traders=$New_Traders WHERE id_campus=$Destination";
+      $Query_3 = $Connect->Query($SQL_String);
+      $SQL_String = "DELETE FROM gs_trading_moves WHERE id_trading_move=$ID_Move";
+      $Query_4 = $Connect->Query($SQL_String);
+   }
+
 }
 
 $Connect->close();

@@ -101,6 +101,12 @@ else:
                 require "script/send_help.php";        
 
             break;
+
+            case "trade_center":
+
+                require "script/trade_center.php";
+
+            break;
             
             case "campus_info":
 

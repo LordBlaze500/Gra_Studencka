@@ -273,7 +273,7 @@ if (!defined('__RAPORT_PHP__'))
          $Query = self::$Connect->Query($SQL_String);
          $Record = $Query->fetch_assoc();
          $ID_User = $Record['id_owner'];
-         $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Owner, '$Content', 0)";
+         $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_User, '$Content', 0)";
          $Query = self::$Connect->Query($SQL_String);
          echo 'SQL STring 2: ';
          echo $SQL_String;
@@ -457,7 +457,7 @@ class Support_Raport
       $Query_5 = self::$Connect->Query($SQL_String);
       $Record_5 = $Query_5->fetch_assoc();
       $Content = "<font size=5><b>Wsparcie dotarło</b></font></br></br>";
-      $Content = $Content."Wsparcie od ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord'])." dotarło do kampusu";
+      $Content = $Content."Wsparcie od ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord']).") dotarło do kampusu ";
       $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
       $Content = $Content.'<table border=1><tr>';
       $Content = $Content.'<td><img src="../img/student.png" width="25" height="25"></td>';

@@ -131,6 +131,7 @@ $Army = new Army($ID_Army);
             </b>
          </td>
          <td style="border: 3px solid #0404B4;">
+            <a href="?l=trade_center"><img src="img/trade.png" alt="Handel" width="50" height="50"></a>
             <a href="?l=help"><img src="img/pomoc.png" alt="Raporty" width="50" height="50"></a>
             <a href="script/raports.php" target="window_iframe" onClick="javascript:Window_('#window', 550, 600, 'Raporty', 'on')"><img src="<?php echo ($nowe_raporty == 0) ? "img/noraport.png" : "img/raport.png"; ?>" alt="Raporty" width="50" height="50"></a>
             <a href="script/messages.php" target="window_iframe" onClick="javascript:Window_('#window', 350, 500, 'Wiadomości', 'on')"><img src="<?php echo ($nowe_wiadomosci == 0) ? "img/nomsg.png" : "img/newmsg.png"; ?>" alt="Wiadomosci" style="width:50px;height:50px;"></a>
