@@ -41,7 +41,7 @@ session_start();
         .top_buttons:hover {text-decoration: underline;}
         .top_buttons_active {color: white; background-color: #10407F;}
         /*MSG*/
-        .msg_area {background-color: #10407F; border-radius: 20px; padding: 5px;}
+        .msg_area {background-color: #10407F; border-radius: 20px; padding: 5px; position: relative; top: -1px;}
         .msg_content {display: none;}
         .msg_header, .msg_header_new {cursor: pointer; border-radius: 10px;}
         .msg_header {background-image: url('../img/messages/1.gif');}
@@ -58,7 +58,7 @@ if(isset($_GET["messages_l"]))
     $messages_l = $_GET["messages_l"];
 else
     $messages_l = "inbox";    
-        ?> 
+?> 
         <center>    
             <a id="top_inbox" class="<?php echo ($messages_l == "inbox") ? "top_buttons_active" : "top_buttons"; ?>" href="?messages_l=inbox">Odebrane</a>    
             <a id="top_new" class="<?php echo ($messages_l == "new") ? "top_buttons_active" : "top_buttons"; ?>" href="?messages_l=new">Nowa</a>

@@ -10,7 +10,7 @@ $q = $connect->query($z);
 <?php
 for($i = 0; $rec = $q->fetch_assoc(); $i++) {
     if($i != 0) echo ",\n";
-    echo '      {"x":"'.$rec["x_coord"].'", "y":"'.$rec["y_coord"].'"}';
+    echo '      {"x":"'.$rec["x_coord"].'", "y":"'.$rec["y_coord"].'", "name":"'.$rec["name"].'"}';
 }
 ?>   
     ]

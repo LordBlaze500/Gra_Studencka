@@ -268,6 +268,18 @@ else:
                 require "script/rektorat.php";        
 
             break;
+            
+            case "map":
+
+                require "script/map.php";        
+
+            break;
+            
+            case "help":
+
+                require "script/help.php";        
+
+            break;
 
             default:
 
