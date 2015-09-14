@@ -21,7 +21,13 @@ if (isset($_POST['strike']))
       echo 'Taki kampus nie istnieje!';
       echo '</b></font></center>';
    }
-   if ($Record && $X > 0 && $Y > 0) 
+   if ($Record && $Record['id_campus'] == $ID_Campus)
+   {
+      echo '<center><font size=4><b>';
+      echo 'Nie możesz zaatakować kampusu wyjściowego.';
+      echo '</b></font></center>';
+   }
+   if ($Record && $X > 0 && $Y > 0 && $Record['id_campus'] != $ID_Campus) 
    {
       $_SESSION['X'] = $X;
       $_SESSION['Y'] = $Y;
@@ -42,7 +48,13 @@ if (isset($_POST['help']))
       echo 'Taki kampus nie istnieje!';
       echo '</b></font></center>';
    }
-   if ($Record && $X > 0 && $Y > 0) 
+   if ($Record && $Record['id_campus'] == $ID_Campus)
+   {
+      echo '<center><font size=4><b>';
+      echo 'Nie możesz wysłać wojsk do kampusu wyjściowego.';
+      echo '</b></font></center>';
+   }
+   if ($Record && $X > 0 && $Y > 0 && $Record['id_campus'] != $ID_Campus) 
    {
       $_SESSION['X'] = $X;
       $_SESSION['Y'] = $Y;

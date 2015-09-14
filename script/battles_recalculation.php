@@ -12,6 +12,12 @@ while ($Record = $Query->fetch_assoc())
 {
 	if ($Record['strike'] == 1)
 	{
+    if (date('H') > 21 || date('H') < 6) $Bonus = 2;
+    else $Bonus = 1;
+    echo 'date h: ';
+    echo date('H');
+    echo '<br/>';
+    $Bonus_Set = 0;
     $Raport = new Battle_Raport();
 		$Luck = rand(0, 20);
     $Raport->Luck_Setter($Luck);
@@ -45,6 +51,13 @@ while ($Record = $Query->fetch_assoc())
               $Defenders_Attack_Heavy = $Defenders_Attack_Heavy + $Defending_Armies->At($j)->Total_Attack_Heavy_Getter();
               $Defenders_Attack_Cavalry = $Defenders_Attack_Cavalry + $Defending_Armies->At($j)->Total_Attack_Cavalry_Getter();
 	    	}
+        if ($Bonus_Set == 0)
+        {
+           $Defenders_Attack_Light = $Defenders_Attack_Light * $Bonus;
+           $Defenders_Attack_Heavy = $Defenders_Attack_Heavy * $Bonus;
+           $Defenders_Attack_Cavalry = $Defenders_Attack_Cavalry * $Bonus;
+           $Bonus_Set = 1;
+        }
 		    $Aggressor_Attack_Light = ($Move->Army_Getter()->Total_Attack_Light_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Heavy = ($Move->Army_Getter()->Total_Attack_Heavy_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Cavalry = ($Move->Army_Getter()->Total_Attack_Cavalry_Getter())*(1+($Luck/100));
