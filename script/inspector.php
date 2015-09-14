@@ -35,11 +35,11 @@ $Inspector = new Troops_Type('inspector');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Inspector->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Inspector->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Inspector->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Inspector->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

@@ -33,7 +33,7 @@ $Distillery = new Mining_Building('distillery', $ID_Campus);
    <table border=1 bgcolor=<?php Bg_Color_Three();?>>
       <tr>
          <td> <b>Obecny poziom: <?php echo $Distillery->Level_Getter(); ?> </b></td>
-         <td> <b>Produkcja: <?php echo $Distillery->Production_Getter(); ?> flaszek/godzina </b></td>
+         <td> <i>Produkcja: <?php echo $Distillery->Production_Getter(); ?> flaszek/godzina </i></td>
       </tr>
       <?php
       if ($Distillery->Level_Getter() < 10)
@@ -45,9 +45,9 @@ $Distillery = new Mining_Building('distillery', $ID_Campus);
             $SQL_String = "SELECT * FROM gs_mines_costs WHERE name='distillery' AND level=$Next_Level";
             $Query = $Connect->query($SQL_String);
             $Record = $Query->fetch_assoc();
-            echo '<b>Produkcja: ';
+            echo '<i>Produkcja: ';
             echo $Record['income'];
-            echo ' flaszek/godzina</b>';
+            echo ' flaszek/godzina</i>';
             echo '</td>';
          echo '</tr>';
       }

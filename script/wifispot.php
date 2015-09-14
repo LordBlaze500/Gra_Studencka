@@ -33,7 +33,7 @@ $Wifispot = new Mining_Building('wifispot', $ID_Campus);
    <table border=1 bgcolor=<?php Bg_Color_Three();?>>
       <tr>
          <td> <b>Obecny poziom: <?php echo $Wifispot->Level_Getter(); ?> </b></td>
-         <td> <b>Produkcja: <?php echo $Wifispot->Production_Getter(); ?> wiader/godzina </b></td>
+         <td> <i>Produkcja: <?php echo $Wifispot->Production_Getter(); ?> wiader/godzina </i></td>
       </tr>
       <?php
       if ($Wifispot->Level_Getter() < 10)
@@ -45,9 +45,9 @@ $Wifispot = new Mining_Building('wifispot', $ID_Campus);
             $SQL_String = "SELECT * FROM gs_mines_costs WHERE name='wifispot' AND level=$Next_Level";
             $Query = $Connect->query($SQL_String);
             $Record = $Query->fetch_assoc();
-            echo '<b>Produkcja: ';
+            echo '<i>Produkcja: ';
             echo $Record['income'];
-            echo ' wiader/godzina</b>';
+            echo ' wiader/godzina</i>';
             echo '</td>';
          echo '</tr>';
       }

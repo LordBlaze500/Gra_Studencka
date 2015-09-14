@@ -33,7 +33,7 @@ $Doner = new Mining_Building('doner', $ID_Campus);
    <table border=1 bgcolor=<?php Bg_Color_Three();?>>
       <tr>
          <td> <b>Obecny poziom: <?php echo $Doner->Level_Getter(); ?> </b></td>
-         <td> <b>Produkcja: <?php echo $Doner->Production_Getter(); ?> rollo/godzina </b></td>
+         <td> <i>Produkcja: <?php echo $Doner->Production_Getter(); ?> rollo/godzina </i></td>
       </tr>
       <?php
       if ($Doner->Level_Getter() < 10)
@@ -45,9 +45,9 @@ $Doner = new Mining_Building('doner', $ID_Campus);
             $SQL_String = "SELECT * FROM gs_mines_costs WHERE name='doner' AND level=$Next_Level";
             $Query = $Connect->query($SQL_String);
             $Record = $Query->fetch_assoc();
-            echo '<b>Produkcja: ';
+            echo '<i>Produkcja: ';
             echo $Record['income'];
-            echo ' rollo/godzina</b>';
+            echo ' rollo/godzina</i>';
             echo '</td>';
          echo '</tr>';
       }

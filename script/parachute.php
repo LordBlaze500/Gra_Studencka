@@ -31,11 +31,11 @@ $Parachute = new Troops_Type('parachute');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Parachute->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Parachute->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Parachute->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Parachute->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

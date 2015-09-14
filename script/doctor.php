@@ -33,11 +33,11 @@ $Doctor = new Troops_Type('doctor');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Doctor->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Doctor->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Doctor->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Doctor->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

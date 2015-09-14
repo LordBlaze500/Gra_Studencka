@@ -35,11 +35,11 @@ $Student = new Troops_Type('student');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Student->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Student->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Student->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Student->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

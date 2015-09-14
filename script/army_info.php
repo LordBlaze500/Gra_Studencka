@@ -16,14 +16,14 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
    <?php
    if (isset($_GET['id_army']))
    {
-      echo '<font size="4"><b>Informacje o wojskach</b></font></br>';
+      echo '<font size="5"><b>Informacje o wojskach</b></font></br>';
    	  $ID_Army = $_GET['id_army'];
    	  $SQL_String = "SELECT * FROM gs_armies WHERE id_army=$ID_Army";
    	  $Query = $Connect->Query($SQL_String);
    	  $Record = $Query->fetch_assoc();
    	  if (!$Record)
    	  {
-   	  	  echo 'Armia o takim ID nie istnieje!';
+   	  	  echo '<font size=4><b>Armia o takim ID nie istnieje!</b></font>';
    	  	  exit();
    	  }
    	  if ($Record['id_homecampus'] == $ID_Campus && $Record['id_stayingcampus'] != 0 && $Record['id_stayingcampus'] != $ID_Campus)
@@ -31,27 +31,27 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
          echo '<table border=1'; echo ' bgcolor='; echo Bg_Color_Three(); echo '>';
             echo '<tr>';
                echo '<td>';
-               echo 'Miejsce pobytu: ';
+               echo '<b>Miejsce pobytu: </b>';
                echo '</td>';
-               echo '<td>';
+               echo '<td><i>';
                $ID_Stayingcampus = $Record['id_stayingcampus'];
                $SQL_String_2 = "SELECT name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Stayingcampus";
                $Query_2 = $Connect->Query($SQL_String_2);
                $Record_2 = $Query_2->fetch_assoc();
                echo '<a href="?l=campus_info&id_campus='; echo $ID_Stayingcampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')</a>';
-               echo '</td>';
+               echo '</i></td>';
             echo '</tr>';
             echo '<tr>';
-               echo '<td>';
+               echo '<td><b>';
                echo 'Pochodzenie: ';
-               echo '</td>';
-               echo '<td>';
+               echo '</b></td>';
+               echo '<td><i>';
                $ID_Homecampus = $Record['id_homecampus'];
                $SQL_String_2 = "SELECT name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Homecampus";
                $Query_2 = $Connect->Query($SQL_String_2);
                $Record_2 = $Query_2->fetch_assoc();
                echo '<a href="?l=campus_info&id_campus='; echo $ID_Homecampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')</a>';
-               echo '</td>';
+               echo '</i></td>';
             echo '</tr>';
          echo '</table>';
          $Army = new Army($ID_Army);
@@ -86,28 +86,28 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
    	  {
            echo '<table border=1'; echo ' bgcolor='; echo Bg_Color_Three(); echo '>';
             echo '<tr>';
-               echo '<td>';
+               echo '<td><b>';
                echo 'Miejsce pobytu: ';
-               echo '</td>';
-               echo '<td>';
+               echo '</b></td>';
+               echo '<td><i>';
                $ID_Stayingcampus = $Record['id_stayingcampus'];
                $SQL_String_2 = "SELECT name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Stayingcampus";
                $Query_2 = $Connect->Query($SQL_String_2);
                $Record_2 = $Query_2->fetch_assoc();
                echo '<a href="?l=campus_info&id_campus='; echo $ID_Stayingcampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')</a>';
-               echo '</td>';
+               echo '</i></td>';
             echo '</tr>';
             echo '<tr>';
-               echo '<td>';
+               echo '<td><b>';
                echo 'Pochodzenie: ';
-               echo '</td>';
-               echo '<td>';
+               echo '</b></td>';
+               echo '<td><i>';
                $ID_Homecampus = $Record['id_homecampus'];
                $SQL_String_2 = "SELECT name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Homecampus";
                $Query_2 = $Connect->Query($SQL_String_2);
                $Record_2 = $Query_2->fetch_assoc();
                echo '<a href="?l=campus_info&id_campus='; echo $ID_Homecampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')</a>';
-               echo '</td>';
+               echo '</i></td>';
             echo '</tr>';
          echo '</table>';
          $Army = new Army($ID_Army);

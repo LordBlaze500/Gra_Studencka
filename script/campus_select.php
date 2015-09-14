@@ -11,7 +11,7 @@ $User_Login = $_SESSION["login"];
 </head>
 <body>
    <center>
-   <b>Wybierz kampus: </b><br/>
+   <font size="5"><b>Wybór kampusu</b></font><br/>
    <?php
    $SQL_String = "SELECT id_user, last_active FROM gs_users WHERE login = '$User_Login'";
    $Query = $Connect->query($SQL_String);
@@ -49,7 +49,7 @@ $User_Login = $_SESSION["login"];
       }
       else
       {
-         echo '<b><font color="red">To nie jest twoj kampus!</font></b>';
+         echo '<b><font size="4" color="yellow">To nie jest twoj kampus!</font></b>';
       }
    }
    $Connect->close();

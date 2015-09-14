@@ -75,7 +75,7 @@ if (isset($_POST['send']))
          <td>
             <b>Cel:</b>
          </td>
-         <td>
+         <td><i>
             <?php 
             echo '<a href="?l=campus_info&id_campus=';
             echo $ID_Target;
@@ -88,13 +88,13 @@ if (isset($_POST['send']))
             echo ')';
             echo '</a>';
             ?>
-         </td>
+         </i></td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
          <td>
             <b>Właściciel:</b>
          </td>
-         <td>
+         <td><i>
             <?php 
             echo '<a href="?l=user_info&id_user=';
             echo $ID_Owner;
@@ -102,7 +102,7 @@ if (isset($_POST['send']))
             echo $Login;
             echo '</a>';
             ?>
-         </td>
+         </i></td>
       </tr>
       <form method="POST">
       <tr bgcolor=<?php Bg_Color_Three();?>>

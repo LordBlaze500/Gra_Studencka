@@ -15,9 +15,6 @@ $ID_Army = $Record['id_army'];
 $Cafe = new Recrutation_Building('cafe', $ID_Campus);
 $Nerd = new Force(new Troops_Type('nerd'), $ID_Army);
 $Stooley = new Force(new Troops_Type('stooley'), $ID_Army);
-$Vodka = new Resource('vodka', $ID_Campus);
-$Kebab = new Resource('kebab', $ID_Campus);
-$Wifi = new Resource('wifi', $ID_Campus);
 
 function Recruiter($Troop, $Number)
 {
@@ -25,17 +22,14 @@ function Recruiter($Troop, $Number)
    if ($Result == 1) 
    {
       $_POST['info'] = "recruited";
-      header('Location: index.php?l=cafe');
    }
    if ($Result == 2) 
    {
       $_POST['info'] = "noresources";
-      header('Location: index.php?l=cafe');
    }
    if ($Result == 3) 
    {
       $_POST['info'] = "nospace";
-      header('Location: index.php?l=cafe');
    }
 }
 
@@ -50,6 +44,9 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
    $Number = $_POST['stooley_number'];
    Recruiter($Stooley, $Number);
 }
+$Vodka = new Resource('vodka', $ID_Campus);
+$Kebab = new Resource('kebab', $ID_Campus);
+$Wifi = new Resource('wifi', $ID_Campus);
 ?>
 
 <html>
@@ -95,9 +92,9 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
       $Info = $_POST['info'];
       switch ($Info)
       {
-      case "recruited": echo '<b><font size="5" color="yellow">Jednostki zrekrutowane</font></b>'; break;
-      case "noresources": echo '<b><font size="5" color="yellow">Za mało surowców</font></b>'; break;
-      case "nospace": echo '<b><font size="5" color="yellow">Za mały limit jednostek</font></b>'; break;
+      case "recruited": echo '<b><font size="4" color="yellow">Jednostki zrekrutowane</font></b>'; break;
+      case "noresources": echo '<b><font size="4" color="yellow">Za mało surowców</font></b>'; break;
+      case "nospace": echo '<b><font size="4" color="yellow">Za mały limit jednostek</font></b>'; break;
       }
    }
    ?>
@@ -118,8 +115,8 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
          <td><center><b>Rekrutacja</b></center></td>
       </tr>
       <tr>
-         <td><b><a href="?l=nerd"><img src="img/nerd.png" width="30" height="30">Nerd</a></b></td>
-         <td><b><center><img src="img/wodka.png" width="30" height="30">
+         <td><i><a href="?l=nerd"><img src="img/nerd.png" width="30" height="30">Nerd</a></i></td>
+         <td><i><center><img src="img/wodka.png" width="30" height="30">
             <?php
             echo $Nerd->Type_Getter()->Cost_Vodka_Getter();
             ?>
@@ -131,9 +128,9 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
             <?php
             echo $Nerd->Type_Getter()->Cost_Wifi_Getter();
             ?>
-            </center></b></td>
+            </center></i></td>
          </td>
-         <td><b><center>
+         <td><i><center>
             <?php
             echo $Nerd->Number_Getter(); 
             echo ' (';
@@ -141,9 +138,9 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
             echo ')/';
             echo $Nerd->Maximum_Getter();
             ?>
-            </center></b>
+            </center></i>
          </td>
-         <td><b>
+         <td><i>
             <?php
             if ($Cafe->Status_Getter() > 0)
             { 
@@ -157,12 +154,12 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
             }
             else echo 'Wymagana e-Kafejka';
             ?>
-            </b>
+            </i>
          </td>
       </tr>
       <tr>
-         <td><b><a href="?l=stooley"><img src="img/stulejarz.png" width="30" height="30">Stulejarz</a></b></td>
-         <td><b><center>
+         <td><i><a href="?l=stooley"><img src="img/stulejarz.png" width="30" height="30">Stulejarz</a></i></td>
+         <td><i><center>
             <img src="img/wodka.png" width="30" height="30">
             <?php
             echo $Stooley->Type_Getter()->Cost_Vodka_Getter();
@@ -176,9 +173,9 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
             echo $Stooley->Type_Getter()->Cost_Wifi_Getter();
             ?>
             </center>
-            </b>
+            </i>
          </td>
-         <td><b><center>
+         <td><i><center>
             <?php
             echo $Stooley->Number_Getter();
             echo ' (';
@@ -186,9 +183,9 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
             echo ')/';
             echo $Stooley->Maximum_Getter();
             ?>
-            </center></b>
+            </center></i>
          </td>
-         <td><b>
+         <td><i>
             <?php
             if ($Cafe->Status_Getter() > 1)
             { 
@@ -202,7 +199,7 @@ if (isset($_POST['stooley_number']) && $Cafe->Status_Getter() > 1)
             }
             else echo 'Wymagana ulepszona e-Kafejka';
             ?>
-            </b>
+            </i>
          </td>
       </tr>
 

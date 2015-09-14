@@ -32,11 +32,11 @@ $Clochard = new Troops_Type('clochard');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Clochard->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Clochard->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Clochard->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Clochard->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

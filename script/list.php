@@ -23,7 +23,6 @@ if(!defined('__LIST_PHP__'))
        	    $this->Head = new Element;
        	    $this->Head->Data = $Arg_Data;
        	    $this->Head->Next = NULL;
-         	echo "added head";
          }
          else
          {
@@ -35,7 +34,6 @@ if(!defined('__LIST_PHP__'))
        	    $Temp->Next = new Element;
        	    $Temp->Next->Data = $Arg_Data;
        	    $Temp->Next->Next = NULL;
-         	echo "added another";
          }
 	  }
 	  public function At($Arg_Position)

@@ -87,7 +87,7 @@ if (isset($_POST['New_Desc']))
       <tr bgcolor=<?php Bg_Color_Two();?>>
          <td>
             <center>
-            W ustawieniach możesz zmienić swój login, hasło i opis użytkownika.<br/>
+            <i>W ustawieniach możesz zmienić swój login, hasło i opis użytkownika.<br/></i>
             </center>
          </td>
       </tr>
@@ -95,27 +95,27 @@ if (isset($_POST['New_Desc']))
    <?php
    if ($Changed_Login == 1)
    {
-      echo '<font size=4><b>Login zmieniony.</b></font><br/>';
+      echo '<font size=4 color="yellow"><b>Login zmieniony.</b></font><br/>';
    }
    if ($Changed_Login == 2)
    {
-   	  echo '<font size=4><b>Taki login jest już zajęty.</b></font><br/>';
+   	  echo '<font size=4 color="yellow"><b>Taki login jest już zajęty.</b></font><br/>';
    }
    if ($Changed_Password == 1)
    {
-   	  echo '<font size=4><b>Hasło zmienione.</b></font><br/>';
+   	  echo '<font size=4 color="yellow"><b>Hasło zmienione.</b></font><br/>';
    }
    if ($Changed_Password == 2)
    {
-   	  echo '<font size=4><b>Stare hasło nie jest prawidłowe.</b></font><br/>';
+   	  echo '<font size=4 color="yellow"><b>Stare hasło nie jest prawidłowe.</b></font><br/>';
    }
    if ($Changed_Password == 3)
    {
-   	  echo '<font size=4><b>Hasła nie są zgodne.</b></font><br/>';
+   	  echo '<font size=4 color="yellow"><b>Hasła nie są zgodne.</b></font><br/>';
    }
    if ($Changed_Desc == 1)
    {
-   	  echo '<font size=4><b>Opis zmieniony.</b></font><br/>';
+   	  echo '<font size=4 color="yellow"><b>Opis zmieniony.</b></font><br/>';
    }
    ?>
    <table border=1>
@@ -135,7 +135,7 @@ if (isset($_POST['New_Desc']))
          <td>
             <b>Zmiana hasła:</b>
          </td>
-         <td align="right">
+         <td align="right"><i>
             <form method="POST">
             <input type="hidden" name="l" value="settings">
             Stare hasło:
@@ -146,20 +146,20 @@ if (isset($_POST['New_Desc']))
             <input type="password" name="New_Pass_Again" value=""><br/>
             <input type="submit" name="Change_Password" value="Zmień">
             </form>
-         </td>
+         </i></td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
          <td>
             <b>Zmiana opisu gracza:</b>
          </td>
-         <td align="right">
+         <td align="right"><i>
             <form method="POST">
             <input type="hidden" name="l" value="settings">
             Nowy opis:
             <input type="textbox" name="New_Desc" value="Opis...">
             <input type="submit" name="Change_Desc" value="Zmień">
             </form>
-         </td>
+         </i></td>
       </tr> 
    </table>
    <a href="?l=main">Powrót</a>

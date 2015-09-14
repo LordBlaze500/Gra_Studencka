@@ -32,11 +32,11 @@ $Veteran = new Troops_Type('veteran');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Veteran->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Veteran->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Veteran->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Veteran->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

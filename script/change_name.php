@@ -13,7 +13,7 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 </head>
 <body>
    <center>
-   <b><font size="4">Zmiana nazwy kampusu</font></b>
+   <b><font size="5">Zmiana nazwy kampusu</font></b>
 
    <?php
    if (isset($_POST['new_name']))
@@ -28,28 +28,28 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
    <table border=1 bgcolor=<?php Bg_Color_Two();?>>
       <tr>
          <td>
-            Aktualna nazwa:
+            <b>Aktualna nazwa:</b>
          </td>
-         <td>
+         <td><i>
             <?php
             $SQL_String = "SELECT name FROM gs_campuses WHERE id_campus=$ID_Campus";
             $Query = $Connect->Query($SQL_String);
             $Record = $Query->fetch_assoc();
             $Current_Name = $Record['name'];
             echo $Current_Name;
-            ?>
+            ?></i>
          </td>
       </tr>
       <tr>
-         <td>
+         <td><b>
             Nowa nazwa:
-         </td>
-         <td>
+         </b></td>
+         <td><i>
             <form method="POST">
             <input type="hidden" name="l" value="change_name">
             <input type="text" name="new_name">
             <input type="submit" value="Zmień">
-            </form>
+            </form></i>
          </td>
       </tr>   
 

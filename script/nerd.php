@@ -37,11 +37,11 @@ $Nerd = new Troops_Type('nerd');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Nerd->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Nerd->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Nerd->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Nerd->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

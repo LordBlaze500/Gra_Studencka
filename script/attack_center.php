@@ -24,7 +24,7 @@ if (isset($_POST['strike']))
    if ($Record && $Record['id_campus'] == $ID_Campus)
    {
       echo '<center><font size=4><b>';
-      echo 'Nie możesz zaatakować kampusu wyjściowego.';
+      echo 'Nie możesz zaatakować kampusu wyjściowego!';
       echo '</b></font></center>';
    }
    if ($Record && $X > 0 && $Y > 0 && $Record['id_campus'] != $ID_Campus) 
@@ -51,7 +51,7 @@ if (isset($_POST['help']))
    if ($Record && $Record['id_campus'] == $ID_Campus)
    {
       echo '<center><font size=4><b>';
-      echo 'Nie możesz wysłać wojsk do kampusu wyjściowego.';
+      echo 'Nie możesz wysłać wojsk do kampusu wyjściowego!';
       echo '</b></font></center>';
    }
    if ($Record && $X > 0 && $Y > 0 && $Record['id_campus'] != $ID_Campus) 
@@ -114,7 +114,6 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
       $Raport->Send();
    }
 }
-
 ?>
 
 <html>
@@ -128,20 +127,20 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
          <td>
             <center>
             <font size="5"><b>Centrum ataków</b></font><br/>
-            <img src="img/crossed_swords.jpg" alt="Centrum atakow" width="150" height="150">
+            <img src="img/crossed_swords.png" alt="Centrum atakow" width="150" height="150">
             </center>
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Two();?>>
          <td>
-            <center>
+            <center><i>
             Centrum ataków informuje, jakie wojska idą na ten kampus<br/>
-            oraz pozwala wysyłać wojska do innych kampusów.
+            oraz pozwala wysyłać wojska do innych kampusów.</i>
             </center>
          </td>
       </tr>
    </table>
-   <font size="4"><b>Nadchodzące ataki</b></font><br/>
+   <font size="4" color="yellow"><b>Nadchodzące ataki</b></font><br/>
 
    <table border=1>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -168,9 +167,9 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $Source; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
-            echo '<td><center>'; echo '<a href="?l=user_info&id_user='; echo $Owner; echo '">'; echo $Record_3['login']; echo '</a>'; echo '</center></td>';
-            echo '<td><center>'; echo $Record['arrival_time']; echo '</center></td>';
+            echo '<td><center><i>'; echo '<a href="?l=campus_info&id_campus='; echo $Source; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo '<a href="?l=user_info&id_user='; echo $Owner; echo '">'; echo $Record_3['login']; echo '</a>'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo $Record['arrival_time']; echo '</i></center></td>';
             echo '</tr>';
          }
          if ($No_Attacks == 1)
@@ -179,15 +178,15 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
             echo '</tr>';
          }
          ?>
    </table>
 
-   <font size="4"><b>Nadchodzące wsparcie</b></font><br/>
+   <font size="4" color="yellow"><b>Nadchodzące wsparcie</b></font><br/>
 
    <table border=1>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -215,10 +214,10 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $Source; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
-            echo '<td><center>'; echo '<a href="?l=user_info&id_user='; echo $Owner; echo '">'; echo $Record_3['login']; echo '</a>'; echo '</center></td>';
-            echo '<td><center>'; echo $Record['arrival_time']; echo '</center></td>';
-            echo '<td><center>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></center>';
+            echo '<td><center><i>'; echo '<a href="?l=campus_info&id_campus='; echo $Source; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo '<a href="?l=user_info&id_user='; echo $Owner; echo '">'; echo $Record_3['login']; echo '</a>'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo $Record['arrival_time']; echo '</i></center></td>';
+            echo '<td><center><i>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></i></center>';
             echo '</tr>';
          }
          if ($No_Attacks == 1)
@@ -227,16 +226,16 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
             echo '</tr>';
          }
          ?>
    </table>
 
-   <font size="4"><b>Twoje wojska w drodze</b></font><br/>
+   <font size="4" color="yellow"><b>Twoje wojska w drodze</b></font><br/>
 
    <table border=1>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -261,13 +260,13 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; 
+            echo '<td><i><center>'; 
             if ($Type == 1) echo 'Atak';
             if ($Type == 0) echo 'Wsparcie';
-            echo '</center></td>';
-            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Destination; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
-            echo '<td><center>'; echo $Record['arrival_time']; echo '</center></td>';
-            echo '<td><center>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></center>';
+            echo '</center></i></td>';
+            echo '<td><i><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Destination; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></i></td>';
+            echo '<td><i><center>'; echo $Record['arrival_time']; echo '</center></i></td>';
+            echo '<td><i><center>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></center></i>';
             echo '</tr>';
          }
          if ($No_Attacks == 1)
@@ -276,16 +275,16 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
             echo '</tr>';
          }
          ?>
    </table>
 
-   <font size="4"><b>Powracające twoje wojska</b></font><br/>
+   <font size="4" color="yellow"><b>Powracające twoje wojska</b></font><br/>
 
    <table border=1>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -312,9 +311,9 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $Old_Destination; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
-            echo '<td><center>'; echo $Record['arrival_time']; echo '</center></td>';
-            echo '<td><center>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></center>';
+            echo '<td><center><i>'; echo '<a href="?l=campus_info&id_campus='; echo $Old_Destination; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo $Record['arrival_time']; echo '</i></center></td>';
+            echo '<td><center><i>'; echo '<a href="?l=move_info&id_move='; echo $Record['id_move']; echo '">'; echo 'Szczegóły'; echo '</a></i></center>';
             echo '</tr>';
          }
          if ($No_Attacks == 1)
@@ -323,15 +322,15 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
             echo '</tr>';
          }
          ?>
    </table>
 
-   <font size="4"><b>Twoje wojska w innych kampusach</b></font><br/>
+   <font size="4" color="yellow"><b>Twoje wojska w innych kampusach</b></font><br/>
 
    <table border=1>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -354,19 +353,19 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Stayingcampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
-            echo '<td>';
+            echo '<td><i><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Stayingcampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></i></td>';
+            echo '<td><i>';
             echo '<form method="POST">';
             echo '<input type="hidden" name="l" value="attacks">';
             echo '<input type="hidden" name="id_army" value="';
             echo $Record['id_army'];
             echo '"">';
             echo '<input type="submit" name="retreat" value=Wycofaj>';
-            echo '</form>';
+            echo '</form></i>';
             echo '</td>';
-            echo '<td>';
+            echo '<td><i>';
             echo '<a href="?l=army_info&id_army='; echo $Record['id_army']; echo '">'; echo 'Szczegóły'; echo '</a>';
-            echo '</td>';
+            echo '</i></td>';
             echo '</tr>';
          }
          if ($No_Attacks == 1)
@@ -375,15 +374,15 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
+            echo '<td><center><i>'; echo 'Brak'; echo '</i></center></td>';
             echo '</tr>';
          }
          ?>
    </table>
 
-   <font size="4"><b>Cudze wojska w tym kampusie</b></font><br/>
+   <font size="4" color="yellow"><b>Cudze wojska w tym kampusie</b></font><br/>
 
    <table border=1>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -406,8 +405,8 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Homecampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></td>';
-            echo '<td>';
+            echo '<td><i><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Homecampus; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></i></td>';
+            echo '<td><i>';
             echo '<form method="POST">';
             echo '<input type="hidden" name="l" value="attacks">';
             echo '<input type="hidden" name="id_army" value="';
@@ -415,10 +414,10 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo '"">';
             echo '<input type="submit" name="sendback" value=Odeślij>';
             echo '</form>';
-            echo '</td>';
-            echo '<td>';
+            echo '</i></td>';
+            echo '<td><i>';
             echo '<a href="?l=army_info&id_army='; echo $Record['id_army']; echo '">'; echo 'Szczegóły'; echo '</a>';
-            echo '</td>';
+            echo '</i></td>';
             echo '</tr>';
          }
          if ($No_Attacks == 1)
@@ -427,18 +426,18 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo ' bgcolor=';
             echo Bg_Color_Three();
             echo '>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
-            echo '<td><center>'; echo 'Brak'; echo '</center></td>';
+            echo '<td><i><center>'; echo 'Brak'; echo '</center></i></td>';
+            echo '<td><i><center>'; echo 'Brak'; echo '</center></i></td>';
+            echo '<td><i><center>'; echo 'Brak'; echo '</center></i></td>';
             echo '</tr>';
          }
          ?>
    </table>
 
-   <font size="4"><b>Wyślij wojska</b></font><br/>
+   <font size="4" color="yellow"><b>Wyślij wojska</b></font><br/>
    <table>
       <tr bgcolor=<?php Bg_Color_Three();?>>
-         <td>
+         <td><b>
             <center>
             <form method="POST">
             <input type="hidden" name="l" value="attacks">
@@ -449,7 +448,7 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             <input type="submit" name="strike" value="Atak">
             <input type="submit" name="help" value="Wsparcie">
             </form>
-            </center>
+            </center></b>
          </td>
       </tr>
    </table>

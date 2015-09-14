@@ -33,11 +33,11 @@ $Stooley = new Troops_Type('stooley');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Stooley->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Stooley->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Stooley->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Stooley->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

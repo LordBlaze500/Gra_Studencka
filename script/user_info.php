@@ -18,28 +18,28 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
       $Query = $Connect->Query($SQL_String);
       if ($Record = $Query->fetch_assoc())
       {
-         echo '<font size="4"><b>Informacje o użytkowniku</b></font>';
+         echo '<font size="5"><b>Informacje o użytkowniku</b></font>';
          echo '<table border=1'; echo ' bgcolor='; echo Bg_Color_Three(); echo '>';
             echo '<tr>';
-               echo '<td>Login:</td>';
-               echo '<td>';
+               echo '<td><b>Login:</b></td>';
+               echo '<td><i>';
                   echo $Record['login'];
-               echo '</td>';
+               echo '</i></td>';
             echo '</tr>';
             echo '<tr>';
-               echo '<td>Punkty:</td>';
-               echo '<td>';
+               echo '<td><b>Punkty:</b></td>';
+               echo '<td><i>';
                   echo $Record['points_total'];
-               echo '</td>';
+               echo '</i></td>';
             echo '</tr>';
             echo '<tr>';
-               echo '<td>Ranking:</td>';
-               echo '<td>';
+               echo '<td><b>Ranking:</b></td>';
+               echo '<td><i>';
                   echo $Record['ranking'];
-               echo '</td>'; 
+               echo '</i></td>'; 
             echo '</tr>';
             echo '<tr>'; 
-               echo '<td>Opis użytkownika:</td>';
+               echo '<td><b>Opis użytkownika:</b></td>';
                echo '<td>';
                   echo '<i>';
                   echo $Record['description'];
@@ -47,7 +47,7 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
                echo '</td>';
             echo '</tr>';
          echo '</table>';
-         echo '<b>Posiadane kampusy</b>';
+         echo '<b><font size="4" color="yellow">Posiadane kampusy</font></b>';
          echo '<table border=1'; echo ' bgcolor='; echo Bg_Color_Three(); echo '>';
          $SQL_String_2 = "SELECT id_campus, x_coord, y_coord, name, points FROM gs_campuses WHERE id_owner=$ID_User";
          $Query_2 = $Connect->Query($SQL_String_2);
@@ -76,9 +76,9 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
          echo '</table>';
          $Connect->close();
       }
-      else echo 'Użytkownik o takim ID nie istnieje!<br/>';
+      else echo '<font size="4" color="yellow">Użytkownik o takim ID nie istnieje!</font><br/>';
    }
-   else echo 'Nie wybrano użytkownika!<br/>';
+   else echo '<font size="4" color="yellow">Nie wybrano użytkownika!</font><br/>';
    ?>
 
    <a href="?l=main">Powrót</a>

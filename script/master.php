@@ -37,11 +37,11 @@ $Master = new Troops_Type('master');
    <table border=1 bgcolor=<?php Bg_Color_Three();?> >
       <tr>
          <td> <b>Koszt rekrutacji: </b></td>
-         <td> <b> <?php $Master->Costs_Display(); ?> </b></td>
+         <td> <i> <?php $Master->Costs_Display(); ?> </i></td>
       </tr>
       <tr>
          <td> <b>Statystyki: </b></td>
-         <td> <b> <?php $Master->Statistics_Display(); ?> </b></td>
+         <td> <i> <?php $Master->Statistics_Display(); ?> </i></td>
       </tr>
    </table>
 

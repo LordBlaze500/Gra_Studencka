@@ -15,9 +15,6 @@ $ID_Army = $Record['id_army'];
 $Liquirstore = new Recrutation_Building('liquirstore', $ID_Campus);
 $Drunkard = new Force(new Troops_Type('drunkard'), $ID_Army);
 $Clochard = new Force(new Troops_Type('clochard'), $ID_Army);
-$Vodka = new Resource('vodka', $ID_Campus);
-$Kebab = new Resource('kebab', $ID_Campus);
-$Wifi = new Resource('wifi', $ID_Campus);
 
 function Recruiter($Troop, $Number)
 {
@@ -25,17 +22,14 @@ function Recruiter($Troop, $Number)
    if ($Result == 1) 
    {
       $_POST['info'] = "recruited";
-      header('Location: index.php?l=liquirstore');
    }
    if ($Result == 2) 
    {
       $_POST['info'] = "noresources";
-      header('Location: index.php?l=liquirstore');
    }
    if ($Result == 3) 
    {
       $_POST['info'] = "nospace";
-      header('Location: index.php?l=liquirstore');
    }
 }
 
@@ -50,6 +44,9 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
    $Number = $_POST['clochard_number'];
    Recruiter($Clochard, $Number);
 }
+$Vodka = new Resource('vodka', $ID_Campus);
+$Kebab = new Resource('kebab', $ID_Campus);
+$Wifi = new Resource('wifi', $ID_Campus);
 ?>
 
 <html>
@@ -95,9 +92,9 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
       $Info = $_POST['info'];
       switch ($Info)
       {
-      case "recruited": echo '<b><font size="5" color="yellow">Jednostki zrekrutowane</font></b>'; break;
-      case "noresources": echo '<b><font size="5" color="yellow">Za mało surowców</font></b>'; break;
-      case "nospace": echo '<b><font size="5" color="yellow">Za mały limit jednostek</font></b>'; break;
+      case "recruited": echo '<b><font size="4" color="yellow">Jednostki zrekrutowane</font></b>'; break;
+      case "noresources": echo '<b><font size="4" color="yellow">Za mało surowców</font></b>'; break;
+      case "nospace": echo '<b><font size="4" color="yellow">Za mały limit jednostek</font></b>'; break;
       }
    }
    ?>
@@ -118,8 +115,8 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
          <td><center><b>Rekrutacja</b></center></td>
       </tr>
       <tr>
-         <td><b><a href="?l=drunkard"><img src="img/menel.png" width="30" height="30">Menel</a></b></td>
-         <td><b><center><img src="img/wodka.png" width="30" height="30">
+         <td><i><a href="?l=drunkard"><img src="img/menel.png" width="30" height="30">Menel</a></i></td>
+         <td><i><center><img src="img/wodka.png" width="30" height="30">
             <?php
             echo $Drunkard->Type_Getter()->Cost_Vodka_Getter();
             ?>
@@ -131,9 +128,9 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
             <?php
             echo $Drunkard->Type_Getter()->Cost_Wifi_Getter();
             ?>
-            </center></b></td>
+            </center></i></td>
          </td>
-         <td><b><center>
+         <td><i><center>
             <?php
             echo $Drunkard->Number_Getter(); 
             echo ' (';
@@ -141,9 +138,9 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
             echo ')/';
             echo $Drunkard->Maximum_Getter();
             ?>
-            </center></b>
+            </center></i>
          </td>
-         <td><b>
+         <td><i>
             <?php
             if ($Liquirstore->Status_Getter() > 0)
             { 
@@ -157,12 +154,12 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
             }
             else echo 'Wymagany monopolowy';
             ?>
-            </b>
+            </i>
          </td>
       </tr>
       <tr>
-         <td><b><a href="?l=clochard"><img src="img/kloszard.png" width="30" height="30">Kloszard</a></b></td>
-         <td><b><center>
+         <td><i><a href="?l=clochard"><img src="img/kloszard.png" width="30" height="30">Kloszard</a></i></td>
+         <td><i><center>
             <img src="img/wodka.png" width="30" height="30">
             <?php
             echo $Clochard->Type_Getter()->Cost_Vodka_Getter();
@@ -176,9 +173,9 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
             echo $Clochard->Type_Getter()->Cost_Wifi_Getter();
             ?>
             </center>
-            </b>
+            </i>
          </td>
-         <td><b><center>
+         <td><i><center>
             <?php
             echo $Clochard->Number_Getter();
             echo ' (';
@@ -186,9 +183,9 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
             echo ')/';
             echo $Clochard->Maximum_Getter();
             ?>
-            </center></b>
+            </center></i>
          </td>
-         <td><b>
+         <td><i>
             <?php
             if ($Liquirstore->Status_Getter() > 1)
             { 
@@ -202,7 +199,7 @@ if (isset($_POST['clochard_number']) && $Liquirstore->Status_Getter() > 1)
             }
             else echo 'Wymagany monopolowy 24h';
             ?>
-            </b>
+            </i>
          </td>
       </tr>
 
