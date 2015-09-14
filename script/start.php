@@ -150,27 +150,51 @@ if(isset($_POST["register_OK"])) {
             $q = $connect->query($z);
             
             // Wiocha
+            $pos_x      = 50;
+            $pos_y      = 50;
+            
             do {
-                $pos_x = rand(1, 100);
-                $pos_y = rand(1, 100);
+                $kierunek   = rand(1, 4);
+                $krok       = rand(1, 3);
+                
+                switch($kierunek) {
+                    case 1:
+                        $pos_x += $krok;
+                    break;
+                    case 2:
+                        $pos_x -= $krok;
+                    break;
+                    case 3:
+                        $pos_y += $krok;
+                    break;
+                    case 4:
+                        $pos_y -= $krok;
+                    break;    
+                }
                 
                 $z = "SELECT id_campus FROM gs_campuses WHERE x_coord = $pos_x AND y_coord = $pos_y";
                 $q = $connect->query($z);
-                $rec_num = $q->num_rows;
+                $rec_num = $q->num_rows;    
             } while($rec_num != 0);
             
             $amount_vodka   = 500;
             $amount_kebab   = 500;
             $amount_wifi    = 500;
+            
             $z = "INSERT INTO gs_campuses (x_coord, y_coord, id_owner, amount_vodka, amount_kebab, amount_wifi, dormitory, transit, college, liquirstore, cafe, terminus, parking, bench, distillery, doner, wifispot) VALUES".
             "($pos_x, $pos_y, (SELECT id_user FROM gs_users WHERE login = '$login'), $amount_vodka, $amount_kebab, $amount_wifi, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1)";
-            $q = $connect->query($z);
+            $q = $connect->query($z);                        
+            
+            $z = "INSERT INTO gs_armies (id_homecampus, id_stayingcampus, student, parachute, inspector, veteran, master, doctor, drunkard, clochard, nerd, stooley) VALUES".
+            "((SELECT id_campus FROM gs_campuses WHERE id_owner = (SELECT id_user FROM gs_users WHERE login = '$login')),".
+            "(SELECT id_campus FROM gs_campuses WHERE id_owner = (SELECT id_user FROM gs_users WHERE login = '$login')), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
+            $q1 = $connect->query($z); 
             
             //mail (                                                                                                                       
             //$email, "Aktywacja konta", $message, $headers
             //);
             
-            if($q) 
+            if($q && $q1) 
               //echo "<span class=\"true\">Rejestracja przebieg³a pomyœlnie!<br />Na podany email zosta³ wys³any link aktywacyjny</span>\n";
               echo "<span class=\"true\">Rejestracja przebiegła pomyślnie! Możesz się zalogować</span>\n";
             else 
