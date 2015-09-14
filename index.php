@@ -288,13 +288,13 @@ endif;
 
 ?>
 
-        <table border="0" cellspacing="0" cellpadding="0" width="350" height="500" id="window">    
+        <table border="1" cellspacing="0" cellpadding="0" width="350" height="500" id="window">    
 
             <tr>
 
                 <td class="move" onMouseDown="javascript:Move('#window')" onMouseUp="javascript:StopMove()">Title</td>
 
-                <td class="close" onClick="javascript:Window_('#window', '0', '', 'off')"></td>
+                <td class="close" onClick="javascript:Window_('#window', '0', '0', '', 'off')"></td>
 
             </tr>    
 
