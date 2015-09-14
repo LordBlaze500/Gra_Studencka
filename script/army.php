@@ -458,87 +458,82 @@ if (!defined('__ARMY_PHP__'))
       }
       public function Hit_Light($Amount_Attack)
       {
-         $Minimal_Amount = $this->Student->Type_Getter()->HP_Getter();
-         if ($this->Parachute->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Parachute->Type_Getter()->HP_Getter();
-         while ($Amount_Attack >= $Minimal_Amount)
+         $Students_HP = $this->Student->Type_Getter()->HP_Getter() * $this->Student->Number_Getter();
+         $Parachutes_HP = $this->Student->Type_Getter()->HP_Getter() * $this->Student->Number_Getter();
+         $Total_HP = $Students_HP + $Parachutes_HP;
+         if ($Amount_Attack >= $Total_HP)
          {
-            if ($this->Student->Number_Getter() == 0 && $this->Parachute->Number_Getter() == 0) return $Amount_Attack;
-            if ($this->Student->Number_Getter() > 0 && $Amount_Attack >= $this->Student->Type_Getter()->HP_Getter()) 
-            {
-               $this->Student->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Student->Type_Getter()->HP_Getter();
-            }
-            if ($this->Parachute->Number_Getter() > 0 && $Amount_Attack >= $this->Parachute->Type_Getter()->HP_Getter()) 
-            {
-               $this->Parachute->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Parachute->Type_Getter()->HP_Getter();
-            }
+            $this->Student->Decrease($this->Student->Number_Getter());
+            $this->Parachute->Decrease($this->Parachute->Number_Getter());
+            $Amount_Attack = $Amount_Attack - $Total_HP;
+            return $Amount_Attack;
          }
-         return $Amount_Attack;
+         else
+         {
+            $Students_Ratio = $Students_HP / $Total_HP;
+            $Parachutes_Ratio = 1 - $Students_Ratio;
+            if ($this->Student->Number_Getter() > 0) $this->Student->Decrease(ceil(($Students_Ratio * $Amount_Attack) / $this->Student->Type_Getter()->HP_Getter()));
+            if ($this->Parachute->Number_Getter() > 0) $this->Parachute->Decrease(ceil(($Parachutes_Ratio * $Amount_Attack) / $this->Parachute->Type_Getter()->HP_Getter()));
+            return 0;
+         }
       }
       public function Hit_Heavy($Amount_Attack)
       {
-         $Minimal_Amount = $this->Nerd->Type_Getter()->HP_Getter();
-         if ($this->Stooley->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Stooley->Type_Getter()->HP_Getter();
-         if ($this->Drunkard->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Drunkard->Type_Getter()->HP_Getter();
-         if ($this->Clochard->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Clochard->Type_Getter()->HP_Getter();
-         while ($Amount_Attack >= $Minimal_Amount)
+         $Nerds_HP = $this->Nerd->Type_Getter()->HP_Getter() * $this->Nerd->Number_Getter();
+         $Stooleys_HP = $this->Stooley->Type_Getter()->HP_Getter() * $this->Stooley->Number_Getter();
+         $Drunkards_HP = $this->Drunkard->Type_Getter()->HP_Getter() * $this->Drunkard->Number_Getter();
+         $Clochards_HP = $this->Clochard->Type_Getter()->HP_Getter() * $this->Clochard->Number_Getter();
+         $Total_HP = $Nerds_HP + $Stooleys_HP + $Drunkards_HP + $Clochards_HP;
+         if ($Amount_Attack >= $Total_HP)
          {
-            if ($this->Nerd->Number_Getter() == 0 && $this->Stooley->Number_Getter() == 0 && $this->Drunkard->Number_Getter() == 0 && $this->Clochard->Number_Getter() == 0) return $Amount_Attack;
-            if ($this->Nerd->Number_Getter() > 0 && $Amount_Attack >= $this->Nerd->Type_Getter()->HP_Getter()) 
-            {
-               $this->Nerd->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Nerd->Type_Getter()->HP_Getter();
-            }
-            if ($this->Stooley->Number_Getter() > 0 && $Amount_Attack >= $this->Stooley->Type_Getter()->HP_Getter()) 
-            {
-               $this->Stooley->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Stooley->Type_Getter()->HP_Getter();
-            }
-            if ($this->Drunkard->Number_Getter() > 0 && $Amount_Attack >= $this->Drunkard->Type_Getter()->HP_Getter()) 
-            {
-               $this->Drunkard->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Drunkard->Type_Getter()->HP_Getter();
-            }
-            if ($this->Clochard->Number_Getter() > 0 && $Amount_Attack >= $this->Clochard->Type_Getter()->HP_Getter()) 
-            {
-               $this->Clochard->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Clochard->Type_Getter()->HP_Getter();
-            }
+            $this->Nerd->Decrease($this->Nerd->Number_Getter());
+            $this->Stooley->Decrease($this->Stooley->Number_Getter());
+            $this->Drunkard->Decrease($this->Drunkard->Number_Getter());
+            $this->Clochard->Decrease($this->Clochard->Number_Getter());
+            $Amount_Attack = $Amount_Attack - $Total_HP;
+            return $Amount_Attack;
          }
-         return $Amount_Attack;
+         else
+         {
+            $Nerds_Ratio = $Nerds_HP / $Total_HP;
+            $Stooleys_Ratio = $Stooleys_HP / $Total_HP;
+            $Drunkards_Ratio = $Drunkards_HP / $Total_HP;
+            $Clochards_Ratio = 1 - ($Nerds_Ratio + $Stooleys_Ratio + $Drunkards_Ratio);
+            if ($this->Nerd->Number_Getter() > 0) $this->Nerd->Decrease(ceil(($Nerds_Ratio * $Amount_Attack) / $this->Nerd->Type_Getter()->HP_Getter()));
+            if ($this->Stooley->Number_Getter() > 0) $this->Stooley->Decrease(ceil(($Stooleys_Ratio * $Amount_Attack) / $this->Stooley->Type_Getter()->HP_Getter()));
+            if ($this->Drunkard->Number_Getter() > 0) $this->Drunkard->Decrease(ceil(($Drunkards_Ratio * $Amount_Attack) / $this->Drunkard->Type_Getter()->HP_Getter()));
+            if ($this->Clochard->Number_Getter() > 0) $this->Clochard->Decrease(ceil(($Clochards_Ratio * $Amount_Attack) / $this->Clochard->Type_Getter()->HP_Getter()));
+            return 0;
+         }
       }
       public function Hit_Cavalry($Amount_Attack)
       {
-         $Minimal_Amount = $this->Master->Type_Getter()->HP_Getter();
-         if ($this->Doctor->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Doctor->Type_Getter()->HP_Getter();
-         if ($this->Inspector->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Inspector->Type_Getter()->HP_Getter();
-         if ($this->Veteran->Type_Getter()->HP_Getter() < $Minimal_Amount) $Minimal_Amount = $this->Veteran->Type_Getter()->HP_Getter();
-         while ($Amount_Attack >= $Minimal_Amount)
+         $Masters_HP = $this->Master->Type_Getter()->HP_Getter() * $this->Master->Number_Getter();
+         $Doctors_HP = $this->Doctor->Type_Getter()->HP_Getter() * $this->Doctor->Number_Getter();
+         $Inspectors_HP = $this->Inspector->Type_Getter()->HP_Getter() * $this->Inspector->Number_Getter();
+         $Veterans_HP = $this->Veteran->Type_Getter()->HP_Getter() * $this->Veteran->Number_Getter();
+         $Total_HP = $Masters_HP + $Doctors_HP + $Inspectors_HP + $Veterans_HP;
+         if ($Amount_Attack >= $Total_HP)
          {
-            if ($this->Master->Number_Getter() == 0 && $this->Doctor->Number_Getter() == 0 && $this->Inspector->Number_Getter() == 0 && $this->Veteran->Number_Getter() == 0) return $Amount_Attack;
-            if ($this->Master->Number_Getter() > 0 && $Amount_Attack >= $this->Master->Type_Getter()->HP_Getter()) 
-            {
-               $this->Master->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Master->Type_Getter()->HP_Getter();
-            }
-            if ($this->Doctor->Number_Getter() > 0 && $Amount_Attack >= $this->Doctor->Type_Getter()->HP_Getter()) 
-            {
-               $this->Doctor->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Doctor->Type_Getter()->HP_Getter();
-            }
-            if ($this->Inspector->Number_Getter() > 0 && $Amount_Attack >= $this->Inspector->Type_Getter()->HP_Getter()) 
-            {
-               $this->Inspector->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Inspector->Type_Getter()->HP_Getter();
-            }
-            if ($this->Veteran->Number_Getter() > 0 && $Amount_Attack >= $this->Veteran->Type_Getter()->HP_Getter()) 
-            {
-               $this->Veteran->Decrease(1);
-               $Amount_Attack = $Amount_Attack - $this->Veteran->Type_Getter()->HP_Getter();
-            }
+            $this->Master->Decrease($this->Master->Number_Getter());
+            $this->Doctor->Decrease($this->Doctor->Number_Getter());
+            $this->Inspector->Decrease($this->Inspector->Number_Getter());
+            $this->Veteran->Decrease($this->Veteran->Number_Getter());
+            $Amount_Attack = $Amount_Attack - $Total_HP;
+            return $Amount_Attack;
          }
-         return $Amount_Attack;
+         else
+         {
+            $Masters_Ratio = $Masters_HP / $Total_HP;
+            $Doctors_Ratio = $Doctors_HP / $Total_HP;
+            $Inspectors_Ratio = $Inspectors_HP / $Total_HP;
+            $Veterans_Ratio = 1 - ($Masters_Ratio + $Doctors_Ratio + $Inspectors_Ratio);
+            if ($this->Master->Number_Getter() > 0) $this->Master->Decrease(ceil(($Masters_Ratio * $Amount_Attack) / $this->Master->Type_Getter()->HP_Getter()));
+            if ($this->Doctor->Number_Getter() > 0) $this->Doctor->Decrease(ceil(($Doctors_Ratio * $Amount_Attack) / $this->Doctor->Type_Getter()->HP_Getter()));
+            if ($this->Inspector->Number_Getter() > 0) $this->Inspector->Decrease(ceil(($Inspectors_Ratio * $Amount_Attack) / $this->Inspector->Type_Getter()->HP_Getter()));
+            if ($this->Veteran->Number_Getter() > 0) $this->Veteran->Decrease(ceil(($Veterans_Ratio * $Amount_Attack) / $this->Veteran->Type_Getter()->HP_Getter()));
+            return 0;
+         }
       }
       public function Split($Arg_Student_Number, $Arg_Parachute_Number, $Arg_Nerd_Number, $Arg_Stooley_Number, $Arg_Drunkard_Number, $Arg_Clochard_Number, $Arg_Master_Number, $Arg_Doctor_Number, $Arg_Inspector_Number, $Arg_Veteran_Number)
       {
