@@ -27,13 +27,13 @@ function MousePosition(j) {
     $(windowName).css({'left':windowPositionX + (mouseX - positionX)});
   }
 }
-function Window_(id, height_, title_, status_) { 
-  width_          = 350;
+function Window_(id, width_, height_, title_, status_) { 
+  //width_          = 350;
   if(status_ == 'on') tmp_title = title_;
   $('.move').text(title_);
   documentHeight  = $(document).height();
   documentWidth   = $(document).width();
-  $('#window_iframe').css({height:height_-50});
+  $('#window_iframe').css({height:height_-50, width:width_});
   if(status_ != 'off') {$(id).css({height:height_});}
   if(status_ != 'off') {$(id).css({width:width_});}
   windowPositionX = (documentWidth / 2) - ($(id).width() / 2);

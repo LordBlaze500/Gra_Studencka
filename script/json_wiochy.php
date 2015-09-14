@@ -18,4 +18,4 @@ for($i = 0; $rec = $q->fetch_assoc(); $i++) {
 <?php
 $q->free_result();
 $connect->close();
-?>
+?>                                             

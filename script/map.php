@@ -87,7 +87,7 @@
                 '<br />Wiocha <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b><br />'+
                 '<input type="hidden" name="strike" value="1" />'+
                 '<input type="submit" name="attack_ok" value="Atak" />'+
-                '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Pomoc" />';
+                '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Pomoc" />';    
                 break;
             }
             

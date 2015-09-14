@@ -4,8 +4,8 @@
   z-index: 100;
 }
 .close {
-  cursor: default;
-  width: 50px;
+  cursor: pointer;
+  width: 45px;
   background-image: url('../img/window/close.png');
 }
 .move {
@@ -14,7 +14,8 @@
   width: 292px;
   height: 50px;
   padding: 0 0 0 8;
-  background-image: url('../img/window/title.png');
+  //background-image: url('../img/window/title.png');
+  background-color: green;
 }
 #window_iframe {
   /*background-image: url('../img/window/bg.png');*/

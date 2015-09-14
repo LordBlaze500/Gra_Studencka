@@ -54,7 +54,7 @@ session_start();
     </head>         
     <body>  
 <?php
-if(isset($_GET["messages_l"]))
+if(isset($_GET["messages_l"]))                                                      
     $messages_l = $_GET["messages_l"];
 else
     $messages_l = "inbox";    
