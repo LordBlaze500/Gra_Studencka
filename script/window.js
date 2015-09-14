@@ -47,7 +47,7 @@ function Window_(id, width_, height_, title_, status_) {
   if(status_ == 'off') {
     $(id).fadeOut();
     //setTimeout('document.getElementById(\'window_iframe\').src = \'script/loading/\'', 500);
-    if(tmp_title == 'Wiadomości')
+    if(tmp_title == 'Wiadomości' || tmp_title == 'Raporty')
       document.location.href = document.location.href;
   }
 }

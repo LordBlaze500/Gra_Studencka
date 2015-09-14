@@ -13,6 +13,10 @@ $z = "SELECT * FROM gs_messages WHERE seen = 0 AND addressee = (SELECT id_user F
 $q = $Connect->query($z);
 $nowe_wiadomosci = $q->num_rows;   
 
+$z = "SELECT * FROM gs_raports WHERE seen = 0 AND id_addressee = (SELECT id_user FROM gs_users WHERE login = '".$_SESSION["login"]."')";
+$q = $Connect->query($z);
+$nowe_raporty = $q->num_rows; 
+
 $SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus AND id_stayingcampus=$ID_Campus";
 $Query = $Connect->Query($SQL_String);
 $Record = $Query->fetch_assoc();
@@ -128,7 +132,7 @@ $Army = new Army($ID_Army);
          </td>
          <td style="border: 3px solid #0404B4;">
             <a href="?l=help"><img src="img/pomoc.png" alt="Raporty" width="50" height="50"></a>
-            <a href="script/raports.php" target="window_iframe" onClick="javascript:Window_('#window', 550, 600, 'Raporty', 'on')"><img src="img/noraport.png" alt="Raporty" width="50" height="50"></a>
+            <a href="script/raports.php" target="window_iframe" onClick="javascript:Window_('#window', 550, 600, 'Raporty', 'on')"><img src="<?php echo ($nowe_raporty == 0) ? "img/noraport.png" : "img/raport.png"; ?>" alt="Raporty" width="50" height="50"></a>
             <a href="script/messages.php" target="window_iframe" onClick="javascript:Window_('#window', 350, 500, 'Wiadomości', 'on')"><img src="<?php echo ($nowe_wiadomosci == 0) ? "img/nomsg.png" : "img/newmsg.png"; ?>" alt="Wiadomosci" style="width:50px;height:50px;"></a>
             <a href="?l=campus_select"><img src="img/switch.png" alt="Zmien kampus" width="50" height="50"></a>
             <a href="?l=map"><img src="img/map.png" alt="Mapa" width="50" height="50"></a>

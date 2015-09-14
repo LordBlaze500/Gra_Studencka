@@ -17,14 +17,14 @@ session_start();
      
                 var client = new XMLHttpRequest();
                 client.open('POST', 'load_msg.php', true);
-                client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 client.send('msg_id='+id.substring(4));
-                client.onreadystatechange = function() {
-                    if(200 === this.status && 4 === this.readyState) {
+                client.onreadystatechange = function() {                
+                    if(200 == this.status && 4 == this.readyState) {
                         var json = this.responseText;
                         eval('var json_obj = ('+json+')'); 
                         msg_area.innerHTML = json_obj.msg.content;  
-                        document.getElementById('TR'+id.substring(4)).className = 'msg_header';                           
+                        document.getElementById('TR'+id.substring(4)).className = 'msg_header';                      
                     }
                 }
             } else
