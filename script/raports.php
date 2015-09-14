@@ -66,7 +66,7 @@ $q = $connect->query($z);
 if($q->num_rows != 0):
 ?>
             <form method="post">
-                <table width="375" cellspacing="0" cellpadding="5" border="0">
+                <table width="540" cellspacing="0" cellpadding="5" border="0">
                     <tr>
                         <td width="10">
                             <input type="checkbox" name="CUAll" value="Zaznacz wszystkie" onClick="javascript:CheckAll(this.form.elements, this.checked)" /></td>
