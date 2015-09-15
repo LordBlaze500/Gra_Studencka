@@ -130,11 +130,11 @@ if(isset($_POST["register_OK"])) {
     $haslo              = md5($_POST["register_password"]);
     $k                  = rand(1, 9999).$login;
     $kod                = md5($k);
-    $headers            = "From: Gra Studencka\r\n".
-                        "Content-type: text/html; charset=utf-8\r\n".
-                        "Reply-to: Gra Studencka\r\n";
-    $message            = "Dziękujemy za rejestracje :) <br />\r\n".
-                        "Link aktywacyjny: http://www.grastudencka.cba.pl/?action=activation&user=".$login."&activation_id=".$kod;  
+    $headers            = "From: Gra_Studencka\r\n".
+                        "Reply-to: Gra_Studencka\r\n";
+    $message            = "Dziękujemy za rejestrację :) \r\n".
+                        "Link aktywacyjny: http://www.grastudencka.cba.pl/?action=activation&user=".$login."&activation_id=".$kod.
+                        "\r\nPo zalogowaniu i wejściu do kampusu zapoznaj się z pomocą oznaczoną ikoną pytajnika na górze strony.\r\n";  
     
     include "db_connect.php";
     $connect = new mysqli($db_host, $db_user, $db_password, $db_name);
@@ -146,7 +146,7 @@ if(isset($_POST["register_OK"])) {
         if($connect->query("SELECT * FROM gs_users WHERE email = '$email'")->num_rows != 0) echo "<span class=\"false\">Podany email jest już wykorzystany!!</span>"; else
         if(strlen($login) < 3 || strlen($login) > 16) echo "<span id=\"false\">Niepoprawny nick!!</span>"; else {
             // Konto
-            $z = "INSERT INTO gs_users (login, password, email, code, active) VALUES ('$login', '$haslo', '$email', '$kod', 1)";
+            $z = "INSERT INTO gs_users (login, password, email, code, active) VALUES ('$login', '$haslo', '$email', '$kod', 0)";
             $q = $connect->query($z);
             
             // Wiocha
@@ -189,16 +189,14 @@ if(isset($_POST["register_OK"])) {
             "((SELECT id_campus FROM gs_campuses WHERE id_owner = (SELECT id_user FROM gs_users WHERE login = '$login')),".
             "(SELECT id_campus FROM gs_campuses WHERE id_owner = (SELECT id_user FROM gs_users WHERE login = '$login')), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
             $q1 = $connect->query($z); 
-            
-            //mail (                                                                                                                       
-            //$email, "Aktywacja konta", $message, $headers
-            //);
+
+            mail($email, "Aktywacja konta", $message, $headers);
             
             if($q && $q1) 
-              //echo "<span class=\"true\">Rejestracja przebieg³a pomyœlnie!<br />Na podany email zosta³ wys³any link aktywacyjny</span>\n";
-              echo "<span class=\"true\">Rejestracja przebiegła pomyślnie! Możesz się zalogować</span>\n";
+              echo "<span class=\"true\">Rejestracja przebiegła pomyślnie!<br />Na podany email został wysłany link aktywacyjny.</span>\n";
+              //echo "<span class=\"true\">Rejestracja przebiegła pomyślnie! Możesz się zalogować</span>\n";
             else 
-              echo "<span class=\"flase\">Error!</span>\n";                                                                                                                                
+              echo "<span class=\"false\">Error!</span>\n";                                                                                                                                
         }
         
         $connect->close();
