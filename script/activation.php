@@ -13,7 +13,7 @@ $connect = new mysqli($db_host, $db_user, $db_password, $db_name);
         $rec = $q->fetch_assoc(); 
         
         if($q->num_rows == 0) {
-            echo "<center><span class=\"false\">Wyst¹pi³ b³¹d</span></center>";
+            echo "<center><span class=\"false\">Wystąpił błąd</span></center>";
         } else if($q->num_rows != 0 && $rec["active"]) {
             echo "<center><span class=\"true\">Twoje konto jest już aktywne</span></center>";
         } else {

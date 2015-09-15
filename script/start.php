@@ -86,8 +86,7 @@ if(isset($_POST["log_OK"])) {
             $_SESSION["zalogowany"] = true;
             $_SESSION["login"]      = $login;
             
-            
-            header("Location: ".$_SERVER["REQUEST_URI"]);
+            header("Location: index.php");
         } else {
             echo "<span class=\"false\">Niepoprawny użytkownik lub hasło</span>";
         } 
@@ -133,7 +132,7 @@ if(isset($_POST["register_OK"])) {
     $headers            = "From: Gra_Studencka\r\n".
                         "Reply-to: Gra_Studencka\r\n";
     $message            = "Dziękujemy za rejestrację :) \r\n".
-                        "Link aktywacyjny: http://www.grastudencka.cba.pl/?action=activation&user=".$login."&activation_id=".$kod.
+                        "Link aktywacyjny: http://www.grastudencka.cba.pl/?l=activation&user=".$login."&activation_id=".$kod.
                         "\r\nPo zalogowaniu i wejściu do kampusu zapoznaj się z pomocą oznaczoną ikoną pytajnika na górze strony.\r\n";  
     
     include "db_connect.php";
