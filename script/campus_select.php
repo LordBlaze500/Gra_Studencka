@@ -13,7 +13,7 @@ $User_Login = $_SESSION["login"];
    <center>
    <font size="5"><b>Wybór kampusu</b></font><br/>
    <?php
-   $SQL_String = "SELECT id_user, last_active FROM gs_users WHERE login = '$User_Login'";
+   $SQL_String = "SELECT id_user FROM gs_users WHERE login = '$User_Login'";
    $Query = $Connect->query($SQL_String);
    $Record = $Query->fetch_assoc();
    $ID_User = $Record["id_user"];
@@ -39,7 +39,7 @@ $User_Login = $_SESSION["login"];
    if (isset($_GET['id']))
    {
       $ID_Campus = $_GET['id'];
-      $SQL_String = "SELECT id_owner FROM gs_campuses WHERE id_campus= '$ID_Campus'";
+      $SQL_String = "SELECT id_owner FROM gs_campuses WHERE id_campus='$ID_Campus'";
       $Query = $Connect->query($SQL_String);
       $Record = $Query->fetch_assoc();
       if ($Record["id_owner"] == $ID_User)
@@ -49,7 +49,7 @@ $User_Login = $_SESSION["login"];
       }
       else
       {
-         echo '<b><font size="4" color="yellow">To nie jest twoj kampus!</font></b>';
+         echo '<b><font size="4" color="yellow">To nie jest twój kampus!</font></b>';
       }
    }
    $Connect->close();
