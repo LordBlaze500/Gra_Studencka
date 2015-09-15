@@ -1,5 +1,6 @@
 <?php
 require "db_connect.php";
+require "style.php";
 
 $connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 
@@ -25,7 +26,7 @@ $connect->close();
 .center {position: absolute; width: 5px; height: 5px; background-color: green;} 
 canvas {background-color: white;}
 form {color: black;} /*#31B404   #0404B4*/
-#div {background-color: #31B404; border: 2px solid #0404B4; width: 400px; display: none;}
+#div {/*background-color: #31B404; border: 2px solid #0404B4;*/ background-image: url('img/window/dymek.png'); background-size: 400px 130px; width: 400px; height: 130px; display: none; position: absolute;}
 </style>
 <script type="text/javascript">
 var canvas          = document.getElementById('canvas');
@@ -42,9 +43,11 @@ var przesuniecie_x  = village_x;
 var przesuniecie_y  = village_y;
 var siatka          = 1;
 var lines           = new Array(10, 20, 20, 50, 100, 100); 
+var dymek_left      = new Array(30, 25, 20, 14, 0, -32);
 var mousewheele     = (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel";       
 var json_obj;
-var interval;   
+var interval;  
+ 
 
 /**********/
 
@@ -72,11 +75,24 @@ function moja_wiocha() {
     przesuniecie_x = village_x;
     przesuniecie_y = village_y;
     
-    setTimeout('rysuj_osie()', 50);
-    setTimeout('rysuj_mape()', 60);
+    init();
 }
 
-function mousemove(ev) {
+function colision() {   
+    var s = Math.pow(2, skala);
+     
+    for(var i = 0; i < json_obj.wiocha.length; i++) {
+        var current_village_x = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1);
+        var current_village_y = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1);
+        
+        if(x > current_village_x - s*4/2 && x < current_village_x + s*4/2 && y > current_village_y - s*4/2 && y < current_village_y + s*4/2) 
+            return ++i;
+    } 
+    
+    return false;   
+}
+
+function mousemove(ev) {                       
     if(ev.layerX || ev.layerX == 0) { 
         x = ev.layerX;
         y = ev.layerY;
@@ -85,8 +101,10 @@ function mousemove(ev) {
         y = ev.offsetY;
     } 
     
-    x -= ($(document).width()/2) - (canvas.width/2);
-    if(x < 0) x = 0;         
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+    if(x < 0) x = 0;
+    if(y < 0) y = 0;   
 }
 
 function mousedown() {                                        
@@ -110,8 +128,7 @@ function move_map() {
     var s = Math.pow(2, skala);
     vector_x = (pos_x - x) / -s;
     vector_y = (pos_y - y) / -s;
-    rysuj_osie();               
-    rysuj_mape();    
+    init();   
 }
 
 function zoom(id) {
@@ -126,32 +143,29 @@ function zoom(id) {
                 
     vector_x = 0;
     vector_y = 0;  
-    rysuj_osie();
-    rysuj_mape();        
+    document.getElementById('div').style.display = 'none';
+    init();      
 }
 
 function check_position() {
-    var village_x, village_y;
+    var current_village_x, current_village_y;
     var s = Math.pow(2, skala);
+    var i;
     
-    for(var i = 0; i < json_obj.wiocha.length; i++) {
-        village_x = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1);
-        village_y = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1);
+    if(i = colision()) { 
+        --i; 
+        var div = document.getElementById('div'); 
+        div.innerHTML = '<input type="hidden" name="X" value="'+json_obj.wiocha[i].x+'" />'+
+        '<input type="hidden" name="Y" value="'+json_obj.wiocha[i].y+'" />'+                
+        '<br />Wiocha: <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b><br />Właściciel: <b>' + json_obj.wiocha[i].owner + '</b><br />'+
+        '<input type="hidden" name="strike" value="1" />'+
+        '<input type="submit" name="attack_ok" value="Atak" />'+
+        '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Pomoc" />';   
+        div.style.display = 'block';
+        div.style.top = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) + canvas.offsetTop - 105;
+        div.style.left = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) + canvas.offsetLeft - dymek_left[skala];
         
-        if(x > village_x - s*4/2 && x < village_x + s*4/2 && y > village_y - s*4/2 && y < village_y + s*4/2) {            
-            document.getElementById('div').innerHTML = '<input type="hidden" name="X" value="'+json_obj.wiocha[i].x+'" />'+
-            '<input type="hidden" name="Y" value="'+json_obj.wiocha[i].y+'" />'+                
-            '<br />Wiocha: <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b><br />Właściciel: <b>' + json_obj.wiocha[i].owner + '</b><br />'+
-            '<input type="hidden" name="strike" value="1" />'+
-            '<input type="submit" name="attack_ok" value="Atak" />'+
-            '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Pomoc" />';   
-            document.getElementById('div').style.display = 'block';
-             
-            break;
-        }
-        
-        document.getElementById('div').style.display = 'none';
-    }       
+    }      
 }
 
 if(canvas.getContext('2d')) {
@@ -186,34 +200,34 @@ if(canvas.getContext('2d')) {
     function rysuj_osie() {
         var s = Math.pow(2, skala);
         var line_count = lines[skala];         
-        c.clearRect(0, 0, w, h);        
+        c.clearRect(0, 0, w, h);      
         c.strokeStyle = 'red'; 
-        c.lineWidth = 1;
+        c.lineWidth = 1;                                                  
         c.font = '8pt Georgia'; 
         
         c.beginPath();
-        c.moveTo(w-5, h-5);
-        c.lineTo(5, h-5);
-        c.lineTo(5, 5);                                    
+        c.moveTo(w-5, 5);
+        c.lineTo(5, 5);
+        c.lineTo(5, h-5);                                    
         c.stroke();
-        c.closePath();
+        c.closePath();    
         
         c.beginPath();
         c.fillStyle = 'red';        
-        c.lineTo(10, 5);
-        c.lineTo(5, 0);
-        c.lineTo(0, 5);
-        c.lineTo(5, 5);
-        c.fillText('y', 10, 7);
+        c.lineTo(10, h-5);
+        c.lineTo(5, h);
+        c.lineTo(0, h-5);
+        c.lineTo(5, h-5);
+        c.fillText('y', 10, h-7);
         c.fill();
         c.closePath();                                        
-        
+
         c.beginPath();
-        c.moveTo(w-5, h-10);        
-        c.lineTo(w, h-5);
-        c.lineTo(w-5, h);
-        c.lineTo(w-5, h-10);        
-        c.fillText('x', w-7, h-10);
+        c.moveTo(w-5, 0);        
+        c.lineTo(w, 5);
+        c.lineTo(w-5, 10);
+        c.lineTo(w-5, 0);        
+        c.fillText('x', w-14, 14);
         c.fill();
         c.closePath();  
                         
@@ -221,7 +235,7 @@ if(canvas.getContext('2d')) {
         c.lineWidth = 0.5;
         
         for(var i = 1; i <= line_count; i++) {
-            c.fillText(100/line_count*i, w/line_count*(i*s) + (przesuniecie_x + vector_x)*s - (w/2)*(s-1), h-10);
+            c.fillText(100/line_count*i, w/line_count*(i*s) + (przesuniecie_x + vector_x)*s - (w/2)*(s-1), 16);
             c.fillText(100/line_count*i, 10, h/line_count*(i*s) + (przesuniecie_y + vector_y)*s - (h/2)*(s-1)); 
             
             c.moveTo(w/line_count*(i*s) + (przesuniecie_x + vector_x)*s - (w/2)*(s-1), h-5);
@@ -234,9 +248,11 @@ if(canvas.getContext('2d')) {
         c.closePath();
     }
     
-    window.onload = function() {
-        setTimeout('rysuj_osie()', 50);
-        setTimeout('rysuj_mape()', 60);    
-    }    
+    function init() {
+        rysuj_osie();
+        rysuj_mape();     
+    }
+    
+    window.onload = init();    
 } else {alert('Zaopatrz sie w nowsza przegladarke...');}
 </script>

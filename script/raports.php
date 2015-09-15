@@ -83,7 +83,7 @@ if($q->num_rows != 0):
         echo "<td width=\"10\" onClick=\"javascript:Check2('".$rec["id_raport"]."')\">".'<input type="checkbox" name="checkbox_message[]" value="'.$rec["id_raport"].'" id="'.$rec["id_raport"].'" />'."</td>";        
 ?>                      
                         <td onClick="javascript:load_msg('msg_<?php echo $rec["id_raport"]; ?>')">                                    
-                            <?php echo "Raport ".$rec["id_raport"]; ?>
+                            <?php echo $rec["title"]; ?>
                         </td>
                     </tr>
                     <tr>                              
