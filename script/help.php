@@ -48,7 +48,7 @@ include "style.php";
             Gdy wojska dotrą do kampusu, rozegra się bitwa. W bitwie zawsze agresor ma przewagę, jest ona większa lub mniejsza. Zależy to od szczęścia. </br>
             W godzinach nocnych, tj. od 22 do 6 znaczną przewagę ma natomiast obrońca. Wynik bitwy zostanie zawarty w raporcie, który otrzymają zarówno agresor, jak i broniący się.</br>
             Wojska przysłane jako wsparcie będą walczyć w obronie danego kampusu, ale właściciel kampusu nie może ich wykorzystać do ataku. Może jedynie nakazać im powrót do własnego kampusu.</br>
-            Wojska do innych kampusów możesz także wysłać za pomocą mapy. Pozwala ona także rozejrzeć się po okolicy i sprawdzić swoje położenie. </br>
+            Wojska do innych kampusów możesz także wysłać za pomocą mapy, ikona <img src="img/map.png" alt="Mapa" width="30" height="30">. Pozwala ona także rozejrzeć się po okolicy i sprawdzić swoje położenie. </br>
             Położenie twojego kampusu wyznaczają współrzędne X i Y, przyjmujące wartości od 1 do 100. </br>
             Każda wioska ma swoje poparcie w skali od 1-100. Symbolizuje je ikona <img src="img/crown.png" alt="Poparcie" width="30" height="30">. Szczegóły na ten temat uzyskasz po kliknięciu na nią. </br>
             Ikona <img src="img/edytuj.png" alt="Edytuj" width="30" height="30"> pozwala zmienić nazwę obecnego kampusu. </br>

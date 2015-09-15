@@ -5,9 +5,22 @@ include "building.php";
 include "resource.php";
 include "army.php";
 
+$Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $ID_Campus = $_SESSION['id_campus'];
 if (!$ID_Campus) header('Location: index.php');
-$Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
+$SQL_String = "SELECT id_owner FROM gs_campuses WHERE id_campus=$ID_Campus";
+$Query = $Connect->Query($SQL_String);
+$Record = $Query->fetch_assoc();
+if (!$_SESSION['id_user'])
+{
+   $_SESSION['id_campus'] = NULL;
+   header('Location: index.php');
+}
+if ($Record['id_owner'] != $_SESSION['id_user'])
+{
+   $_SESSION['id_campus'] = NULL;
+   header('Location: index.php');
+}
       
 $z = "SELECT * FROM gs_messages WHERE seen = 0 AND addressee = (SELECT id_user FROM gs_users WHERE login = '".$_SESSION["login"]."')";
 $q = $Connect->query($z);

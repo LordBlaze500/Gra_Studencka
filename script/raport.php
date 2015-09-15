@@ -183,6 +183,7 @@ if (!defined('__RAPORT_PHP__'))
       $Query_2 = self::$Connect->Query($SQL_String_2);
       $Record_2 = $Query_2->fetch_assoc();
       $Content = $Content.$Record_2['login'].', '.$Record['name'].'('.$Record['x_coord'].'|'.$Record['y_coord'].')</b><br/>';
+      $Title = $Record_2['login'].' atakuje ';
       $Content = $Content.'<table border=1><tr>';
       $Content = $Content.'<td><img src="../img/student.png" width="25" height="25"></td>';
       $Content = $Content.'<td><img src="../img/spadochroniarz.png" width="25" height="25"></td>';
@@ -221,6 +222,7 @@ if (!defined('__RAPORT_PHP__'))
       $SQL_String_2 = "SELECT login FROM gs_users WHERE id_user=$ID_Owner_Target";
       $Query_2 = self::$Connect->Query($SQL_String_2);
       $Record_2 = $Query_2->fetch_assoc();
+      $Title = $Title.$Record['name'].'('.$Record['x_coord'].'|'.$Record['y_coord'].')';
       $Content = $Content.'<b>Obrońca: '.$Record_2['login'].', '.$Record['name'].'('.$Record['x_coord'].'|'.$Record['y_coord'].')</b><br/>';
       $Content = $Content.'<table border=1><tr>';
       $Content = $Content.'<td><img src="../img/student.png" width="25" height="25"></td>';
@@ -260,7 +262,7 @@ if (!defined('__RAPORT_PHP__'))
       {
          $Content = $Content.'<b>Poparcie spadło z '.($this->Obedience_Before).' na '.($this->Obedience_Before-$this->Obedience_Loss).'</b><br/>';
       }
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Owner, '$Content', 0)";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Owner, '$Content', 0, '$Title')";
       $Query = self::$Connect->Query($SQL_String);
       $i = 0;
       while ($this->Defending_Armies_Before_Complete->At($i))
@@ -273,7 +275,7 @@ if (!defined('__RAPORT_PHP__'))
          $Query = self::$Connect->Query($SQL_String);
          $Record = $Query->fetch_assoc();
          $ID_User = $Record['id_owner'];
-         $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_User, '$Content', 0)";
+         $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_User, '$Content', 0, '$Title')";
          $Query = self::$Connect->Query($SQL_String);
          echo 'SQL STring 2: ';
          echo $SQL_String;
@@ -323,6 +325,7 @@ class Retreat_Raport
       $Record_5 = $Query_5->fetch_assoc();
       $Content = "<font size=5><b>Wycofano wsparcie</b></font></br></br>";
       $Content = $Content."Gracz ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord']).") wycofał wsparcie z twojego kampusu:<br/>";
+      $Title = $Record_3['login'].' wycofuje pomoc z '.($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).')';
       $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
       $Content = $Content.'<table border=1><tr>';
       $Content = $Content.'<td><img src="../img/student.png" width="25" height="25"></td>';
@@ -346,7 +349,7 @@ class Retreat_Raport
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
       $ID_Player = $Record_4['id_owner'];
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Player, '$Content', 0)";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Player, '$Content', 0, '$Title')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
@@ -390,6 +393,7 @@ class Sendback_Raport
       $Record_5 = $Query_5->fetch_assoc();
       $Content = "<font size=5><b>Odesłano wsparcie</b></font></br></br>";
       $Content = $Content."Gracz ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord']).") odesłał wsparcie z twojego kampusu:<br/>";
+      $Title = $Record_3['login'].' odsyła pomoc z '.($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).')';
       $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
       $Content = $Content.'<table border=1><tr>';
       $Content = $Content.'<td><img src="../img/student.png" width="25" height="25"></td>';
@@ -413,7 +417,7 @@ class Sendback_Raport
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
       $ID_Player = $Record_4['id_owner'];
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Player, '$Content', 0)";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Player, '$Content', 0, '$Title')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
@@ -458,6 +462,7 @@ class Support_Raport
       $Record_5 = $Query_5->fetch_assoc();
       $Content = "<font size=5><b>Wsparcie dotarło</b></font></br></br>";
       $Content = $Content."Wsparcie od ".($Record_3['login']).", ".($Record_2['name'])."(".($Record_2['x_coord'])."|".($Record_2['y_coord']).") dotarło do kampusu ";
+      $Title = $Record_3['login'].' wspiera '.($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).')';
       $Content = $Content."<b>".($Record_4['name'])."(".($Record_4['x_coord'])."|".($Record_4['y_coord']).")</b><br/>";
       $Content = $Content.'<table border=1><tr>';
       $Content = $Content.'<td><img src="../img/student.png" width="25" height="25"></td>';
@@ -480,9 +485,9 @@ class Support_Raport
       $Content = $Content.'<td>'.($Record_5['doctor']).'</td>';
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Player, '$Content', 0)";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Player, '$Content', 0, '$Title')";
       $Query = self::$Connect->Query($SQL_String);
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen) VALUES ($ID_Owner, '$Content', 0)";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Owner, '$Content', 0, '$Title')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
