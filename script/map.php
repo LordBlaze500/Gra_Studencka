@@ -1,8 +1,20 @@
+<?php
+require "db_connect.php";
+
+$connect = new mysqli($db_host, $db_user, $db_password, $db_name);
+
+$z = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus = ".$_SESSION["id_campus"];
+$q = $connect->query($z);
+$rec = $q->fetch_assoc();
+
+$connect->close();
+?>
 <center>
-    <canvas id="canvas" width="500" height="500" style="border: 1px solid black; cursor: grab"></canvas>
+    <canvas id="canvas" width="700" height="700" style="border: 1px solid black; cursor: grab"></canvas>
     <br />
     <button onClick="javascript:zoom('in')">+</button>
     <button onClick="javascript:zoom('out')">-</button>
+    <button onclick="javascript:moja_wiocha()">Moja wiocha</button>
     <form name="attacks" method="post" action="?l=attacks">
         <div id="div"></div>
     </form>
@@ -15,20 +27,24 @@ canvas {background-color: white;}
 form {color: black;} /*#31B404   #0404B4*/
 #div {background-color: #31B404; border: 2px solid #0404B4; width: 400px; display: none;}
 </style>
-<div id="wiochy"></div>
 <script type="text/javascript">
 var canvas          = document.getElementById('canvas');
-skala               = 3;
+var skala           = 4;
 var x               = 0;
 var y               = 0;
-pos_x               = 0;
-pos_y               = 0;
-vector_x            = 0;
-vector_y            = 0;  
-var przesuniecie_x  = 0;
-var przesuniecie_y  = 0;        
+var pos_x           = 0;
+var pos_y           = 0;
+var vector_x        = 0;
+var vector_y        = 0;  
+var village_x       = <?php echo ((50-$rec["x_coord"])*7)."\n"; ?>
+var village_y       = <?php echo ((50-$rec["y_coord"])*7)."\n"; ?>
+var przesuniecie_x  = village_x;
+var przesuniecie_y  = village_y;
+var siatka          = 1;
+var lines           = new Array(10, 20, 20, 50, 100, 100); 
+var mousewheele     = (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel";       
 var json_obj;
-var interval;
+var interval;   
 
 /**********/
 
@@ -42,6 +58,23 @@ img.onload          = function() {
 canvas.addEventListener('mousemove', mousemove, false);
 canvas.addEventListener('mousedown', mousedown, false);
 canvas.addEventListener('mouseup', mouseup, false);  
+canvas.addEventListener(mousewheele, scrolling, false);
+
+function scrolling(e) {
+    var evt = window.event || e; 
+    var delta = evt.detail? evt.detail*(-120) : evt.wheelDelta;
+    if(delta > 0) zoom('in');
+    else zoom('out');
+}
+
+function moja_wiocha() {
+    vector_x = vector_y = 0;
+    przesuniecie_x = village_x;
+    przesuniecie_y = village_y;
+    
+    setTimeout('rysuj_osie()', 50);
+    setTimeout('rysuj_mape()', 60);
+}
 
 function mousemove(ev) {
     if(ev.layerX || ev.layerX == 0) { 
@@ -61,7 +94,8 @@ function mousedown() {
     pos_y = y;
     canvas.style.cursor = 'grabbing';                                 
     clearInterval(interval);
-    interval = setInterval('move_map()', 30);         
+    interval = setInterval('move_map()', 30);  
+    document.getElementById('div').style.display = 'none';       
 }
 
 function mouseup() {
@@ -73,9 +107,27 @@ function mouseup() {
 }
 
 function move_map() {
-    vector_x = (pos_x - x) * -1;
-    vector_y = (pos_y - y) * -1;
-    rysuj_mape(skala);
+    var s = Math.pow(2, skala);
+    vector_x = (pos_x - x) / -s;
+    vector_y = (pos_y - y) / -s;
+    rysuj_osie();               
+    rysuj_mape();    
+}
+
+function zoom(id) {
+    switch(id) {
+        case 'in':
+            if(skala < 5) ++skala;
+        break;
+        case 'out':
+            if(skala > 0) --skala;
+        break;
+    }  
+                
+    vector_x = 0;
+    vector_y = 0;  
+    rysuj_osie();
+    rysuj_mape();        
 }
 
 function check_position() {
@@ -83,11 +135,10 @@ function check_position() {
     var s = Math.pow(2, skala);
     
     for(var i = 0; i < json_obj.wiocha.length; i++) {
-        village_x = (json_obj.wiocha[i].x * (5+s)) - 50*s + przesuniecie_x + vector_x;
-        village_y = (json_obj.wiocha[i].y * (5+s)) - 50*s + przesuniecie_y + vector_y;
+        village_x = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1);
+        village_y = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1);
         
-        if(x > village_x && x < village_x + 0.5*s && y > village_y && y < village_y + 0.5*s) {
-            //document.getElementById('div').innerHTML = 'Wiocha <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b>';
+        if(x > village_x - s*4/2 && x < village_x + s*4/2 && y > village_y - s*4/2 && y < village_y + s*4/2) {            
             document.getElementById('div').innerHTML = '<input type="hidden" name="X" value="'+json_obj.wiocha[i].x+'" />'+
             '<input type="hidden" name="Y" value="'+json_obj.wiocha[i].y+'" />'+                
             '<br />Wiocha: <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b><br />Właściciel: <b>' + json_obj.wiocha[i].owner + '</b><br />'+
@@ -116,57 +167,76 @@ if(canvas.getContext('2d')) {
             var json = this.responseText;
             eval('json_obj = ('+json+')');                               
         }
-    }
-    
-    function zoom(id) {
-        switch(id) {
-            case 'in':
-                if(skala < 9) ++skala;
-            break;
-            case 'out':
-                if(skala > 3) --skala;
-            break;
-        }  
-                    
-        vector_x = 0;
-        vector_y = 0;
-        rysuj_mape();  
-    }
+    }        
     
     function rysuj_mape() { 
         if(!json_obj || !img_load)
             setTimeout('rysuj_mape()', 50);
          
-        var s = Math.pow(2, skala);
-        c.clearRect(0, 0, w, h);           
-        c.fillStyle = 'red'; 
+        var s = Math.pow(2, skala);           
                         
-            for(var i = 0; i < json_obj.wiocha.length; i++) {
-                c.beginPath();
-                //c.arc((json_obj.wiocha[i].x * (5+s)) - 50*s + przesuniecie_x + vector_x, (json_obj.wiocha[i].y * (5+s)) - 50*s + przesuniecie_y + vector_y, 0.2 * s, 0, Math.PI*2, true);                            
-                c.drawImage(img, (json_obj.wiocha[i].x * (5+s)) - 50*s + przesuniecie_x + vector_x, (json_obj.wiocha[i].y * (5+s)) - 50*s + przesuniecie_y + vector_y, 0.5*s, 0.5*s);
-                c.closePath();
-                c.fill();
-            }
+        for(var i = 0; i < json_obj.wiocha.length; i++) {
+            c.beginPath();
+            c.drawImage(img, json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) - s*4/2, json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) - s*4/2, s*4, s*4);
+            c.closePath();
+            c.fill();
+        }
     }
     
-    window.onload = rysuj_mape();    
+    function rysuj_osie() {
+        var s = Math.pow(2, skala);
+        var line_count = lines[skala];         
+        c.clearRect(0, 0, w, h);        
+        c.strokeStyle = 'red'; 
+        c.lineWidth = 1;
+        c.font = '8pt Georgia'; 
+        
+        c.beginPath();
+        c.moveTo(w-5, h-5);
+        c.lineTo(5, h-5);
+        c.lineTo(5, 5);                                    
+        c.stroke();
+        c.closePath();
+        
+        c.beginPath();
+        c.fillStyle = 'red';        
+        c.lineTo(10, 5);
+        c.lineTo(5, 0);
+        c.lineTo(0, 5);
+        c.lineTo(5, 5);
+        c.fillText('y', 10, 7);
+        c.fill();
+        c.closePath();                                        
+        
+        c.beginPath();
+        c.moveTo(w-5, h-10);        
+        c.lineTo(w, h-5);
+        c.lineTo(w-5, h);
+        c.lineTo(w-5, h-10);        
+        c.fillText('x', w-7, h-10);
+        c.fill();
+        c.closePath();  
+                        
+        c.strokeStyle = 'gray'; 
+        c.lineWidth = 0.5;
+        
+        for(var i = 1; i <= line_count; i++) {
+            c.fillText(100/line_count*i, w/line_count*(i*s) + (przesuniecie_x + vector_x)*s - (w/2)*(s-1), h-10);
+            c.fillText(100/line_count*i, 10, h/line_count*(i*s) + (przesuniecie_y + vector_y)*s - (h/2)*(s-1)); 
+            
+            c.moveTo(w/line_count*(i*s) + (przesuniecie_x + vector_x)*s - (w/2)*(s-1), h-5);
+            c.lineTo(w/line_count*(i*s) + (przesuniecie_x + vector_x)*s - (w/2)*(s-1), 5); 
+            c.moveTo(w-5, h/line_count*(i*s) + (przesuniecie_y + vector_y)*s - (h/2)*(s-1));
+            c.lineTo(5, h/line_count*(i*s) + (przesuniecie_y + vector_y)*s - (h/2)*(s-1));         
+        }
+        
+        c.stroke();
+        c.closePath();
+    }
+    
+    window.onload = function() {
+        setTimeout('rysuj_osie()', 50);
+        setTimeout('rysuj_mape()', 60);    
+    }    
 } else {alert('Zaopatrz sie w nowsza przegladarke...');}
 </script>
-<?php
-/*
-require "db_connect.php";
-$connect = new mysqli($db_host, $db_user, $db_password, $db_name);
-
-$z = "SELECT x_coord, y_coord FROM gs_campuses";
-$q = $connect->query($z);
-for($i = 0; $rec = $q->fetch_assoc(); $i++) {
-    if($rec["y_coord"] == 50 && $rec["x_coord"] == 50)
-        echo '<div class="center" style="top: '.($rec["y_coord"]*10).'; left: '.($rec["x_coord"]*10).'"></div>'."\n";
-    else    
-        echo '<div class="obj" style="top: '.($rec["y_coord"]*10).'; left: '.($rec["x_coord"]*10).'"></div>'."\n";
-} 
-
-$connect->close();
-*/
-?>
