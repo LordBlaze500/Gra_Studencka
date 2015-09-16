@@ -44,6 +44,7 @@ var vector_x        = 0;
 var vector_y        = 0;  
 var village_x       = <?php echo ((50-$rec["x_coord"])*7)."\n"; ?>
 var village_y       = <?php echo ((50-$rec["y_coord"])*7)."\n"; ?>
+var owner           = '<?php echo $_SESSION["login"]; ?>';
 var przesuniecie_x  = village_x;
 var przesuniecie_y  = village_y;
 var siatka          = 1;
@@ -59,10 +60,13 @@ var interval;
 var img_load        = 0;
 var img             = new Image();
 var img2            = new Image();
+var img3            = new Image();
 img.src             = 'img/akademikupgraded.png';
 img2.src            = 'img/blackwhite.png';
+img3.src            = 'img/akademikowner.jpg';
 img.onload          = function() {++img_load;}
 img2.onload         = function() {++img_load;}
+img3.onload         = function() {++img_load;}
 
 canvas.addEventListener('mousemove', mousemove, false);
 canvas.addEventListener('mousedown', mousedown, false);
@@ -198,7 +202,7 @@ if(canvas.getContext('2d')) {
     }        
     
     function rysuj_mape() { 
-        if(!json_obj || img_load != 2)
+        if(!json_obj || img_load != 3)
             setTimeout('rysuj_mape()', 50);
          
         var s = Math.pow(2, skala); 
@@ -207,6 +211,8 @@ if(canvas.getContext('2d')) {
         for(var i = 0; i < json_obj.wiocha.length; i++) {
             if(json_obj.wiocha[i].owner == 'WORLD')
                 current_img = img2;
+            else if(json_obj.wiocha[i].owner == owner)
+                current_img = img3;
             else
                 current_img = img;
         
