@@ -8,7 +8,7 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 
 $SQL_String = "INSERT INTO gs_campuses (x_coord, y_coord, id_owner, amount_vodka, amount_kebab, 
 	          amount_wifi, dormitory, transit, college, liquirstore, cafe, terminus, parking, bench, distillery,
-	          doner, wifispot, name, points, obedience, traders) VALUES ($X, $Y, 0, 500, 500, 500, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,'Kampus'
+	          doner, wifispot, name, points, obedience, traders) VALUES ($X, $Y, 0, 1000, 1000, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3,'Wolny kampus'
 	          ,1,1000,10)";
 $Query = $Connect->Query($SQL_String);
 $SQL_String = "SELECT id_campus FROM gs_campuses WHERE x_coord=$X AND y_coord=$Y";

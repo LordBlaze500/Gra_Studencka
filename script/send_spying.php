@@ -69,7 +69,7 @@ if (isset($_POST['send']))
       $Arrival_Time->add(new DateInterval('PT'.Calculate_Travel_Time($Connect, $New_Army->ID_Homecampus_Getter(),$ID_Target,$New_Army->Speed_Getter()).'M'));
       //$Arrival_Time->add(new DateInterval('PT'.$New_Army->Speed_Getter().'M'));
       $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
-      $SQL_String = "INSERT INTO gs_moves (id_army, id_source, id_destination, arrival_time, strike) VALUES ($ID_New_Army, $ID_Campus, $ID_Target, '$Date_String', 1)";
+      $SQL_String = "INSERT INTO gs_moves (id_army, id_source, id_destination, arrival_time, strike) VALUES ($ID_New_Army, $ID_Campus, $ID_Target, '$Date_String', 3)";
       $Query = $Connect->Query($SQL_String);
       echo '<center>';
       echo '<b><font size="4" color="yellow">Wojska wysłane</font></b>';
@@ -83,7 +83,6 @@ if (isset($_POST['send']))
    }
    }
 }
-
 ?>
 
 <html>
@@ -92,7 +91,7 @@ if (isset($_POST['send']))
 </head>
 <body>
    <center>
-   <font size="5"><b>Wyślij atak</b></font><br/>
+   <font size="5"><b>Wyślij szpiegów</b></font><br/>
    <table>
       <tr bgcolor=<?php Bg_Color_Three();?>>
          <td>

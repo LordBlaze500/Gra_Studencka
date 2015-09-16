@@ -15,9 +15,6 @@ while ($Record = $Query->fetch_assoc())
 	{
     if (date('H') > 21 || date('H') < 6) $Bonus = 2;
     else $Bonus = 1;
-    echo 'date h: ';
-    echo date('H');
-    echo '<br/>';
     $Bonus_Set = 0;
     $Raport = new Battle_Raport();
 		$Luck = rand(0, 20);
@@ -147,6 +144,7 @@ while ($Record = $Query->fetch_assoc())
            }
            else
            {
+              $Raport->Send();
            	  $SQL_String_3 = "UPDATE gs_campuses SET obedience=$New_Obedience WHERE id_campus=$Destination";
            	  $Query_3 = $Connect->Query($SQL_String_3);
            }
@@ -156,13 +154,13 @@ while ($Record = $Query->fetch_assoc())
            $Raport->Result_Setter(1);
            $Raport->Defending_Armies_After_Setter($Defending_Armies);
            $Raport->Aggressor_Army_After_Setter(NULL);
+           $Raport->Send();
            $ID_Army = $Move->Army_Getter()->ID_Army_Getter();
            $SQL_String_3 = "DELETE FROM gs_armies WHERE id_army=$ID_Army";
            $Query_3 = $Connect->Query($SQL_String_3);
            $ID_Move = $Record['id_move'];
            $SQL_String_3 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
            $Query_3 = $Connect->Query($SQL_String_3);
-           $Raport->Send();
         }
         
 	}
@@ -181,6 +179,47 @@ while ($Record = $Query->fetch_assoc())
         $SQL_String_2 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
         $Query_2 = $Connect->Query($SQL_String_2);
 	}
+  if ($Record['strike'] == 3)
+  {
+        $Move = new Move($Record['id_move']);
+        $Total_Number = $Move->Army_Getter()->Student_Getter()->Number_Getter() + $Move->Army_Getter()->Parachute_Getter()->Number_Getter() + $Move->Army_Getter()->Nerd_Getter()->Number_Getter()
+                        + $Move->Army_Getter()->Stooley_Getter()->Number_Getter() + $Move->Army_Getter()->Drunkard_Getter()->Number_Getter() + $Move->Army_Getter()->Clochard_Getter()->Number_Getter() +
+                        $Move->Army_Getter()->Master_Getter()->Number_Getter() + $Move->Army_Getter()->Doctor_Getter()->Number_Getter() + $Move->Army_Getter()->Inspector_Getter()->Number_Getter() +
+                        $Move->Army_Getter()->Veteran_Getter()->Number_Getter();
+        $Effect = rand(1,100);
+        if ($Total_Number * 10 > $Effect)
+        {
+           $Raport = new Spying_Raport($Record['id_move']);
+           $Raport->Send_Lose();
+           $ID_Army = $Move->Army_Getter()->ID_Army_Getter();
+           $ID_Move = $Record['id_move'];
+           $SQL_String = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
+           $Query_2 = $Connect->Query($SQL_String);
+           $SQL_String = "DELETE FROM gs_armies WHERE id_army=$ID_Army";
+           $Query_2 = $Connect->Query($SQL_String);
+        }
+        else
+        {
+           if ($Total_Number <= 3)
+           {
+              $Raport = new Spying_Raport($Record['id_move']);
+              $Raport->Send_Win_1();
+              $Move->Returning();
+           }
+           if ($Total_Number > 3 && $Total_Number <= 6)
+           {
+              $Raport = new Spying_Raport($Record['id_move']);
+              $Raport->Send_Win_2();
+              $Move->Returning();
+           }
+           if ($Total_Number > 6)
+           {
+              $Raport = new Spying_Raport($Record['id_move']);
+              $Raport->Send_Win_3();
+              $Move->Returning();
+           }
+        }
+  }
 	if ($Record['strike'] == 0)
 	{
 		$Move = new Move($Record['id_move']);

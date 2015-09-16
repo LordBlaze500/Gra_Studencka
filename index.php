@@ -59,6 +59,9 @@ else:
             case "send_help":
                 require "script/send_help.php";        
             break;
+            case "send_spying":
+                require "script/send_spying.php";
+            break;
             case "trade_center":
                 require "script/trade_center.php";
             break;

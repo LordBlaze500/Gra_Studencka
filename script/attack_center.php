@@ -95,6 +95,53 @@ if (isset($_POST['help']))
    }
 }
 
+if (isset($_POST['spying']))
+{
+   $X = $_POST['X'];
+   $Y = $_POST['Y'];
+   $SQL_String = "SELECT id_campus FROM gs_campuses WHERE x_coord=$X AND y_coord=$Y";
+   $Query = $Connect->Query($SQL_String);
+   $Record = $Query->fetch_assoc();
+   if (!$Record)
+   {
+      echo '<center><font size=4><b>';
+      echo 'Taki kampus nie istnieje!';
+      echo '</b></font></center>';
+   }
+   if ($Record && $Record['id_campus'] == $ID_Campus)
+   {
+      echo '<center><font size=4><b>';
+      echo 'Nie możesz wysłać wojsk do kampusu wyjściowego!';
+      echo '</b></font></center>';
+   }
+   if ($Record && $X > 0 && $Y > 0 && $Record['id_campus'] != $ID_Campus) 
+   {
+      $ID_Target = $Record['id_campus'];
+      $SQL_String = "SELECT id_owner FROM gs_campuses WHERE id_campus=$ID_Target";
+      $Query_2 = $Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $ID_Owner = $Record_2['id_owner'];
+      $SQL_String = "SELECT registration_date FROM gs_users WHERE id_user=$ID_Owner";
+      $Query_3 = $Connect->Query($SQL_String);
+      $Record_3 = $Query_3->fetch_assoc(); 
+      $Allowed_Date = DateTime::createFromFormat('Y-m-d H:i:s', $Record_3['registration_date']); 
+      $Allowed_Date->add(new DateInterval('PT'.'2880'.'M'));
+      $Current_Date = new DateTime();
+      $Date_String = $Allowed_Date->format('Y-m-d H:i:00');
+      if ($Allowed_Date >= $Current_Date)
+      {
+         echo '<center><font size="4" color="yellow"><b>Cel ma jeszcze ochronę początkową.</br>';
+         echo 'Możesz wysłać szpiegów najwcześniej '.$Date_String.'</b></font></center>';
+      }
+      else
+      {
+         $_SESSION['X'] = $X;
+         $_SESSION['Y'] = $Y;
+         header('Location: index.php?l=send_spying');
+      }
+   }
+}
+
 if (isset($_POST['retreat']) && isset($_POST['id_army']))
 {
    $ID_Army = $_POST['id_army'];
@@ -296,6 +343,7 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             echo '<td><i><center>'; 
             if ($Type == 1) echo 'Atak';
             if ($Type == 0) echo 'Wsparcie';
+            if ($Type == 3) echo 'Szpiegowanie';
             echo '</center></i></td>';
             echo '<td><i><center>'; echo '<a href="?l=campus_info&id_campus='; echo $ID_Destination; echo '">'; echo $Record_2['name']; echo ' ('; echo $Record_2['x_coord']; echo '|'; echo $Record_2['y_coord']; echo ')'; echo '</a>'; echo '</center></i></td>';
             echo '<td><i><center>'; echo $Record['arrival_time']; echo '</center></i></td>';
@@ -480,6 +528,7 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
             <input type="text" name="Y" value="0" style="width: 60px">
             <input type="submit" name="strike" value="Atak">
             <input type="submit" name="help" value="Wsparcie">
+            <input type="submit" name="spying" value="Szpiegowanie">
             </form>
             </center></b>
          </td>

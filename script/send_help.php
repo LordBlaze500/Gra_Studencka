@@ -47,7 +47,16 @@ $Login = $Record['login'];
 if (isset($_POST['send']))
 {
    $Result = $Army->Split($_POST['student'], $_POST['parachute'], $_POST['nerd'], $_POST['stooley'], $_POST['drunkard'], $_POST['clochard'], $_POST['master'], $_POST['doctor'], $_POST['inspector'], $_POST['veteran']);
-   if ($Result == 0)
+   $Is_Zero = $_POST['student'] + $_POST['parachute'] + $_POST['nerd'] + $_POST['stooley'] + $_POST['drunkard'] + $_POST['clochard'] + $_POST['master'] + $_POST['doctor'] + $_POST['inspector'] + $_POST['veteran'];
+   if ($Is_Zero == 0)
+   {
+      echo '<center>';
+      echo '<b><font size="4" color="yellow">Nie podano ilości wojsk!</font></b>';
+      echo '</center>';
+   }
+   else
+   {
+      if ($Result == 0)
    {
       $SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Campus AND id_stayingcampus=$ID_Campus ORDER BY id_army DESC";
       $Query = $Connect->Query($SQL_String);
@@ -71,6 +80,7 @@ if (isset($_POST['send']))
       echo '<center>';
       echo '<b><font size="4" color="yellow">Nie masz tyle wojsk!</font></b>';
       echo '</center>';
+   }
    }
 }
 
