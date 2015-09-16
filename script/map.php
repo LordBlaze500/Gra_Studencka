@@ -160,7 +160,8 @@ function check_position() {
         '<br />Wiocha: <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b><br />Właściciel: <b>' + json_obj.wiocha[i].owner + '</b><br />'+
         '<input type="hidden" name="strike" value="1" />'+
         '<input type="submit" name="attack_ok" value="Atak" />'+
-        '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Pomoc" />';   
+        '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Wyślij wsparcie" />'+
+        '<input type="submit" name="spying_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'spying\'" value="Szpieguj" />';   
         div.style.display = 'block';
         div.style.top = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) + canvas.offsetTop - 105;
         div.style.left = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) + canvas.offsetLeft - dymek_left[skala];

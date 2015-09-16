@@ -142,7 +142,7 @@ else:
                     <option value="-1" selected>--Wybierz--
                     </option>        
 <?php
-        $z = "SELECT id_user, login FROM gs_users";
+        $z = "SELECT id_user, login FROM gs_users WHERE id_user != 0";
         $q = $connect->query($z);
         
         while($rec = $q->fetch_assoc())
