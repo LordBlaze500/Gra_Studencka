@@ -70,6 +70,22 @@ if (isset($_POST['Send']))
       }
    }
 }
+
+if(isset($_POST["X"])) {
+    if($_POST["X"] > 0 && $_POST["X"] <= 100)
+        $x_value = $_POST["X"];
+    else
+        $x_value = "0";
+} else
+    $x_value = "0";
+
+if(isset($_POST["Y"])) {
+    if($_POST["Y"] > 0 && $_POST["Y"] <= 100)
+        $y_value = $_POST["Y"];
+    else
+        $y_value = "0";
+} else
+    $y_value = "0";
 ?>
 
 <html>
@@ -77,7 +93,36 @@ if (isset($_POST['Send']))
    <?php Style_Inline(); ?>
 </head>
 <body>
-   <center>
+    <style type="text/css">
+    #send, #sell {display: none;}  
+    .trade_menu span {background-color: #31B404; padding: 3px; border: 2px outset yellow; cursor: pointer;}
+    .trade_menu span:hover {border: 2px inset red;}
+    </style>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+    var send = 0;
+    var sell = 0;
+    
+    /**********/
+    
+    function show_send_form() {
+        $('#sell').slideUp(1000, function() {
+            $('#send').slideDown(1000);
+        });         
+    }
+    
+    function show_sell_form() {
+        $('#send').slideUp(1000, function() {
+            $('#sell').slideDown(1000);
+        });
+    }
+    
+    <?php
+    if($x_value != 0 && $y_value != 0)
+        echo "window.onload = function() {show_send_form();}";
+    ?>
+    </script>
+   <center>   
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
          <td>
@@ -97,64 +142,124 @@ if (isset($_POST['Send']))
       </tr>
    </table>
    <table>
-      <tr bgcolor=<?php Bg_Color_Three();?>>
-         <td><b>Dostępni handlarze:</b></td>
-         <td><i>
-            <?php
-            $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$ID_Campus";
-            $Query = $Connect->Query($SQL_String);
-            $Record = $Query->fetch_assoc();
-            echo $Record['traders'];
-            echo '/10';
-            ?>
-         </i></td>
-     </tr>
-   </table>
-
-   <table border=1 bgcolor=<?php Bg_Color_Three();?>>
-      <tr>
-         <td>
-            <center><b><img src="img/wodka.png" width="50" height="50"><?php echo $Vodka->Amount_Getter(); ?> <img src="img/kebab.png" width="50" height="50"><?php echo $Kebab->Amount_Getter(); ?> <img src="img/wifi.png" width="50" height="50"><?php echo $Wifi->Amount_Getter(); ?></b></center>
-         </td>
-      </tr>
-   </table>
-
-   <table>
-      <tr bgcolor=<?php Bg_Color_Three();?>>
-         <td>
-         <b>Wyślij surowce do:</b>
-         </td>
-         <td align="right"><i>
-            <form method="POST">
-            <input type="hidden" name="l" value="trade_center">
-            X:
-            <input type="text" name="X" value="0" style="width: 60px">
-            Y:
-            <input type="text" name="Y" value="0" style="width: 60px">
-         </td>
-      </tr>
-      <tr bgcolor=<?php Bg_Color_Three();?>>
-         <td>
-            <b>Ilość:</b>
-         </td>
-         <td align="right"><i>
-            <img src="img/wodka.png" alt="Wodka" width="30" height="30">
-            <input type="text" name="Vodka" value="0" style="width: 60px">
-            <img src="img/kebab.png" alt="Kebab" width="30" height="30">
-            <input type="text" name="Kebab" value="0" style="width: 60px">
-            <img src="img/wifi.png" alt="Wifi" width="30" height="30">
-            <input type="text" name="Wifi" value="0" style="width: 60px">
-         </i></td>
-      </tr>
-      <tr bgcolor=<?php Bg_Color_Three();?>>
-         <td>
-            <b>Potwierdź:</b>
-         </td>
-         <td align="right"><i>
-            <input type="submit" name="Send" value="Wyślij">
-         </i></td>
-      </tr>
-   </table>
+          <tr bgcolor=<?php Bg_Color_Three();?>>
+             <td><b>Dostępni handlarze:</b></td>
+             <td><i>
+                <?php
+                $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$ID_Campus";
+                $Query = $Connect->Query($SQL_String);
+                $Record = $Query->fetch_assoc();
+                echo $Record['traders'];
+                echo '/10';
+                ?>
+             </i></td>
+         </tr>
+       </table>
+    
+       <table border=1 bgcolor=<?php Bg_Color_Three();?>>
+          <tr>
+             <td>
+                <center><b><img src="img/wodka.png" width="50" height="50"><?php echo $Vodka->Amount_Getter(); ?> <img src="img/kebab.png" width="50" height="50"><?php echo $Kebab->Amount_Getter(); ?> <img src="img/wifi.png" width="50" height="50"><?php echo $Wifi->Amount_Getter(); ?></b></center>
+             </td>
+          </tr>
+       </table><br />
+   
+    <div class="trade_menu">
+        <span onClick="javascript:show_send_form()">Wyślij surowce</span>&nbsp;&nbsp;<span onClick="javascript:show_sell_form()">Dodaj ogłoszenie</span>
+    </div><br />
+       
+   <div id="send">
+       <form method="POST">
+           <table>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                 <td>
+                 <b>Wyślij surowce do:</b>
+                 </td>
+                 <td align="right"><i>                
+                    <input type="hidden" name="l" value="trade_center">
+                    X:
+                    <input type="text" name="X" value="<?php echo $x_value; ?>" style="width: 60px">
+                    Y:
+                    <input type="text" name="Y" value="<?php echo $y_value; ?>" style="width: 60px">
+                 </td>
+              </tr>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                 <td>
+                    <b>Ilość:</b>
+                 </td>
+                 <td align="right"><i>
+                    <img src="img/wodka.png" alt="Wodka" width="30" height="30">
+                    <input type="text" name="Vodka" value="0" style="width: 60px">
+                    <img src="img/kebab.png" alt="Kebab" width="30" height="30">
+                    <input type="text" name="Kebab" value="0" style="width: 60px">
+                    <img src="img/wifi.png" alt="Wifi" width="30" height="30">
+                    <input type="text" name="Wifi" value="0" style="width: 60px">
+                 </i></td>
+              </tr>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                 <td>
+                    <b>Potwierdź:</b>
+                 </td>
+                 <td align="right"><i>
+                    <input type="submit" name="Send" value="Wyślij">
+                 </i></td>
+              </tr>
+           </table>
+       </form>
+   </div>
+   <div id="sell">       
+       <form method="POST">
+           <table>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                 <td>
+                 <b>Sprzedam:</b>
+                 </td>
+                 <td align="right">
+                    <img src="img/wodka.png" alt="Wodka" width="30" height="30">
+                    <input type="radio" name="item_for_sale" value="Vodka" style="width: 60px" />
+                    <img src="img/kebab.png" alt="Kebab" width="30" height="30">
+                    <input type="radio" name="item_for_sale" value="Kebab" style="width: 60px" />
+                    <img src="img/wifi.png" alt="Wifi" width="30" height="30">
+                    <input type="radio" name="item_for_sale" value="Wifi" style="width: 60px" />                    
+                 </td>
+              </tr>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                 <td>
+                    <b>Ilość:</b>
+                 </td>
+                 <td>
+                    <input type="text" name="amount" />
+                 </td>
+              </tr>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                <td>
+                 <b>Zapłata w:</b>
+                 </td>
+                 <td align="right">
+                    <img src="img/wodka.png" alt="Wodka" width="30" height="30">
+                    <input type="radio" name="payment" value="Vodka" style="width: 60px" />
+                    <img src="img/kebab.png" alt="Kebab" width="30" height="30">
+                    <input type="radio" name="payment" value="Kebab" style="width: 60px" />
+                    <img src="img/wifi.png" alt="Wifi" width="30" height="30">
+                    <input type="radio" name="payment" value="Wifi" style="width: 60px" />                    
+                 </td>
+              </tr>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                 <td>
+                    <b>Cena:</b>
+                 </td>
+                 <td>
+                    <input type="text" name="price" />
+                 </td>
+              </tr>
+              <tr bgcolor=<?php Bg_Color_Three();?>>
+                <td align="center" colspan="2">
+                    <input type="submit" name="sell_ok" value="Wystaw ogłoszenie">
+                </td>
+              </tr>
+           </table>
+       </form>
+   </div>
 
    <a href="?l=main">Powrót</a>
    </center>

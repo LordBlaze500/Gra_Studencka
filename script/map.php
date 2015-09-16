@@ -19,6 +19,11 @@ $connect->close();
     <form name="attacks" method="post" action="?l=attacks">
         <div id="div"></div>
     </form>
+    <form method="post" name="send_item" action="?l=trade_center" style="display: none">        
+        <input type="hidden" name="X" value="" />
+        <input type="hidden" name="Y" value="" />
+        <input type="submit" name="send_ok" value="OK" />
+    </form>
     <a href="#" onClick="javascript:history.go(-1)">Powrót</a> 
 </center>
 <style type="text/css">
@@ -26,7 +31,7 @@ $connect->close();
 .center {position: absolute; width: 5px; height: 5px; background-color: green;} 
 canvas {background-color: white;}
 form {color: black;} /*#31B404   #0404B4*/
-#div {/*background-color: #31B404; border: 2px solid #0404B4;*/ background-image: url('img/window/dymek.png'); background-size: 400px 130px; width: 400px; height: 130px; display: none; position: absolute;}
+#div {/*background-color: #31B404; border: 2px solid #0404B4;*/ background-image: url('img/window/dymek.png'); background-size: 420px 130px; width: 420px; height: 130px; display: none; position: absolute;}
 </style>
 <script type="text/javascript">
 var canvas          = document.getElementById('canvas');
@@ -51,12 +56,13 @@ var interval;
 
 /**********/
 
-var img_load        = false;
+var img_load        = 0;
 var img             = new Image();
+var img2            = new Image();
 img.src             = 'img/akademikupgraded.png';
-img.onload          = function() {
-    img_load = true;
-}
+img2.src            = 'img/blackwhite.png';
+img.onload          = function() {++img_load;}
+img2.onload         = function() {++img_load;}
 
 canvas.addEventListener('mousemove', mousemove, false);
 canvas.addEventListener('mousedown', mousedown, false);
@@ -147,6 +153,12 @@ function zoom(id) {
     init();      
 }
 
+function wysylka(i) {
+    document.forms['send_item'].X.value = json_obj.wiocha[i].x;
+    document.forms['send_item'].Y.value = json_obj.wiocha[i].y;  
+    document.forms['send_item'].send_ok.click();
+}
+
 function check_position() {
     var current_village_x, current_village_y;
     var s = Math.pow(2, skala);
@@ -160,8 +172,9 @@ function check_position() {
         '<br />Wiocha: <b>' + json_obj.wiocha[i].name + '(' + json_obj.wiocha[i].x + '|' + json_obj.wiocha[i].y + ')</b><br />Właściciel: <b>' + json_obj.wiocha[i].owner + '</b><br />'+
         '<input type="hidden" name="strike" value="1" />'+
         '<input type="submit" name="attack_ok" value="Atak" />'+
-        '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Wyślij wsparcie" />'+
-        '<input type="submit" name="spying_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'spying\'" value="Szpieguj" />';   
+        '<input type="submit" name="help_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'help\'" value="Wsparcie" />'+
+        '<input type="submit" name="spying_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'spying\'" value="Szpieguj" />'+
+        '<input type="button" name="send_items" onClick="javascript:wysylka('+i+')" value="Wyślij surowce" />';   
         div.style.display = 'block';
         div.style.top = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) + canvas.offsetTop - 105;
         div.style.left = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) + canvas.offsetLeft - dymek_left[skala];
@@ -185,14 +198,20 @@ if(canvas.getContext('2d')) {
     }        
     
     function rysuj_mape() { 
-        if(!json_obj || !img_load)
+        if(!json_obj || img_load != 2)
             setTimeout('rysuj_mape()', 50);
          
-        var s = Math.pow(2, skala);           
+        var s = Math.pow(2, skala); 
+        var current_img;                          
                         
         for(var i = 0; i < json_obj.wiocha.length; i++) {
+            if(json_obj.wiocha[i].owner == 'WORLD')
+                current_img = img2;
+            else
+                current_img = img;
+        
             c.beginPath();
-            c.drawImage(img, json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) - s*4/2, json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) - s*4/2, s*4, s*4);
+            c.drawImage(current_img, json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) - s*4/2, json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) - s*4/2, s*4, s*4);
             c.closePath();
             c.fill();
         }
