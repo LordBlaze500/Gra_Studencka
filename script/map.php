@@ -31,7 +31,7 @@ $connect->close();
 .center {position: absolute; width: 5px; height: 5px; background-color: green;} 
 canvas {background-color: white;}
 form {color: black;} /*#31B404   #0404B4*/
-#div {/*background-color: #31B404; border: 2px solid #0404B4;*/ background-image: url('img/window/dymek.png'); background-size: 420px 130px; width: 420px; height: 130px; display: none; position: absolute;}
+#div {/*background-color: #31B404; border: 2px solid #0404B4;*/ background-image: url('img/window/dymek.png'); background-size: 460px 130px; width: 460px; height: 130px; display: none; position: absolute;}
 </style>
 <script type="text/javascript">
 var canvas          = document.getElementById('canvas');
