@@ -234,6 +234,8 @@ while ($Record = $Query->fetch_assoc())
    else
    {
       $ID_Move = $Record['id_trading_move'];
+      $Raport = new Delivery_Raport($ID_Move);
+      $Raport->Send();
       $Traders = $Record['traders'];
       $Destination = $Record['id_destination'];
       $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$Destination";

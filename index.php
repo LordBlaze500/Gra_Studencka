@@ -27,6 +27,12 @@ else:
     if(isset($_GET["l"])) {
         $l = $_GET["l"];
         switch($l) { 
+            case "ranking":
+                require "script/ranking.php";
+            break;
+            case "ranking_all":
+                require "script/ranking_all.php";
+            break;
             case "campus_select":
                 require "script/campus_select.php";        
             break;

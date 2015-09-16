@@ -87,6 +87,17 @@ $Army = new Army($ID_Army);
             else echo '(0)';
             ?>
          </td>
+         <td>
+            <?php
+            $ID_User = $_SESSION['id_user'];
+            $SQL_String = "SELECT ranking, points_total FROM gs_users WHERE id_user=$ID_User";
+            $Query = $Connect->Query($SQL_String);
+            $Record = $Query->fetch_assoc();
+            echo '<a href="?l=ranking">';
+            echo '<img src="img/progress.png" width="50" height="50">';
+            echo '('; echo $Record['ranking']; echo '.|'; echo $Record['points_total']; echo ' p.)</a>';
+            ?>
+         </td>
          <td style="border: 3px solid #0404B4;">
             <?php
             $SQL_String = "SELECT name, x_coord, y_coord, obedience FROM gs_campuses WHERE id_campus=$ID_Campus";

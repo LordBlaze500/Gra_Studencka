@@ -47,7 +47,7 @@ function walidator() {
 window.onload = function() {document.forms['log_form'].user.focus();}               
 </script>                          
 <center>                           
-    <div style="color: red; font-size: 50px;">Gra Studencka                          
+    <div style="color: red; font-size: 50px;"><img src="img/logo.png">                         
     </div>                         
     <form method="post" name="log_form"><br />                              
         <table border="0" class="log_table">                                 
@@ -145,7 +145,9 @@ if(isset($_POST["register_OK"])) {
         if($connect->query("SELECT * FROM gs_users WHERE email = '$email'")->num_rows != 0) echo "<span class=\"false\">Podany email jest już wykorzystany!!</span>"; else
         if(strlen($login) < 3 || strlen($login) > 16) echo "<span id=\"false\">Niepoprawny nick!!</span>"; else {
             // Konto
-            $z = "INSERT INTO gs_users (login, password, email, code, active) VALUES ('$login', '$haslo', '$email', '$kod', 0)";
+            $Date_Time = new DateTime(); 
+            $Date_String = $Date_Time->format('Y-m-d H:i:00');
+            $z = "INSERT INTO gs_users (login, password, email, code, active, registration_date) VALUES ('$login', '$haslo', '$email', '$kod', 0, '$Date_String')";
             $q = $connect->query($z);
             
             // Wiocha

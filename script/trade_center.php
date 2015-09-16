@@ -89,6 +89,7 @@ if (isset($_POST['Send']))
       <tr align="center" bgcolor=<?php Bg_Color_Two();?>>
          <td>
             <center></br><i>
+            <b><font color="red">Handlu jeszcze nie ma ale wyklepiemy jakoś na dniach.</font></b><br/>
             Centrum handlu pozwala przesyłać surowce do innych kampusów oraz handlować nimi z innymi graczami. </br>
             Możesz stworzyć własną ofertę handlu bądź przyjąć cudzą. Każdy handlarz może unieść do 1000 sztuk surowców.</br>
             </i></center></br>

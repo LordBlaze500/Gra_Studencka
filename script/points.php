@@ -36,7 +36,7 @@ if (!defined('__POINTS_PHP__'))
 
    function Calculate_User_Points($Connect)
    {
-      $SQL_String = "SELECT id_user FROM gs_users";
+      $SQL_String = "SELECT id_user, login FROM gs_users";
       $Query = $Connect->Query($SQL_String);
       while ($Record = $Query->fetch_assoc())
       {
@@ -45,8 +45,16 @@ if (!defined('__POINTS_PHP__'))
          $Query_2 = $Connect->Query($SQL_String_2);
          $Record_2 = $Query_2->fetch_assoc();
          $Total = $Record_2['total'];
-         $SQL_String_3 = "UPDATE gs_users SET points_total=$Total WHERE id_user=$ID_User";
-         $Query_3 = $Connect->Query($SQL_String_3);
+         if ($Record['login'] != 'WORLD')
+         {
+            $SQL_String_3 = "UPDATE gs_users SET points_total=$Total WHERE id_user=$ID_User";
+            $Query_3 = $Connect->Query($SQL_String_3);
+         }
+         else
+         {
+            $SQL_String_3 = "UPDATE gs_users SET points_total=0 WHERE id_user=$ID_User";
+            $Query_3 = $Connect->Query($SQL_String_3);
+         }
       }
    }
 

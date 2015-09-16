@@ -496,4 +496,61 @@ class Support_Raport
       if (self::$Object_Counter == 0) self::$Connect->close();
    }
 }
+
+class Delivery_Raport
+{
+   private static $Connect;
+   private static $Object_Counter;
+   private $ID_Trading_Move;
+   public function __construct($Arg_ID_Trading_Move)
+   {
+      if (self::$Object_Counter == 0) self::$Connect = new mysqli($GLOBALS['db_host'], $GLOBALS['db_user'], $GLOBALS['db_password'], $GLOBALS['db_name']);
+      self::$Object_Counter = self::$Object_Counter + 1;
+      $this->ID_Trading_Move = $Arg_ID_Trading_Move;
+   }
+   public function Send()
+   {
+      $SQL_String = "SELECT id_source, id_destination, vodka, kebab, wifi FROM gs_trading_moves WHERE id_trading_move=$this->ID_Trading_Move";
+      $Query = self::$Connect->Query($SQL_String);
+      $Record = $Query->fetch_assoc();
+      $ID_Source = $Record['id_source'];
+      $ID_Destination = $Record['id_destination'];
+      $Vodka = $Record['vodka'];
+      if (!$Vodka) $Vodka = 0;
+      $Kebab = $Record['kebab'];
+      if (!$Kebab) $Kebab = 0;
+      $Wifi = $Record['wifi'];
+      if (!$Wifi) $Wifi = 0;
+      $SQL_String = "SELECT name, x_coord, y_coord, id_owner FROM gs_campuses WHERE id_campus=$ID_Source";
+      $Query_2 = self::$Connect->Query($SQL_String);
+      $Record_2 = $Query_2->fetch_assoc();
+      $SQL_String = "SELECT name, x_coord, y_coord, id_owner FROM gs_campuses WHERE id_campus=$ID_Destination";
+      $Query_3 = self::$Connect->Query($SQL_String);
+      $Record_3 = $Query_3->fetch_assoc();
+      $ID_Sender = $Record_2['id_owner'];
+      $ID_Receiver = $Record_3['id_owner'];
+      $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_Sender";
+      $Query_4 = self::$Connect->Query($SQL_String);
+      $Record_4 = $Query_4->fetch_assoc();
+      $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_Receiver";
+      $Query_5 = self::$Connect->Query($SQL_String);
+      $Record_5 = $Query_5->fetch_assoc();
+      $Title = "Surowce od ".$Record_4['login'].' dotarły do '.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')';
+      $Content = "<font size=5><b>Surowce dotarły</b></font></br></br>";
+      $Content = $Content.'Surowce od '.$Record_4['login'].' ,'.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].') dotarło do kampusu ';
+      $Content = $Content.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')</b></br>';
+      $Content = $Content.'<table border=1><tr><td>';
+      $Content = $Content.'<img src="img/wodka.png"></td><td><img src="img/kebab.png"></td><td><img src="img/wifi.png"></td></tr>';
+      $Content = $Content.'<tr><td>'.$Vodka.'</td>'.$Kebab.'</td>'.$Wifi.'</td></tr></table>';
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Sender, '$Content', 0, '$Title')";
+      $Query = self::$Connect->Query($SQL_String);
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Receiver, '$Content', 0, '$Title')";
+      $Query = self::$Connect->Query($SQL_String);
+   }
+   public function __destruct()
+   {
+      self::$Object_Counter = self::$Object_Counter - 1;
+      if (self::$Object_Counter == 0) self::$Connect->close();
+   }
+}
 ?>

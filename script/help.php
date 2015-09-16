@@ -45,6 +45,7 @@ include "style.php";
             Ikona mieczy <img src="img/crossed_swords.png" alt="Centrum atakow" width="30" height="30"> pozwala przejść do centrum ataków. Możesz tam wysłać wojska w celu ataku bądź wsparcia </br>
             oraz sprawdzić ruchy i miejsce przebywania twoich wojsk oraz sprawdzić, czy do tego kampusu idą jakieś wojska.</br>
             Liczba w nawiasach informuje o ilości ataków zmierzających na ten kampus. </br>
+            Po zarejestrowaniu obejmuje Cię 48 godzinna ochrona początkujących, podczas której nie możesz zostać zaatakowany.</br>
             Gdy wojska dotrą do kampusu, rozegra się bitwa. W bitwie zawsze agresor ma przewagę, jest ona większa lub mniejsza. Zależy to od szczęścia. </br>
             W godzinach nocnych, tj. od 22 do 6 znaczną przewagę ma natomiast obrońca. Wynik bitwy zostanie zawarty w raporcie, który otrzymają zarówno agresor, jak i broniący się.</br>
             Wojska przysłane jako wsparcie będą walczyć w obronie danego kampusu, ale właściciel kampusu nie może ich wykorzystać do ataku. Może jedynie nakazać im powrót do własnego kampusu.</br>
