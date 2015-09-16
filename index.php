@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if(isset($_GET["logout"])) {
     session_destroy();
@@ -8,13 +8,15 @@ if(isset($_GET["logout"])) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>                           
     <head>                                             
-        <meta http-equiv="content-type" content="text/html; charset=utf-8">          
-        <link rel="stylesheet" type="text/css" href="css/window.css" /> 
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Gra studencka</title>        
         <style type="text/css">
-        body {background-image: url('img/bg.png');}        
+        body {background-image: url('img/bg.png'); font-family: Georgia;}        
         a {text-decoration: none; color: #FFFF00; font-weight: bold;}
         a:hover {text-decoration: underline;}
-        </style>                           
+        </style>  
+        <link rel="stylesheet" type="text/css" href="css/window.css" /> 
+        <link rel="icon" href="img/wodka.png" type="image/png">                         
     </head>         
     <body>                 
 <?php
@@ -145,7 +147,7 @@ else:
                 require "script/help.php";        
             break;
             default:
-                echo "Nic tu nie ma";
+                echo "<center><img src=\"img/no_no.gif\" /><br /><a href=\"?l=main\">Powrót</a></center>";
             break;
         }
     } else
