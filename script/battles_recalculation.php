@@ -20,6 +20,7 @@ while ($Record = $Query->fetch_assoc())
 		$Luck = rand(0, 20);
     $Raport->Luck_Setter($Luck);
 		$Move = new Move($Record['id_move']);
+    $Over_Thousand = $Move->Army_Getter()->Over_Thousand();
     $Raport->Aggressor_Army_Before_Setter($Move->Army_Getter());
 		$Destination = $Move->ID_Destination_Getter();
     $Raport->Source_Setter($Move->ID_Source_Getter());
@@ -128,9 +129,17 @@ while ($Record = $Query->fetch_assoc())
            $SQL_String_3 = "SELECT obedience FROM gs_campuses WHERE id_campus=$Destination";
            $Query_3 = $Connect->Query($SQL_String_3);
            $Record_3 = $Query_3->fetch_assoc();
-           $Obedience_Decrease = rand(10,20);
-           $Raport->Obedience_Loss_Setter($Obedience_Decrease, $Record_3['obedience']);
-           $New_Obedience = $Record_3['obedience'] - $Obedience_Decrease;
+           if ($Over_Thousand == 1)
+           {
+              $Obedience_Decrease = rand(10,20);
+              $Raport->Obedience_Loss_Setter($Obedience_Decrease, $Record_3['obedience']);
+              $New_Obedience = $Record_3['obedience'] - $Obedience_Decrease;
+           }
+           else
+           {
+              $Raport->Obedience_Loss_Setter(0, $Record_3['obedience']);
+              $New_Obedience = $Record_3['obedience'];
+           }
            if ($New_Obedience <= 0)
            {
               $Raport->Send();
@@ -242,6 +251,8 @@ while ($Record = $Query->fetch_assoc())
    if ($Record['going_back'] == 0)
    {
       $ID_Move = $Record['id_trading_move'];
+      $Raport = new Delivery_Raport($ID_Move);
+      $Raport->Send();
       $Source = $Record['id_source'];
       $Destination = $Record['id_destination'];
       $Traders = $Record['traders'];
@@ -273,8 +284,6 @@ while ($Record = $Query->fetch_assoc())
    else
    {
       $ID_Move = $Record['id_trading_move'];
-      $Raport = new Delivery_Raport($ID_Move);
-      $Raport->Send();
       $Traders = $Record['traders'];
       $Destination = $Record['id_destination'];
       $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$Destination";

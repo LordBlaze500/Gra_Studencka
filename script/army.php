@@ -397,6 +397,20 @@ if (!defined('__ARMY_PHP__'))
       {
          return $this->Speed;
       }
+      public function Over_Thousand()
+      {
+         if ($this->Student->Number_Getter() + 
+             $this->Parachute->Number_Getter() + 
+             $this->Nerd->Number_Getter() + 
+             $this->Stooley->Number_Getter() + 
+             $this->Drunkard->Number_Getter() + 
+             $this->Clochard->Number_Getter() + 
+             $this->Master->Number_Getter() + 
+             $this->Doctor->Number_Getter() + 
+             $this->Inspector->Number_Getter() + 
+             $this->Veteran->Number_Getter() >= 1000) return 1;
+            else return 0;
+      }
       public function Exterminated()
       {
          if ($this->Student->Number_Getter() == 0 && 

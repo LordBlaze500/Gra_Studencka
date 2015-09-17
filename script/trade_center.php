@@ -261,6 +261,81 @@ if(isset($_POST["Y"])) {
        </form>
    </div>
 
+      <font size="4" color="yellow"><b>Ruchy twoich handlarzy</b></font>
+      <table border=1>
+      <tr bgcolor=<?php Bg_Color_Three();?>>
+         <td><b>Cel</b></td>
+         <td><b>Liczba handlarzy</b></td>
+         <td><b>Surowce</b></td>
+         <td><b>Godzina przybycia</b></td>
+      </tr> 
+      <?php
+      $No_Moves = 1;
+      $SQL_String = "SELECT * FROM gs_trading_moves WHERE id_source=$ID_Campus OR id_destination=$ID_Campus";
+      $Query = $Connect->Query($SQL_String);
+      while ($Record = $Query->fetch_assoc())
+      {
+         if ($Record['going_back'] == 0 && $Record['id_destination'] == $ID_Campus) continue;
+         if ($Record['going_back'] == 1 && $Record['id_source'] == $ID_Campus) continue;
+         $No_Moves = 0;
+         $ID_Destination = $Record['id_destination'];
+         $SQL_String = "SELECT name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Destination";
+         $Query_2 = $Connect->Query($SQL_String);
+         $Record_2 = $Query_2->fetch_assoc();
+         echo '<tr bgcolor='; Bg_Color_Three(); echo '>';
+         if ($Record['id_destination'] == $ID_Campus) echo '<td><i>Powrót</i></td>';
+         else echo '<td><i>'.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].')</i></td>';
+         echo '<td><i>'.$Record['traders'].'</i></td>';
+         echo '<td><i>'.'<img src="img/wodka.png" alt="Wodka" width="30" height="30">'.$Record['vodka'].'<img src="img/kebab.png" alt="Kebab" width="30" height="30">'.$Record['kebab'].'<img src="img/wifi.png" alt="Wifi" width="30" height="30">'.$Record['wifi'].'</i></td>';
+         echo '<td><i>'.$Record['arrival_time'].'</i></td></tr>';
+      }
+      if ($No_Moves == 1)
+      {
+         echo '<tr bgcolor='; Bg_Color_Three(); echo '>';
+         echo '<td><i>Brak</i></td>';  
+         echo '<td><i>Brak</i></td>';  
+         echo '<td><i>Brak</i></td>';  
+         echo '<td><i>Brak</i></td></tr>';  
+      }
+      ?>
+   </table>
+
+   <font size="4" color="yellow"><b>Obcy handlarze zmierzający tutaj</b></font>
+      <table border=1>
+      <tr bgcolor=<?php Bg_Color_Three();?>>
+         <td><b>Pochodzenie</b></td>
+         <td><b>Liczba handlarzy</b></td>
+         <td><b>Surowce</b></td>
+         <td><b>Godzina przybycia</b></td>
+      </tr> 
+      <?php
+      $No_Moves = 1;
+      $SQL_String = "SELECT * FROM gs_trading_moves WHERE id_destination=$ID_Campus AND going_back=0";
+      $Query = $Connect->Query($SQL_String);
+      while ($Record = $Query->fetch_assoc())
+      {
+         $No_Moves = 0;
+         $ID_Source = $Record['id_source'];
+         $SQL_String = "SELECT name, x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Source";
+         $Query_2 = $Connect->Query($SQL_String);
+         $Record_2 = $Query_2->fetch_assoc();
+         echo '<tr bgcolor='; Bg_Color_Three(); echo '>';
+         echo '<td><i>'.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].')</i></td>';
+         echo '<td><i>'.$Record['traders'].'</i></td>';
+         echo '<td><i>'.'<img src="img/wodka.png" alt="Wodka" width="30" height="30">'.$Record['vodka'].'<img src="img/kebab.png" alt="Kebab" width="30" height="30">'.$Record['kebab'].'<img src="img/wifi.png" alt="Wifi" width="30" height="30">'.$Record['wifi'].'</i></td>';
+         echo '<td><i>'.$Record['arrival_time'].'</i></td></tr>';
+      }
+      if ($No_Moves == 1)
+      {
+         echo '<tr bgcolor='; Bg_Color_Three(); echo '>';
+         echo '<td><i>Brak</i></td>';  
+         echo '<td><i>Brak</i></td>';  
+         echo '<td><i>Brak</i></td>';  
+         echo '<td><i>Brak</i></td></tr>';  
+      }
+      ?>
+   </table>
+
    <a href="?l=main">Powrót</a>
    </center>
 </body>

@@ -51,7 +51,10 @@ include "style.php";
             Wojska przysłane jako wsparcie będą walczyć w obronie danego kampusu, ale właściciel kampusu nie może ich wykorzystać do ataku. Może jedynie nakazać im powrót do własnego kampusu.</br>
             Wojska do innych kampusów możesz także wysłać za pomocą mapy, ikona <img src="img/map.png" alt="Mapa" width="30" height="30">. Pozwala ona także rozejrzeć się po okolicy i sprawdzić swoje położenie. </br>
             Położenie twojego kampusu wyznaczają współrzędne X i Y, przyjmujące wartości od 1 do 100. </br>
-            Każda wioska ma swoje poparcie w skali od 1-100. Symbolizuje je ikona <img src="img/crown.png" alt="Poparcie" width="30" height="30">. Szczegóły na ten temat uzyskasz po kliknięciu na nią. </br>
+            Każdy kampus ma swoje poparcie w skali od 1-100. Symbolizuje je ikona <img src="img/crown.png" alt="Poparcie" width="30" height="30">. Szczegóły na ten temat uzyskasz po kliknięciu na nią. </br>
+            Wyjątkiem są kampusy gracza WORLD - są one niczyje i zazwyczaj nie ma w nich wojsk. Można je wykorzystać do farmienia lub podbić, ale ich poparcie wynosi 1000.</br>
+            Szpiegowanie polega na zebraniu informacji o danym kampusie. Wysyłać jako szpiegów należy bardzo małe grupy żołnierzy. </br>
+            Im większa grupa tym większa szansa, że zostaną przyłapani, jednak im więcej ludzi tym więcej informacji mają szansę zebrać. </br>
             Ikona <img src="img/edytuj.png" alt="Edytuj" width="30" height="30"> pozwala zmienić nazwę obecnego kampusu. </br>
             Ikona <img src="img/switch.png" alt="Przelacz" width="30" height="30"> pozwala przełączać się między posiadanymi przez Ciebie kampusami. </br>
             Ikona <img src="img/noraport.png" alt="Raporty" width="30" height="30"> pozwala sprawdzić raporty informujące o wydarzeniach takich jak np. rozegrane bitwy. </br>

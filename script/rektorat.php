@@ -83,17 +83,17 @@ function Builder($Building)
    if ($Result == 0)
    {
       $_POST['info'] = "built";
-      header('Location: index.php?l=rektorat');
+      //header('Location: index.php?l=rektorat');
    } 
    if ($Result == 1)
    {
       $_POST['info'] = "alreadybuilt";
-      header('Location: index.php?l=rektorat');
+      //header('Location: index.php?l=rektorat');
    } 
    if ($Result == 2)
    {
       $_POST['info'] = "noresources";
-      header('Location: index.php?l=rektorat');
+      //header('Location: index.php?l=rektorat');
    } 
 }
 ?>
