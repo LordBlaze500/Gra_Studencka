@@ -262,7 +262,9 @@ if (!defined('__RAPORT_PHP__'))
       {
          $Content = $Content.'<b>Poparcie spadło z '.($this->Obedience_Before).' na '.($this->Obedience_Before-$this->Obedience_Loss).'</b><br/>';
       }
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Owner, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Owner, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
       $i = 0;
       while ($this->Defending_Armies_Before_Complete->At($i))
@@ -275,7 +277,7 @@ if (!defined('__RAPORT_PHP__'))
          $Query = self::$Connect->Query($SQL_String);
          $Record = $Query->fetch_assoc();
          $ID_User = $Record['id_owner'];
-         $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_User, '$Content', 0, '$Title')";
+         $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_User, '$Content', 0, '$Title', '$Date_String')";
          $Query = self::$Connect->Query($SQL_String);
          echo 'SQL STring 2: ';
          echo $SQL_String;
@@ -348,7 +350,9 @@ class Retreat_Raport
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
       $ID_Player = $Record_4['id_owner'];
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Player, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Player, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
@@ -416,7 +420,9 @@ class Sendback_Raport
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
       $ID_Player = $Record_4['id_owner'];
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Player, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Player, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
@@ -484,9 +490,11 @@ class Support_Raport
       $Content = $Content.'<td>'.($Record_5['doctor']).'</td>';
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Player, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Player, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Owner, '$Content', 0, '$Title')";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Owner, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
@@ -541,9 +549,11 @@ class Delivery_Raport
       $Content = $Content.'<table border=1><tr><td>';
       $Content = $Content.'<img src="img/wodka.png"></td><td><img src="img/kebab.png"></td><td><img src="img/wifi.png"></td></tr>';
       $Content = $Content.'<tr><td>'.$Vodka.'</td>'.$Kebab.'</td>'.$Wifi.'</td></tr></table>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Sender, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Receiver, '$Content', 0, '$Title')";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Receiver, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()
@@ -611,9 +621,11 @@ class Spying_Raport
       $Content = $Content.'<td>'.($Record_5['doctor']).'</td>';
       $Content = $Content.'<td>'.($Record_5['inspector']).'</td>';
       $Content = $Content.'<td>'.($Record_5['veteran']).'</td></tr></table>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Sender, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Receiver, '$Content', 0, '$Title')";
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Receiver, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function Send_Win_1()
@@ -715,7 +727,9 @@ class Spying_Raport
       $Content = $Content.'<td>'.($Record_7['wifispot']).'</td></tr>';
       $Content = $Content.'<tr><td>Doner</td>';
       $Content = $Content.'<td>'.($Record_7['doner']).'</td></tr></table>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Sender, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function Send_Win_2()
@@ -819,7 +833,9 @@ class Spying_Raport
       $Content = $Content.'<td>'.($Record_7['doner']).'</td></tr></table><br/>';
       $Content = $Content.'Surowce:<br/>';
       $Content = $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record_7['amount_vodka']).'<img src="../img/kebab.png" width="25" height="25">'.($Record_7['amount_kebab']).'<img src="../img/wifi.png" width="25" height="25">'.($Record_7['amount_wifi']).'</font><br/>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Sender, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function Send_Win_3()
@@ -951,7 +967,9 @@ class Spying_Raport
       $Content = $Content.'Surowce:<br/>';
       $Content = $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record_7['amount_vodka']).'<img src="../img/kebab.png" width="25" height="25">'.($Record_7['amount_kebab']).'<img src="../img/wifi.png" width="25" height="25">'.($Record_7['amount_wifi']).'</font><br/>';
       $Content = $Content.'Poparcie: '.$Record_7['obedience'].'<br/>';
-      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title) VALUES ($ID_Sender, '$Content', 0, '$Title')";
+      $Current_Date = new DateTime(); 
+      $Date_String = $Current_Date->format('Y-m-d H:i:s');
+      $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender, '$Content', 0, '$Title', '$Date_String')";
       $Query = self::$Connect->Query($SQL_String);
    }
    public function __destruct()

@@ -9,18 +9,23 @@ $Arrival_Time = new DateTime();
 $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
 $SQL_String = "SELECT id_move, strike FROM gs_moves WHERE arrival_time <= '$Date_String'";
 $Query = $Connect->Query($SQL_String);
+//$fp = fopen('logs.txt','w');
 while ($Record = $Query->fetch_assoc())
 {
 	if ($Record['strike'] == 1)
 	{
     if (date('H') > 21 || date('H') < 6) $Bonus = 2;
     else $Bonus = 1;
+    //fwrite($fp, '\n New Battle, $Date_String\n');
+    //fwrite($fp, $Record['id_move'].$Record['strike'].'\n')
     $Bonus_Set = 0;
     $Raport = new Battle_Raport();
 		$Luck = rand(0, 20);
+    //fwrite($fp, 'Luck: '.$Luck.'\n');
     $Raport->Luck_Setter($Luck);
 		$Move = new Move($Record['id_move']);
     $Over_Thousand = $Move->Army_Getter()->Over_Thousand();
+    //fwrite($fp, 'Over 1000: '.$Over_Thousand.'\n');
     $Raport->Aggressor_Army_Before_Setter($Move->Army_Getter());
 		$Destination = $Move->ID_Destination_Getter();
     $Raport->Source_Setter($Move->ID_Source_Getter());
@@ -29,11 +34,14 @@ while ($Record = $Query->fetch_assoc())
 		$Query_2 = $Connect->Query($SQL_String_2);
 		$i = 0;
 		$Defending_Armies = new My_List();
+    //fwrite($fp, 'Inserting def armies...');
 		while ($Record_2 = $Query_2->fetch_assoc())
 		{
+      //fwrite($fp, 'x');
 			$Defending_Armies->Insert(new Army($Record_2['id_army']));
 			$i = $i + 1;
 		}
+    //fwrite($fp, '\n');
     $Raport->Defending_Armies_Before_Setter($Defending_Armies);
 		$Defenders_Attack_Light = 0;
 		$Defenders_Attack_Heavy = 0;
@@ -57,6 +65,9 @@ while ($Record = $Query->fetch_assoc())
            $Defenders_Attack_Cavalry = $Defenders_Attack_Cavalry * $Bonus;
            $Bonus_Set = 1;
         }
+        //fwrite($fp, 'def attack light '.$Defenders_Attack_Light.'\n');
+        //fwrite($fp, 'def attack heavy '.$Defenders_Attack_Heavy.'\n');
+        //fwrite($fp, 'def attack cavalry '.$Defenders_Attack_Cavalry.'\n');
 		    $Aggressor_Attack_Light = ($Move->Army_Getter()->Total_Attack_Light_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Heavy = ($Move->Army_Getter()->Total_Attack_Heavy_Getter())*(1+($Luck/100));
 	    	$Aggressor_Attack_Cavalry = ($Move->Army_Getter()->Total_Attack_Cavalry_Getter())*(1+($Luck/100));
@@ -184,6 +195,7 @@ while ($Record = $Query->fetch_assoc())
         $ID_Army = $Record_2['id_army'];
         $Original_Army = new Army($ID_Army);
         $Original_Army->Unite($Move->Army_Getter()->ID_Army_Getter());
+        $Original_Army = NULL; // invoking destructor
         $ID_Move = $Record['id_move'];
         $SQL_String_2 = "DELETE FROM gs_moves WHERE id_move=$ID_Move";
         $Query_2 = $Connect->Query($SQL_String_2);
@@ -196,6 +208,19 @@ while ($Record = $Query->fetch_assoc())
                         $Move->Army_Getter()->Master_Getter()->Number_Getter() + $Move->Army_Getter()->Doctor_Getter()->Number_Getter() + $Move->Army_Getter()->Inspector_Getter()->Number_Getter() +
                         $Move->Army_Getter()->Veteran_Getter()->Number_Getter();
         $Effect = rand(1,100);
+        $ID_Destination = $Move->ID_Destination_Getter();
+        $SQL_String = "SELECT id_army FROM gs_armies WHERE id_homecampus=$ID_Destination AND id_stayingcampus=$ID_Destination";
+        $Query_2 = $Connect->Query($SQL_String);
+        $Record_2 = $Query_2->fetch_assoc();
+        $Army_R = new Army($Record_2['id_army']);
+        if ($Army_R->Exterminated() == 1)
+        {
+              $Raport = new Spying_Raport($Record['id_move']);
+              $Raport->Send_Win_3();
+              $Move->Returning();
+        }
+        else
+        {
         if ($Total_Number * 10 > $Effect)
         {
            $Raport = new Spying_Raport($Record['id_move']);
@@ -227,6 +252,7 @@ while ($Record = $Query->fetch_assoc())
               $Raport->Send_Win_3();
               $Move->Returning();
            }
+        }
         }
   }
 	if ($Record['strike'] == 0)
@@ -298,6 +324,6 @@ while ($Record = $Query->fetch_assoc())
    }
 
 }
-
+//fclose($fp);
 $Connect->close();
 ?>

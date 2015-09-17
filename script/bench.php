@@ -17,6 +17,8 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
    $_SESSION['id_campus'] = NULL;
    header('Location: index.php');
 }
+
+$Bench = new Special_Building('bench', $ID_Campus);
 ?>
 
 <html>
@@ -34,7 +36,9 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
             if ($Bench->Status_Getter() == 1) echo '<font size="5">Ławeczka</font>';
             ?>
             <br/></b>
-            <img src="img/laweczka.png" alt="Ławeczka" width="234" height="111"><br/>  
+            <?php
+            if ($Bench->Status_Getter() == 1) echo '<img src="img/laweczka.png" alt="Ławeczka" width="234" height="111"><br/>';
+            ?>
             </center>          
          </td>
       </tr>

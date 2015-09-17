@@ -43,6 +43,7 @@ if (isset($_POST['New_Login']))
 		$Record = $Query->fetch_assoc();
 		$Old_Login = $Record['login'];
 		$SQL_String = "UPDATE gs_users SET login='$New_Login' WHERE login='$Old_Login'";
+    $_SESSION['login'] = $New_Login;
 		$Query = $Connect->Query($SQL_String);
 		$Changed_Login = 1;
 	}

@@ -6,6 +6,9 @@ Calculate_Points($Connect);
 Calculate_User_Points($Connect);
 Calculate_Ranking($Connect);
 
+$SQL_String = "DELETE FROM gs_raports WHERE id_addressee=0";
+$Query = $Connect->Query($SQL_String);
+
 $SQL_String = "SELECT id_campus, amount_kebab, amount_wifi, amount_vodka, distillery, doner, wifispot, obedience FROM gs_campuses";
 $Query = $Connect->Query($SQL_String);
 while ($Record = $Query->fetch_assoc())

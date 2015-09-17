@@ -129,7 +129,9 @@ else:
         $content    = $_POST["content"];
         
         if($to != -1 && $content != "") {
-            $z = "INSERT INTO gs_messages (content, sender, addressee, seen) VALUES ('$content', (SELECT id_user FROM gs_users WHERE login = '".$_SESSION["login"]."'), '$to', 0)";
+            $Current_Date = new DateTime(); 
+            $Date_String = $Current_Date->format('Y-m-d H:i:s');
+            $z = "INSERT INTO gs_messages (content, sender, addressee, seen, sent_date) VALUES ('$content', (SELECT id_user FROM gs_users WHERE login = '".$_SESSION["login"]."'), '$to', 0, '$Date_String')";
             $q = $connect->query($z);            
             
             echo ($q) ? '<center><font class="true">Wiadomość została wysłana</font></center><br />'."\n" : '<center><font class="false">Wystąpił błąd...</font></center><br />'."\n";

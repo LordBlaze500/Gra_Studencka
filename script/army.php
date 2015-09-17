@@ -473,7 +473,7 @@ if (!defined('__ARMY_PHP__'))
       public function Hit_Light($Amount_Attack)
       {
          $Students_HP = $this->Student->Type_Getter()->HP_Getter() * $this->Student->Number_Getter();
-         $Parachutes_HP = $this->Student->Type_Getter()->HP_Getter() * $this->Student->Number_Getter();
+         $Parachutes_HP = $this->Parachute->Type_Getter()->HP_Getter() * $this->Parachute->Number_Getter();
          $Total_HP = $Students_HP + $Parachutes_HP;
          if ($Amount_Attack >= $Total_HP)
          {
@@ -727,18 +727,21 @@ if (!defined('__ARMY_PHP__'))
                $Vodka = $Vodka - 1;
                $this->Stolen_Vodka = $this->Stolen_Vodka + 1;
                $Total_Capacity = $Total_Capacity - 1;
+               if ($Total_Capacity == 0) break;
             } 
             if ($Kebab > 0)
             {
                $Kebab = $Kebab - 1;
                $this->Stolen_Kebab = $this->Stolen_Kebab + 1;
                $Total_Capacity = $Total_Capacity - 1;
+               if ($Total_Capacity == 0) break;
             } 
             if ($Wifi > 0)
             {
                $Wifi = $Wifi - 1;
                $this->Stolen_Wifi = $this->Stolen_Wifi + 1;
                $Total_Capacity = $Total_Capacity - 1;
+               if ($Total_Capacity == 0) break;
             } 
             if ($Vodka == 0 && $Kebab == 0 && $Wifi == 0) break;
          }

@@ -35,7 +35,9 @@ $Parking = new Special_Building("parking", $ID_Campus);
             if ($Parking->Status_Getter() == 1) echo '<font size="5">Parking</font>';
             ?>
             <br/></b>
-            <img src="img/parking.png" alt="Parking" width="251" height="181"><br/>  
+            <?php
+            if ($Parking->Status_Getter() == 1) echo '<img src="img/parking.png" alt="Parking" width="251" height="181"><br/>'; 
+            ?>
             </center>          
          </td>
       </tr>

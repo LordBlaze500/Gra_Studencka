@@ -24,7 +24,7 @@ include "style.php";
             oraz rekrutację wojsk. </br> 
             W grze mamy 3 rodzaje surowców: Wódka <img src="img/wodka.png" alt="Wodka" width="30" height="30">, Kebab <img src="img/kebab.png" alt="Kebab" width="30" height="30"> i Wifi <img src="img/wifi.png" alt="Wifi" width="30" height="30">.</br>
             Co godzinę otrzymujesz określoną ilość każdego z nich, zależną od poziomu budynków je wytwarzających, odpowiednio: </br>
-            Gorzelnia, Doner Kebab i Spot Wifi. </br>
+            Gorzelnia, Doner Kebab i Spot Wifi. Maksymalna ilość każdego z surowców w kampusie to 20000.</br>
             Budynki można rozbudowywać w rektoracie. Budynki wytwarzające surowce można rozbudować do poziomu 10, budynki </br>
             rekrutujące wojska można zbudować i ulepszyć, budynki specjalne tylko zbudować. </br>
             Budynki rekrutujące wojska pozwalają na rekrutację 2 typów jednostek, podstawowa wersja pozwala na rekrutację słabszej </br>
@@ -52,7 +52,7 @@ include "style.php";
             Wojska do innych kampusów możesz także wysłać za pomocą mapy, ikona <img src="img/map.png" alt="Mapa" width="30" height="30">. Pozwala ona także rozejrzeć się po okolicy i sprawdzić swoje położenie. </br>
             Położenie twojego kampusu wyznaczają współrzędne X i Y, przyjmujące wartości od 1 do 100. </br>
             Każdy kampus ma swoje poparcie w skali od 1-100. Symbolizuje je ikona <img src="img/crown.png" alt="Poparcie" width="30" height="30">. Szczegóły na ten temat uzyskasz po kliknięciu na nią. </br>
-            Wyjątkiem są kampusy gracza WORLD - są one niczyje i zazwyczaj nie ma w nich wojsk. Można je wykorzystać do farmienia lub podbić, ale ich poparcie wynosi 1000.</br>
+            Wyjątkiem są kampusy gracza WORLD - są one niczyje i zazwyczaj nie ma w nich wojsk. Można je wykorzystać do farmienia lub podbić.</br>
             Szpiegowanie polega na zebraniu informacji o danym kampusie. Wysyłać jako szpiegów należy bardzo małe grupy żołnierzy. </br>
             Im większa grupa tym większa szansa, że zostaną przyłapani, jednak im więcej ludzi tym więcej informacji mają szansę zebrać. </br>
             Ikona <img src="img/edytuj.png" alt="Edytuj" width="30" height="30"> pozwala zmienić nazwę obecnego kampusu. </br>

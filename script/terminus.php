@@ -35,7 +35,9 @@ $Terminus = new Special_Building("terminus", $ID_Campus);
             if ($Terminus->Status_Getter() == 1) echo '<font size="5">Zajezdnia</font>';
             ?>
             <br/></b>
-            <img src="img/zajezdnia.png" alt="Ławeczka" width="386" height="118"><br/>  
+            <?php
+            if ($Terminus->Status_Getter() == 1) echo '<img src="img/zajezdnia.png" alt="Ławeczka" width="386" height="118"><br/>'; 
+            ?>
             </center>          
          </td>
       </tr>
