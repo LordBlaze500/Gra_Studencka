@@ -54,7 +54,6 @@ var mousewheele     = (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" :
 var json_obj;
 var interval;  
  
-
 /**********/
 
 var img_load        = 0;
@@ -110,11 +109,14 @@ function mousemove(ev) {
         x = ev.offsetX;
         y = ev.offsetY;
     } 
+     
+    if(mousewheele == 'DOMMouseScroll') {    
+        x -= canvas.offsetLeft;
+        y -= canvas.offsetTop;
+    }
     
-    x -= canvas.offsetLeft;
-    y -= canvas.offsetTop;
     if(x < 0) x = 0;
-    if(y < 0) y = 0;   
+    if(y < 0) y = 0;  
 }
 
 function mousedown() {                                        
