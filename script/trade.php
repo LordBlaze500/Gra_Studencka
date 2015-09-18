@@ -35,8 +35,13 @@ class Trade {
                  '<img src="img/wodka.png" alt="Wodka" width="30" height="30">'.$rec["vodka_cost"].
                  '<img src="img/kebab.png" alt="Kebab" width="30" height="30">'.$rec["kebab_cost"].
                  '<img src="img/wifi.png" alt="Wifi" width="30" height="30">'.$rec["wifi_cost"].'</td>'.
-                 '<td>'.$rec1["login"].'</td><td><form method="post"><input type="hidden" name="offer_id" value="'.$rec["id_offer"].'" /><input type="submit" name="buy" value="Kup" /></form></td>'.
-                 '</tr>'."\n";
+                 '<td>'.$rec1["login"].'</td><td><form method="post"><input type="hidden" name="offer_id" value="'.$rec["id_offer"].'" /><input type="submit" name="buy" value="Kup" />';
+                 
+            if($_SESSION["id_campus"] == $rec["id_owner"])
+                echo '<input type="submit" name="delete_offer" value="Anuluj" />';
+                 
+            echo  '</form></td>'.
+                  '</tr>'."\n";
                  
         } 
         
@@ -83,6 +88,26 @@ class Trade {
         }
     }
     
+    public static function delete_offer($offer_id) {
+        if(Trade::validate_count($offer_id)) {
+            $new = new Trade;
+            $z = "SELECT id_owner FROM gs_trade_offers WHERE id_offer = ".$offer_id;
+            $q = self::$connect->query($z);
+            $rec = $q->fetch_assoc();
+            
+            if($rec["id_owner"] == $_SESSION["id_campus"]) {
+                $z = "DELETE FROM gs_trade_offers WHERE id_offer = ".$offer_id;
+                $q = self::$connect->query($z);
+                
+                if($q) 
+                    echo '<center><font size=4 color="yellow"><b>Oferta została usunięta</b></font></center>'; 
+                else
+                    echo '<center><font size=4 color="yellow"><b>Error</b></font></center>';       
+            } else 
+                echo '<center><font size=4 color="yellow"><b>To nie jest oferta tego kampusu</b></font></center>';    
+        }        
+    }
+    
     public function __construct($id_user=-1, $vodka=-1, $kebab=-1, $wifi=-1, $vodka_cost=-1, $kebab_cost=-1, $wifi_cost=-1) {        
         if(!self::$obj_counter) self::$connect = new mysqli($GLOBALS["db_host"], $GLOBALS["db_user"], $GLOBALS["db_password"], $GLOBALS["db_name"]);
         ++self::$obj_counter;
@@ -91,19 +116,28 @@ class Trade {
         if($id_user != -1 && $vodka != -1 && $kebab != -1 && $wifi != -1 && $vodka_cost != -1 && $kebab_cost != -1 && $wifi_cost != -1) {
             $vodka_amount = new Resource('vodka', $_SESSION["id_campus"]);
             $kebab_amount = new Resource('kebab', $_SESSION["id_campus"]);
-            $wifi_amount = new Resource('wifi', $_SESSION["id_campus"]);                
+            $wifi_amount = new Resource('wifi', $_SESSION["id_campus"]); 
+            $traders_need = ceil(($vodka + $kebab + $wifi) / 1000);
+            $z = "SELECT traders FROM gs_campuses WHERE id_campus = ".$_SESSION["id_campus"];  
+            $q = self::$connect->query($z);
+            $traders = $q->fetch_assoc()["traders"];                    
             
-            if($vodka > $vodka_amount->Amount_Getter() || $kebab > $kebab_amount->Amount_Getter() || $wifi > $wifi_amount->Amount_Getter()) 
-              echo '<center><font size=4 color="yellow"><b>Masz za mało surowców</b></font></center>';
-            else {
+            if($vodka > $vodka_amount->Amount_Getter() || $kebab > $kebab_amount->Amount_Getter() || $wifi > $wifi_amount->Amount_Getter() || $traders_need > $traders) { 
+                if($traders_need > $traders)
+                    echo '<center><font size=4 color="yellow"><b>Masz za mało handlarzy</b></font></center>';
+                else
+                    echo '<center><font size=4 color="yellow"><b>Masz za mało surowców</b></font></center>';
+            } else {
                 $z = "INSERT INTO gs_trade_offers (id_owner, vodka, kebab, wifi, vodka_cost, kebab_cost, wifi_cost) VALUES ($id_user, $vodka, $kebab, $wifi, $vodka_cost, $kebab_cost, $wifi_cost)";
                 $q = self::$connect->query($z);
                 
                 $vodka_amount->Decrease($vodka);
                 $kebab_amount->Decrease($kebab);
                 $wifi_amount->Decrease($wifi);
-                       
-                if($q) echo '<center><font size=4 color="yellow"><b>Aukcja została dodana</b></font></center>';
+                $z = "UPDATE gs_campuses SET traders = ".($traders - $traders_need);
+                $q1 = self::$connect->query($z); 
+                                                       
+                if($q && $q1) echo '<center><font size=4 color="yellow"><b>Aukcja została dodana</b></font></center>';
                 else '<center><font size=4 color="yellow"><b>Error</b></font></center>';
             } 
         }                   

@@ -11,6 +11,10 @@ if(isset($_POST["buy"])) {
     if(isset($_POST["offer_id"])) Trade::buy_offer($_POST["offer_id"]);
 }
 
+if(isset($_POST["delete_offer"])) {
+    if(isset($_POST["offer_id"])) Trade::delete_offer($_POST["offer_id"]);    
+}
+
 if(isset($_POST["sell_ok"])) {
     if(isset($_POST["vodka"]))  $vodka  = $_POST["vodka"];  else $vodka = "0";
     if(isset($_POST["kebab"]))  $kebab  = $_POST["kebab"];  else $kebab = "0";
