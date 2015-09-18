@@ -23,7 +23,7 @@ session_start();
                     if(200 === this.status && 4 === this.readyState) {
                         var json = this.responseText;
                         eval('var json_obj = ('+json+')'); 
-                        msg_area.innerHTML = json_obj.msg.content;  
+                        msg_area.innerHTML = json_obj.msg.content + '<span class="data">Data ' + json_obj.msg.data + '</span>';  
                         document.getElementById('TR'+id.substring(4)).className = 'msg_header';                           
                     }
                 }
@@ -40,6 +40,7 @@ session_start();
         .msg_header, .msg_header_new {cursor: pointer; border-radius: 10px;}
         .msg_header {background-image: url('../img/messages/1.gif');}
         .msg_header_new {background-image: url('../img/messages/2.gif');}
+        .data {color: gray;}
         /*
         #FF9020
         #10407F

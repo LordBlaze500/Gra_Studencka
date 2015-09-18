@@ -13,7 +13,7 @@ if(!$_SESSION["zalogowany"]) exit();
 require "db_connect.php";
 $connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 
-$z = "SELECT content, seen FROM gs_messages WHERE id_message = $msg_id";
+$z = "SELECT content, seen, sent_date FROM gs_messages WHERE id_message = $msg_id";
 $rec = $connect->query($z)->fetch_assoc();
 
 if(!$rec["seen"]) {
@@ -21,8 +21,8 @@ if(!$rec["seen"]) {
     $q = $connect->query($z);
 }
 
-$connect->close();   
+$connect->close(); 
 ?>
 {
-    "msg" : {"content":"<?php echo str_replace("\"", "\'", str_replace("\r\n", "", nl2br($rec["content"]))); ?>"}
+    "msg" : {"content":"<?php echo str_replace("\"", "\'", str_replace("\r\n", "", nl2br($rec["content"]))); ?>", "data":"<?php echo $rec["sent_date"]; ?>"} 
 }

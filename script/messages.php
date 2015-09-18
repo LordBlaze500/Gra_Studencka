@@ -23,7 +23,7 @@ session_start();
                     if(200 == this.status && 4 == this.readyState) {
                         var json = this.responseText;
                         eval('var json_obj = ('+json+')'); 
-                        msg_area.innerHTML = json_obj.msg.content;  
+                        msg_area.innerHTML = json_obj.msg.content + '<br /><br /><span class="data">Wysłano ' + json_obj.msg.data + '</span>';  
                         document.getElementById('TR'+id.substring(4)).className = 'msg_header';                      
                     }
                 }
@@ -46,6 +46,7 @@ session_start();
         .msg_header, .msg_header_new {cursor: pointer; border-radius: 10px;}
         .msg_header {background-image: url('../img/messages/1.gif');}
         .msg_header_new {background-image: url('../img/messages/2.gif');}
+        .data {color: yellow;}
         /*
         #FF9020
         #10407F
@@ -107,7 +108,7 @@ if($messages_l == "inbox"):
                             </td>
                         </tr>
                         <tr>                              
-                            <td colspan="2" class="msg_content" id="msg_<?php echo $rec["id_message"]; ?>">             
+                            <td colspan="2" class="msg_content" id="msg_<?php echo $rec["id_message"]; ?>">            
                             </td>
                         </tr>
 <?php
