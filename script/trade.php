@@ -24,7 +24,7 @@ class Trade {
              '<tr bgcolor="FFBF00"><td>Oferta</td><td>Cena</td><td>Sprzedający</td><td>Opcje</td></tr>'."\n";
         
         while($rec = $q->fetch_assoc()) {
-            $z1 = "SELECT id_owner, login FROM gs_campuses JOIN gs_users ON (gs_campuses.id_owner = gs_users.id_user) WHERE id_campus = ".$rec["id_owner"];
+            $z1 = "SELECT id_owner, name, x_coord, y_coord, login FROM gs_campuses JOIN gs_users ON (gs_campuses.id_owner = gs_users.id_user) WHERE id_campus = ".$rec["id_owner"];
             $q1 = self::$connect->query($z1);
             $rec1 = $q1->fetch_assoc();
             //JOIN gs_users ON (gs_users.id_user = gs_campuses.id_owner) 
@@ -35,7 +35,7 @@ class Trade {
                  '<img src="img/wodka.png" alt="Wodka" width="30" height="30">'.$rec["vodka_cost"].
                  '<img src="img/kebab.png" alt="Kebab" width="30" height="30">'.$rec["kebab_cost"].
                  '<img src="img/wifi.png" alt="Wifi" width="30" height="30">'.$rec["wifi_cost"].'</td>'.
-                 '<td>'.$rec1["login"].'</td><td><form method="post"><input type="hidden" name="offer_id" value="'.$rec["id_offer"].'" /><input type="submit" name="buy" value="Kup" />';
+                 '<td>'.$rec1["login"].', '.$rec1['name'].'('.$rec1['x_coord'].'|'.$rec1['y_coord'].')</td><td><form method="post"><input type="hidden" name="offer_id" value="'.$rec["id_offer"].'" /><input type="submit" name="buy" value="Kup" />';
                  
             if($_SESSION["id_campus"] == $rec["id_owner"])
                 echo '<input type="submit" name="delete_offer" value="Anuluj" />';
@@ -68,21 +68,67 @@ class Trade {
             else {  
                 if($_SESSION["id_campus"] == $rec["id_owner"]) 
                     echo '<center><font size=4 color="yellow"><b>Błąd</b></font></center>';
-                else {                                       
-                    $vodka_amount->Increase($rec["vodka"]);
-                    $kebab_amount->Increase($rec["kebab"]);
-                    $wifi_amount->Increase($rec["wifi"]); 
-                    $vodka_amount->Decrease($rec["vodka_cost"]);
-                    $kebab_amount->Decrease($rec["kebab_cost"]);
-                    $wifi_amount->Decrease($rec["wifi_cost"]);   
-                    $seller_vodka_amount->Increase($rec["vodka_cost"]);
-                    $seller_kebab_amount->Increase($rec["kebab_cost"]);
-                    $seller_wifi_amount->Increase($rec["wifi_cost"]);   
+                else {     
+                    $ID_Campus = $_SESSION['id_campus'];
+                    $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$ID_Campus";
+                    $Query = self::$connect->Query($SQL_String);
+                    $Record = $Query->fetch_assoc();
+                    $Traders = $Record['traders'];
+                    $Traders_Needed = ceil(($rec['vodka_cost'] + $rec['kebab_cost'] + $rec['wifi_cost'])/1000);
+                    $Traders_Needed_Seller = ceil(($rec['vodka'] + $rec['kebab'] + $rec['wifi'])/1000);
+                    if ($Traders >= $Traders_Needed)
+                    {
+                        $vodka_amount->Decrease($rec["vodka_cost"]);
+                        $kebab_amount->Decrease($rec["kebab_cost"]);
+                        $wifi_amount->Decrease($rec["wifi_cost"]);  
+                        $ID_Owner = $rec['id_owner'];
+                        $Vodka = $rec['vodka'];
+                        $Kebab = $rec['kebab'];
+                        $Wifi = $rec['wifi'];
+                        $Vodka_Cost = $rec['vodka_cost'];
+                        $Kebab_Cost = $rec['kebab_cost'];
+                        $Wifi_Cost = $rec['wifi_cost'];
+                        $SQL_String = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Campus";
+                        $Query = self::$connect->Query($SQL_String);
+                        $Record = $Query->fetch_assoc();
+                        $X_A = $Record['x_coord']; $Y_A = $Record['y_coord'];
+                        $SQL_String = "SELECT x_coord, y_coord FROM gs_campuses WHERE id_campus=$ID_Owner";
+                        $Query = self::$connect->Query($SQL_String);
+                        $Record = $Query->fetch_assoc();
+                        $X_B = $Record['x_coord']; $Y_B = $Record['y_coord'];
+                        $Distance = abs($X_A - $X_B) + abs($Y_A - $Y_B);
+                        $Arrival_Time = new DateTime();
+                        $Arrival_Time->add(new DateInterval('PT'.(10*$Distance).'M'));
+                        $Date_String = $Arrival_Time->format('Y-m-d H:i:00');
+
+                        $SQL_String = "INSERT INTO gs_trading_moves (id_source, id_destination, traders, vodka, kebab, wifi, arrival_time, going_back) VALUES
+                        ($ID_Owner, $ID_Campus, $Traders_Needed_Seller, $Vodka, $Kebab, $Wifi, '$Date_String', 0)";
+                        $Query = self::$connect->Query($SQL_String);
+                        $SQL_String = "INSERT INTO gs_trading_moves (id_source, id_destination, traders, vodka, kebab, wifi, arrival_time, going_back) VALUES
+                        ($ID_Campus, $ID_Owner, $Traders_Needed, $Vodka_Cost, $Kebab_Cost, $Wifi_Cost, '$Date_String', 0)";
+                        $Query = self::$connect->Query($SQL_String);
+
+                        $Raport = new Deal_Raport($offer_id);
+                        $Raport->Send($ID_Owner, $ID_Campus);
                     
                     $z = "DELETE FROM gs_trade_offers WHERE id_offer = $offer_id";
                     $q = self::$connect->query($z);
                     
                     echo '<center><font size=4 color="yellow"><b>Dokonano zakupu</b></font></center>';
+                    }
+                    else
+                    {
+                        echo '<center><font size=4 color="yellow"><b>Masz za mało</b></font></center>';
+                    }
+                    //$vodka_amount->Increase($rec["vodka"]);
+                    //$kebab_amount->Increase($rec["kebab"]);
+                    //$wifi_amount->Increase($rec["wifi"]); 
+ 
+                    //$seller_vodka_amount->Increase($rec["vodka_cost"]);
+                    //$seller_kebab_amount->Increase($rec["kebab_cost"]);
+                    //$seller_wifi_amount->Increase($rec["wifi_cost"]);   
+
+                    // RAPORT TRADE HERE
                 }
             }
         }
@@ -91,11 +137,26 @@ class Trade {
     public static function delete_offer($offer_id) {
         if(Trade::validate_count($offer_id)) {
             $new = new Trade;
-            $z = "SELECT id_owner FROM gs_trade_offers WHERE id_offer = ".$offer_id;
+            $z = "SELECT vodka, kebab, wifi, id_owner FROM gs_trade_offers WHERE id_offer = ".$offer_id;
             $q = self::$connect->query($z);
             $rec = $q->fetch_assoc();
             
             if($rec["id_owner"] == $_SESSION["id_campus"]) {
+                $ID_Campus = $rec['id_owner'];
+                $SQL_String = "SELECT traders FROM gs_campuses WHERE id_campus=$ID_Campus";
+                $Query = self::$connect->Query($SQL_String);
+                $Record = $Query->fetch_assoc();
+
+                $Vodka = new Resource('vodka', $_SESSION['id_campus']);
+                $Kebab = new Resource('kebab', $_SESSION['id_campus']);
+                $Wifi = new Resource('wifi', $_SESSION['id_campus']);
+                $Vodka->Increase($rec['vodka']);
+                $Kebab->Increase($rec['kebab']);
+                $Wifi->Increase($rec['wifi']);
+                $New_Traders = $Record['traders'] + ceil(($rec['vodka'] + $rec['kebab'] + $rec['wifi'])/1000);
+                $SQL_String = "UPDATE gs_campuses SET traders=$New_Traders WHERE id_campus=$ID_Campus";
+                $Query = self::$connect->Query($SQL_String);
+
                 $z = "DELETE FROM gs_trade_offers WHERE id_offer = ".$offer_id;
                 $q = self::$connect->query($z);
                 

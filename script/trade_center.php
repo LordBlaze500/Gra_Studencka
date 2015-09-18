@@ -166,7 +166,6 @@ if(isset($_POST["Y"])) {
       <tr align="center" bgcolor=<?php Bg_Color_Two();?>>
          <td>
             <center></br><i>
-            <b><font color="red">Handlu jeszcze nie ma ale wyklepiemy jakoś na dniach.</font></b><br/>
             Centrum handlu pozwala przesyłać surowce do innych kampusów oraz handlować nimi z innymi graczami. </br>
             Możesz stworzyć własną ofertę handlu bądź przyjąć cudzą. Każdy handlarz może unieść do 1000 sztuk surowców.</br>
             </i></center></br>
@@ -197,7 +196,7 @@ if(isset($_POST["Y"])) {
        </table><br />
    
     <div class="trade_menu">
-        <span onClick="javascript:show_tables('send')">Wyślij surowce</span>&nbsp;&nbsp;<span onClick="javascript:show_tables('sell')">Dodaj ogłoszenie</span>&nbsp;&nbsp;<span onClick="javascript:show_tables('trade_offers')">Tablica ogłoszeń</span>&nbsp;&nbsp;<span onClick="javascript:show_tables('moves')"">Ruchy handlarzy</span>
+        <span onClick="javascript:show_tables('send')">Wyślij surowce</span>&nbsp;&nbsp;<span onClick="javascript:show_tables('sell')">Dodaj ogłoszenie</span>&nbsp;&nbsp;<span onClick="javascript:show_tables('trade_offers')">Tablica ogłoszeń</span>&nbsp;&nbsp;<span onClick="javascript:show_tables('moves')">Ruchy handlarzy</span>
     </div><br />
        
    <div id="send">

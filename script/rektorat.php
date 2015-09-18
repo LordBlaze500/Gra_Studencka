@@ -95,7 +95,6 @@ function Builder($Building)
       $_SESSION['info'] = "noresources";
       header('Location: index.php?l=rektorat');
    } 
-   $_SESSION['info'] = NULL;
 }
 ?>
 

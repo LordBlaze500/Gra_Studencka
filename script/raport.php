@@ -544,11 +544,11 @@ class Delivery_Raport
       $Record_5 = $Query_5->fetch_assoc();
       $Title = "Surowce od ".$Record_4['login'].' dotarły do '.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')';
       $Content = "<font size=5><b>Surowce dotarły</b></font></br></br>";
-      $Content = $Content.'Surowce od '.$Record_4['login'].' ,'.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].') dotarło do kampusu ';
+      $Content = $Content.'Surowce od '.$Record_4['login'].', '.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].') dotarły do kampusu ';
       $Content = $Content.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')</b></br>';
       $Content = $Content.'<table border=1><tr><td>';
-      $Content = $Content.'<img src="img/wodka.png"></td><td><img src="img/kebab.png"></td><td><img src="img/wifi.png"></td></tr>';
-      $Content = $Content.'<tr><td>'.$Vodka.'</td>'.$Kebab.'</td>'.$Wifi.'</td></tr></table>';
+      $Content = $Content.'<img src="../img/wodka.png"></td><td><img src="../img/kebab.png"></td><td><img src="../img/wifi.png"></td></tr>';
+      $Content = $Content.'<tr><td>'.$Vodka.'</td><td>'.$Kebab.'</td><td>'.$Wifi.'</td></tr></table>';
       $Current_Date = new DateTime(); 
       $Date_String = $Current_Date->format('Y-m-d H:i:s');
       $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender, '$Content', 0, '$Title', '$Date_String')";
@@ -977,6 +977,56 @@ class Spying_Raport
       self::$Object_Counter = self::$Object_Counter - 1;
       if (self::$Object_Counter == 0) self::$Connect->close();
    }
+}
+
+class Deal_Raport
+{
+    private static $Connect;
+    private static $Object_Counter;
+    private $ID_Move;
+    public function __construct($Arg_ID_Move)
+    {
+       if (self::$Object_Counter == 0) self::$Connect = new mysqli($GLOBALS['db_host'], $GLOBALS['db_user'], $GLOBALS['db_password'], $GLOBALS['db_name']);
+       self::$Object_Counter = self::$Object_Counter + 1;
+       $this->ID_Move = $Arg_ID_Move;
+    }
+    public function Send($Arg_ID_Sender, $Arg_ID_Receiver)
+    {
+       $SQL_String = "SELECT * FROM gs_trade_offers WHERE id_owner=$Arg_ID_Sender";
+       $Query = self::$Connect->Query($SQL_String);
+       $Record = $Query->fetch_assoc();
+       $SQL_String = "SELECT id_owner, x_coord, y_coord, name FROM gs_campuses WHERE id_campus=$Arg_ID_Sender";
+       $Query_2 = self::$Connect->Query($SQL_String);
+       $Record_2 = $Query_2->fetch_assoc();
+       $SQL_String = "SELECT id_owner, x_coord, y_coord, name FROM gs_campuses WHERE id_campus=$Arg_ID_Receiver";
+       $Query_3 = self::$Connect->Query($SQL_String);
+       $Record_3 = $Query_3->fetch_assoc();
+       $ID_Sender_Player = $Record_2['id_owner'];
+       $ID_Receiver_Player = $Record_3['id_owner'];
+       $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_Sender_Player";
+       $Query_4 = self::$Connect->Query($SQL_String);
+       $Record_4 = $Query_4->fetch_assoc();
+       $SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_Receiver_Player";
+       $Query_5 = self::$Connect->Query($SQL_String);
+       $Record_5 = $Query_5->fetch_assoc();
+       $Title = $Record_5['login'].', '.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')'.' przyjął ofertę gracza '.$Record_4['login'].', '.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].')';
+       $Content = '<font size=5><b>Oferta przyjęta</b></font><br/><br/>';
+       $Content = $Content.'Gracz '.$Record_4['login'].', '.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].')'.' wysłał surowce:<br/>';
+       $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record['vodka']).'<img src="../img/kebab.png" width="25" height="25">'.($Record['kebab']).'<img src="../img/wifi.png" width="25" height="25">'.($Record['wifi']).'</font><br/>';
+       $Content = $Content.'Gracz '.$Record_5['login'].', '.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')'.' wysłał surowce:<br/>';
+       $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record['vodka_cost']).'<img src="../img/kebab.png" width="25" height="25">'.($Record['kebab_cost']).'<img src="../img/wifi.png" width="25" height="25">'.($Record['wifi_cost']).'</font><br/>';
+       $Current_Date = new DateTime(); 
+       $Date_String = $Current_Date->format('Y-m-d H:i:s');
+       $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender_Player, '$Content', 0, '$Title', '$Date_String')";
+       $Query = self::$Connect->Query($SQL_String);
+       $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Receiver_Player, '$Content', 0, '$Title', '$Date_String')";
+       $Query = self::$Connect->Query($SQL_String);
+    }
+    public function __destruct()
+    {
+       self::$Object_Counter = self::$Object_Counter - 1;
+       if (self::$Object_Counter == 0) self::$Connect->close();
+    }
 }
 
 }
