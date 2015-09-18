@@ -82,19 +82,20 @@ function Builder($Building)
    $Result = $Building->Build();
    if ($Result == 0)
    {
-      $_POST['info'] = "built";
-      //header('Location: index.php?l=rektorat');
+      $_SESSION['info'] = "built";
+      header('Location: index.php?l=rektorat');
    } 
    if ($Result == 1)
    {
-      $_POST['info'] = "alreadybuilt";
-      //header('Location: index.php?l=rektorat');
+      $_SESSION['info'] = "alreadybuilt";
+      header('Location: index.php?l=rektorat');
    } 
    if ($Result == 2)
    {
-      $_POST['info'] = "noresources";
-      //header('Location: index.php?l=rektorat');
+      $_SESSION['info'] = "noresources";
+      header('Location: index.php?l=rektorat');
    } 
+   $_SESSION['info'] = NULL;
 }
 ?>
 
@@ -118,9 +119,9 @@ function Builder($Building)
    </table>
 
    <?php
-   if (isset($_POST['info']))
+   if (isset($_SESSION['info']))
    {
-      switch ($_POST['info'])
+      switch ($_SESSION['info'])
       {
       case 'built':
          echo '<b><font size=4 color="yellow"> Zbudowane </font></b>';
@@ -132,6 +133,7 @@ function Builder($Building)
          echo '<b><font size=4 color="yellow"> Za mało surowców </font></b>';
          break;
       } 
+      $_SESSION['info'] = NULL;
    }
    ?>
 

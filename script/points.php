@@ -4,7 +4,7 @@ if (!defined('__POINTS_PHP__'))
    define('__POINTS_PHP__',1);
    function Calculate_Points($Connect)
    {
-   $SQL_String = "SELECT * FROM gs_campuses";
+   $SQL_String = "SELECT * FROM gs_campuses ORDER BY id_campus DESC";
    $Query = $Connect->Query($SQL_String);
    while ($Record = $Query->fetch_assoc())
    {
@@ -36,7 +36,7 @@ if (!defined('__POINTS_PHP__'))
 
    function Calculate_User_Points($Connect)
    {
-      $SQL_String = "SELECT id_user, login FROM gs_users";
+      $SQL_String = "SELECT id_user, login FROM gs_users ORDER BY id_user DESC";
       $Query = $Connect->Query($SQL_String);
       while ($Record = $Query->fetch_assoc())
       {

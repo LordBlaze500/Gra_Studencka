@@ -254,23 +254,23 @@ if (!defined('__ARMY_PHP__'))
       {
          $this->Update_Flag = 1;
          $this->Number = $this->Number + $Arg_Number;
-         $this->Number_In_Total = $this->Number_In_Total + $Arg_Number;
-         while ($this->Number_In_Total > $this->Maximum)
-         {
-            $this->Number = $this->Number - 1;
-            $this->Number_In_Total = $this->Number_In_Total - 1;
-         } 
+         //$this->Number_In_Total = $this->Number_In_Total + $Arg_Number;
+         //while ($this->Number_In_Total > $this->Maximum)
+         //{
+         //   $this->Number = $this->Number - 1;
+         //   $this->Number_In_Total = $this->Number_In_Total - 1;
+         //} 
       }
       public function Decrease($Arg_Number)
       {
          $this->Update_Flag = 1;
          $this->Number = $this->Number - $Arg_Number;
-         $this->Number_In_Total = $this->Number_In_Total - $Arg_Number;
-         while ($this->Number_In_Total < 0)
-         {
-            $this->Number = $this->Number + 1;
-            $this->Number_In_Total = $this->Number_In_Total + 1;
-         } 
+         //$this->Number_In_Total = $this->Number_In_Total - $Arg_Number;
+         //while ($this->Number_In_Total < 0)
+         //{
+         //   $this->Number = $this->Number + 1;
+         //   $this->Number_In_Total = $this->Number_In_Total + 1;
+         //} 
       }
       public function __destruct()
       {
