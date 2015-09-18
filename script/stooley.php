@@ -4,11 +4,6 @@ include "style.php";
 $Stooley = new Troops_Type('stooley');
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -43,5 +38,3 @@ $Stooley = new Troops_Type('stooley');
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

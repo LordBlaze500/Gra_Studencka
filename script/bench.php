@@ -21,11 +21,6 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
 $Bench = new Special_Building('bench', $ID_Campus);
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?> >
@@ -63,5 +58,3 @@ $Bench = new Special_Building('bench', $ID_Campus);
    <a href="?l=main">Powrót</a>
 
    </center>
-</body>
-</html>

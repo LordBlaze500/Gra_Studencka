@@ -85,11 +85,6 @@ if (isset($_POST['send']))
 }
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <font size="5"><b>Wyślij szpiegów</b></font><br/>
    <table>
@@ -259,7 +254,5 @@ if (isset($_POST['send']))
         }
    }
    </script>
-</body>
-</html>
 
 <?php $Connect->close(); ?>

@@ -20,11 +20,6 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
 $Parking = new Special_Building("parking", $ID_Campus);
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?> >
@@ -62,5 +57,3 @@ $Parking = new Special_Building("parking", $ID_Campus);
    <a href="?l=main">Powrót</a>
 
    </center>
-</body>
-</html>

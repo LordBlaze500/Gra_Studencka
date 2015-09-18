@@ -4,11 +4,6 @@ include "style.php";
 $Nerd = new Troops_Type('nerd');
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -47,5 +42,3 @@ $Nerd = new Troops_Type('nerd');
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

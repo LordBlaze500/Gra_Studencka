@@ -39,7 +39,6 @@ if (!defined('__BUILDING_PHP__'))
       abstract public function Build();
       public function __destruct()
       {
-         echo 'closing connection...';
          self::$Object_Counter = self::$Object_Counter - 1;
          if (self::$Object_Counter == 0) self::$Connect->close();
       }

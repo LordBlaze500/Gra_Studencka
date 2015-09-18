@@ -4,11 +4,6 @@ include "style.php";
 $Parachute = new Troops_Type('parachute');
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -41,5 +36,3 @@ $Parachute = new Troops_Type('parachute');
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

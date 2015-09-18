@@ -117,11 +117,6 @@ if(isset($_POST["Y"])) {
     $y_value = "0";
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
     <style type="text/css">
     #send, #sell, #moves, #trade_offers {display: none;}  
     .trade_menu span {background-color: #31B404; padding: 3px; border: 2px outset yellow; cursor: pointer;}
@@ -362,5 +357,3 @@ if(isset($_POST["Y"])) {
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

@@ -196,11 +196,6 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
 }
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -537,8 +532,6 @@ if (isset($_POST['sendback']) && isset($_POST['id_army']))
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>
 
 <?php $Connect->close(); ?>
 

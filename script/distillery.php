@@ -21,11 +21,6 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
 $Distillery = new Mining_Building('distillery', $ID_Campus);
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -69,5 +64,3 @@ $Distillery = new Mining_Building('distillery', $ID_Campus);
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

@@ -4,11 +4,6 @@ include "style.php";
 $Drunkard = new Troops_Type('drunkard');
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -45,5 +40,3 @@ $Drunkard = new Troops_Type('drunkard');
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

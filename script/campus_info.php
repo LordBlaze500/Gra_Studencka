@@ -3,11 +3,6 @@ include "db_connect.php";
 include "style.php";
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <?php
    $Connect = new mysqli($db_host, $db_user, $db_password, $db_name); 
@@ -68,5 +63,4 @@ include "style.php";
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>
+

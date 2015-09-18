@@ -29,11 +29,6 @@ $Current_Ranking = $Upper_Ranking;
 $Lower_Ranking = $Player_Ranking + 10;
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -114,4 +109,3 @@ $Lower_Ranking = $Player_Ranking + 10;
    <a href="?l=ranking_all">Zobacz cały ranking</a></br>
    <a href="?l=main">Powrót</a>
    </center>
-</body>

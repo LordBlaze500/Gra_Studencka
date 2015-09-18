@@ -62,11 +62,6 @@ $Kebab = new Resource('kebab', $ID_Campus);
 $Wifi = new Resource('wifi', $ID_Campus);
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -215,11 +210,7 @@ $Wifi = new Resource('wifi', $ID_Campus);
             </i>
          </td>
       </tr>
-
-</center>
 </table>
-
 <a href="?l=main">Powrót</a>
-
 </center>
-</html>
+

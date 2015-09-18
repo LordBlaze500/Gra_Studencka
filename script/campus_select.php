@@ -5,11 +5,6 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $User_Login = $_SESSION["login"];
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <font size="5"><b>Wybór kampusu</b></font><br/>
    <?php
@@ -55,7 +50,6 @@ $User_Login = $_SESSION["login"];
    $Connect->close();
    ?>
    </center>
-</body>
-</html>
+
 
     

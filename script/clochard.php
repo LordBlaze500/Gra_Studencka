@@ -4,11 +4,6 @@ include "style.php";
 $Clochard = new Troops_Type('clochard');
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -42,5 +37,3 @@ $Clochard = new Troops_Type('clochard');
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

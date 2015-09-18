@@ -21,11 +21,6 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
 }
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <?php
    if (isset($_GET['id_move']))
@@ -352,5 +347,3 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
    ?>
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

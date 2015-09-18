@@ -2,6 +2,7 @@
 require_once "db_connect.php";
 require_once "resource.php";
 require_once "style.php";
+include "raport.php";
 
 class Trade {
     private static $connect;
@@ -78,6 +79,9 @@ class Trade {
                     $Traders_Needed_Seller = ceil(($rec['vodka'] + $rec['kebab'] + $rec['wifi'])/1000);
                     if ($Traders >= $Traders_Needed)
                     {
+                        $New_Traders = $Traders - $Traders_Needed;
+                        $SQL_String = "UPDATE gs_campuses SET traders=$New_Traders WHERE id_campus=$ID_Campus";
+                        $Query = self::$connect->Query($SQL_String);
                         $vodka_amount->Decrease($rec["vodka_cost"]);
                         $kebab_amount->Decrease($rec["kebab_cost"]);
                         $wifi_amount->Decrease($rec["wifi_cost"]);  
@@ -195,7 +199,8 @@ class Trade {
                 $vodka_amount->Decrease($vodka);
                 $kebab_amount->Decrease($kebab);
                 $wifi_amount->Decrease($wifi);
-                $z = "UPDATE gs_campuses SET traders = ".($traders - $traders_need);
+                $ID_Campus = $_SESSION['id_campus'];
+                $z = "UPDATE gs_campuses SET traders = ".($traders - $traders_need)." WHERE id_campus=$ID_Campus";
                 $q1 = self::$connect->query($z); 
                                                        
                 if($q && $q1) echo '<center><font size=4 color="yellow"><b>Aukcja została dodana</b></font></center>';

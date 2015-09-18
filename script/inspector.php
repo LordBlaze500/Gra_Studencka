@@ -4,11 +4,6 @@ include "style.php";
 $Inspector = new Troops_Type('inspector');
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -45,5 +40,3 @@ $Inspector = new Troops_Type('inspector');
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

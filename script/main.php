@@ -54,22 +54,6 @@ $Army = new Army($ID_Army);
       
 ?>
 
-<html>
-<head>
-   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-   <title>Gra studencka</title>
-   <link rel="icon" href="img/wodka.png" type="image/png">
-   <style>
-   table
-   {
-   border-collapse: collapse;
-   }
-   body {
-   font-family:Georgia;
-   }
-   </style>
-</head>
-<body>
    <center>
    <table border=1 bgcolor=<?php Bg_Color_Three();?> style="border: 3px solid #0404B4;">
       <tr>
@@ -339,5 +323,5 @@ $Army = new Army($ID_Army);
    </table>
    </center>
    <?php $Connect->Close(); ?>
-</body>
-</html>
+
+

@@ -21,11 +21,6 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
 $ID_User = $_SESSION['id_user'];
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
        <font size="5"><b>Ranking</b></font><br/>
    	   <table border=1>
@@ -84,4 +79,4 @@ $ID_User = $_SESSION['id_user'];
       </table>
    <a href="?l=main">Powrót</a>
    </center>
-</body>
+

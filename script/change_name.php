@@ -20,11 +20,6 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
 }
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <b><font size="5">Zmiana nazwy kampusu</font></b>
 
@@ -71,5 +66,3 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
    <a href="?l=main">Powrót</a>
    </center>
    <?php $Connect->close(); ?>
-</body>
-</html>

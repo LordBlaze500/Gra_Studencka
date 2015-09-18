@@ -1012,11 +1012,11 @@ class Deal_Raport
        $Title = $Record_5['login'].', '.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')'.' przyjął ofertę gracza '.$Record_4['login'].', '.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].')';
        $Content = '<font size=5><b>Oferta przyjęta</b></font><br/><br/>';
        $Content = $Content.'Gracz '.$Record_4['login'].', '.$Record_2['name'].'('.$Record_2['x_coord'].'|'.$Record_2['y_coord'].')'.' wysłał surowce:<br/>';
-       $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record['vodka']).'<img src="../img/kebab.png" width="25" height="25">'.($Record['kebab']).'<img src="../img/wifi.png" width="25" height="25">'.($Record['wifi']).'</font><br/>';
+       $Content = $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record['vodka']).'<img src="../img/kebab.png" width="25" height="25">'.($Record['kebab']).'<img src="../img/wifi.png" width="25" height="25">'.($Record['wifi']).'</font><br/>';
        $Content = $Content.'Gracz '.$Record_5['login'].', '.$Record_3['name'].'('.$Record_3['x_coord'].'|'.$Record_3['y_coord'].')'.' wysłał surowce:<br/>';
-       $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record['vodka_cost']).'<img src="../img/kebab.png" width="25" height="25">'.($Record['kebab_cost']).'<img src="../img/wifi.png" width="25" height="25">'.($Record['wifi_cost']).'</font><br/>';
+       $Content = $Content.'<img src="../img/wodka.png" width="25" height="25">'.($Record['vodka_cost']).'<img src="../img/kebab.png" width="25" height="25">'.($Record['kebab_cost']).'<img src="../img/wifi.png" width="25" height="25">'.($Record['wifi_cost']).'</font><br/>';
        $Current_Date = new DateTime(); 
-       $Date_String = $Current_Date->format('Y-m-d H:i:s');
+       $Date_String = $Current_Date->format('Y-m-d H:i:0');
        $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Sender_Player, '$Content', 0, '$Title', '$Date_String')";
        $Query = self::$Connect->Query($SQL_String);
        $SQL_String = "INSERT INTO gs_raports (id_addressee, content, seen, title, sent_date) VALUES ($ID_Receiver_Player, '$Content', 0, '$Title', '$Date_String')";

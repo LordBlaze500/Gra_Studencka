@@ -4,11 +4,6 @@ include "style.php";
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name); 
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <?php
    if (isset($_GET['id_user']))
@@ -83,5 +78,4 @@ $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>
+

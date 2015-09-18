@@ -2,11 +2,6 @@
 include "style.php";
 ?>
 
-<html>
-<head>
-   <?php Style_Inline(); ?>
-</head>
-<body>
    <center>
    <table border=1>
       <tr bgcolor=<?php Bg_Color_One();?>>
@@ -66,5 +61,3 @@ include "style.php";
 
    <a href="?l=main">Powrót</a>
    </center>
-</body>
-</html>

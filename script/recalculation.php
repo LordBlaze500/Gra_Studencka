@@ -27,7 +27,6 @@ if ($Current_Date < $Last_Date)
 $Current_Date->add(new DateInterval('PT'.'45'.'M'));
 $Date_String = $Current_Time->format('Y-m-d H:i:s');
 $SQL_String = "UPDATE gs_interval_regulator SET last_invoke='$Date_String'";
-echo $SQL_String;
 $Query = $Connect->Query($SQL_String);
 
 $SQL_String = "SELECT id_campus, amount_kebab, amount_wifi, amount_vodka, distillery, doner, wifispot, obedience FROM gs_campuses ORDER BY id_campus DESC";

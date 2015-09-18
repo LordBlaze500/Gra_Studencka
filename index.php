@@ -9,12 +9,25 @@ if(isset($_GET["logout"])) {
 <html>                           
     <head>                                             
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
-        <title>Gra studencka</title>        
+        <title>Gra studencka</title>      
+        <link rel="icon" href="img/wodka.png" type="image/png">  
         <style type="text/css">
         body {background-image: url('img/bg.png'); font-family: Georgia;}        
         a {text-decoration: none; color: #FFFF00; font-weight: bold;}
         a:hover {text-decoration: underline;}
+        table
+        {
+        border-collapse: collapse;
+        }
+        table, td, th
+        {
+        border: 3px solid #0404B4;
+        }
+        body {
+        font-family:Georgia;
+        }
         </style>  
+
         <link rel="stylesheet" type="text/css" href="css/window.css" /> 
         <link rel="icon" href="img/wodka.png" type="image/png">                         
     </head>         
