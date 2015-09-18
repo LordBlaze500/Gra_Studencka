@@ -135,6 +135,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="student" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.student.value = '<?php echo $Army->Student_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -145,6 +146,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="parachute" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.parachute.value = '<?php echo $Army->Parachute_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -155,6 +157,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="nerd" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.nerd.value = '<?php echo $Army->Nerd_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -165,6 +168,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="stooley" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.stooley.value = '<?php echo $Army->Stooley_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -175,6 +179,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="drunkard" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.drunkard.value = '<?php echo $Army->Drunkard_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -185,6 +190,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="clochard" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.clochard.value = '<?php echo $Army->Clochard_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -195,6 +201,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="master" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.master.value = '<?php echo $Army->Master_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -205,6 +212,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="doctor" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.doctor.value = '<?php echo $Army->Doctor_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -215,6 +223,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="inspector" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.inspector.value = '<?php echo $Army->Inspector_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -225,6 +234,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="text" name="veteran" value="0" style="width: 60px">
+            <input onClick="javascript:this.form.veteran.value = '<?php echo $Army->Veteran_Getter()->Number_Getter(); ?>'" type="button" value="Max" />
          </td>
       </tr>
       <tr bgcolor=<?php Bg_Color_Three();?>>
@@ -233,6 +243,7 @@ if (isset($_POST['send']))
          </td>
          <td>
             <input type="submit" name="send" value="Wyślij">
+            <input type="button" value="Max" onClick="javascript:all_max(this.form.elements)" />
          </td>
       </tr>
       </form>
@@ -240,6 +251,14 @@ if (isset($_POST['send']))
 
    <a href="?l=main">Powrót</a>
    </center>
+   <script type="text/javascript">
+   function all_max(list) {
+        for(var i = 0; i < list.length; i++) {
+            if(list[i].type == 'button')
+                list[i].click();
+        }
+   }
+   </script>
 </body>
 </html>
 

@@ -45,7 +45,7 @@ $User_Login = $_SESSION["login"];
       if ($Record["id_owner"] == $ID_User)
       {
          $_SESSION["id_campus"] = $ID_Campus;
-         header("Location: index.php?l=main");
+         header("Location: ?l=main");
       }
       else
       {

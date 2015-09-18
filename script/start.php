@@ -86,7 +86,7 @@ if(isset($_POST["log_OK"])) {
             $_SESSION["zalogowany"] = true;
             $_SESSION["login"]      = $login;
             
-            header("Location: index.php");
+            header("Location: ?=campus_select");
         } else {
             echo "<span class=\"false\">Niepoprawny użytkownik lub hasło</span>";
         } 

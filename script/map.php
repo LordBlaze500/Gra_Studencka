@@ -29,7 +29,7 @@ $connect->close();
 <style type="text/css">
 .obj {position: absolute; width: 5px; height: 5px; background-color: red;}
 .center {position: absolute; width: 5px; height: 5px; background-color: green;} 
-canvas {background-color: white;}
+canvas {background-color: white; cursor: -webkit-grab;}
 form {color: black;} /*#31B404   #0404B4*/
 #div {/*background-color: #31B404; border: 2px solid #0404B4;*/ background-image: url('img/window/dymek.png'); background-size: 460px 130px; width: 460px; height: 130px; display: none; position: absolute;}
 </style>
@@ -49,8 +49,9 @@ var przesuniecie_x  = village_x;
 var przesuniecie_y  = village_y;
 var siatka          = 1;
 var lines           = new Array(10, 20, 20, 50, 100, 100); 
-var dymek_left      = new Array(30, 25, 20, 14, 0, -32);
-var mousewheele     = (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel";       
+var dymek_left      = new Array(33, 30, 26, 18, 0, -32);
+var mousewheele     = (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel";   
+var shifted         = false;    
 var json_obj;
 var interval;  
  
@@ -116,24 +117,28 @@ function mousemove(ev) {
     }
     
     if(x < 0) x = 0;
-    if(y < 0) y = 0;  
+    if(y < 0) y = 0; 
+    shifted     = true; 
 }
 
 function mousedown() {                                        
     pos_x = x;
     pos_y = y;
-    canvas.style.cursor = 'grabbing';                                 
+    shifted = false;
+    if(mousewheele == 'DOMMouseScroll') canvas.style.cursor = 'grabbing'; 
+    else canvas.style.cursor = '-webkit-grabbing';                                 
     clearInterval(interval);
     interval = setInterval('move_map()', 30);  
     document.getElementById('div').style.display = 'none';       
 }
 
 function mouseup() {
-    canvas.style.cursor = 'grab';
+    if(mousewheele == 'DOMMouseScroll') canvas.style.cursor = 'grab'; 
+    else canvas.style.cursor = '-webkit-grab'; 
     clearInterval(interval);
+    if(!shifted) check_position();
     przesuniecie_x += vector_x;
-    przesuniecie_y += vector_y; 
-    check_position();       
+    przesuniecie_y += vector_y;      
 }
 
 function move_map() {
@@ -182,7 +187,7 @@ function check_position() {
         '<input type="submit" name="spying_ok" onClick="javascript:document.forms[\'attacks\'].strike.name=\'spying\'" value="Szpieguj" />'+
         '<input type="button" name="send_items" onClick="javascript:wysylka('+i+')" value="Wyślij surowce" />';   
         div.style.display = 'block';
-        div.style.top = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) + canvas.offsetTop - 105;
+        div.style.top = json_obj.wiocha[i].y/100 * h * s + (przesuniecie_y + vector_y)*s - (h/2)*(s-1) + canvas.offsetTop - 106;
         div.style.left = json_obj.wiocha[i].x/100 * w * s + (przesuniecie_x + vector_x)*s - (w/2)*(s-1) + canvas.offsetLeft - dymek_left[skala];
         
     }      
