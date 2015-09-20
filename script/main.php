@@ -21,6 +21,7 @@ if ($Record['id_owner'] != $_SESSION['id_user'])
    $_SESSION['id_campus'] = NULL;
    header('Location: index.php');
 }
+if ($_SESSION['info'] != NULL) $_SESSION['info'] = NULL;
       
 $z = "SELECT * FROM gs_messages WHERE seen = 0 AND addressee = (SELECT id_user FROM gs_users WHERE login = '".$_SESSION["login"]."')";
 $q = $Connect->query($z);

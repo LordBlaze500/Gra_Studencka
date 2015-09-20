@@ -127,7 +127,6 @@ function Builder($Building)
          echo '<b><font size=4 color="yellow"> Za mało surowców </font></b>';
          break;
       } 
-      $_SESSION['info'] = NULL;
    }
    ?>
 
