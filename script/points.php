@@ -38,10 +38,8 @@ if (!defined('__POINTS_PHP__'))
    {
       $SQL_String = "SELECT id_user, login FROM gs_users ORDER BY id_user DESC";
       $Query = $Connect->Query($SQL_String);
-      $No_Campuses = 1;
       while ($Record = $Query->fetch_assoc())
       {
-         $No_Campuses = 0;
          $ID_User = $Record['id_user'];
          $SQL_String_2 = "SELECT SUM(Points) AS total FROM gs_campuses WHERE id_owner=$ID_User";
          $Query_2 = $Connect->Query($SQL_String_2);
@@ -49,19 +47,22 @@ if (!defined('__POINTS_PHP__'))
          $Total = $Record_2['total'];
          if ($Record['login'] != 'WORLD')
          {
-            $SQL_String_3 = "UPDATE gs_users SET points_total=$Total WHERE id_user=$ID_User";
-            $Query_3 = $Connect->Query($SQL_String_3);
+            if (!$Total)
+            {
+               $SQL_String_3 = "UPDATE gs_users SET points_total=0 WHERE id_user=$ID_User";
+               $Query_3 = $Connect->Query($SQL_String_3);
+            }
+            else
+            {
+               $SQL_String_3 = "UPDATE gs_users SET points_total=$Total WHERE id_user=$ID_User";
+               $Query_3 = $Connect->Query($SQL_String_3);
+            }
          }
          else
          {
             $SQL_String_3 = "UPDATE gs_users SET points_total=0 WHERE id_user=$ID_User";
             $Query_3 = $Connect->Query($SQL_String_3);
          }
-      }
-      if ($No_Campuses == 1)
-      {
-            $SQL_String_3 = "UPDATE gs_users SET points_total=0 WHERE id_user=$ID_User";
-            $Query_3 = $Connect->Query($SQL_String_3);
       }
    }
 

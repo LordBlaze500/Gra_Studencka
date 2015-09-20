@@ -50,17 +50,17 @@ window.onload = function() {document.forms['log_form'].user.focus();}
     <div style="color: red; font-size: 50px;"><img src="img/logo.png">                         
     </div>                         
     <form method="post" name="log_form"><br />                              
-        <table border="0" class="log_table">                                 
-            <tr>                         
-                <td class="bold" colspan="2">LOGOWANIE</td>                     
+        <table border="1">                                 
+            <tr bgcolor="#31B404">                         
+                <td colspan="2"><center><b><font size=4 color="yellow">LOGOWANIE</font></b></center></td>                     
             </tr>                              
-            <tr><td>Użytkownik</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Użytkownik</i></td><td>                             
                     <input type="text" name="user" /></td>                     
             </tr>                              
-            <tr><td>Hasło</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Hasło</i></td><td>                             
                     <input type="password" name="password" /></td>                     
             </tr>                              
-            <tr>                         
+            <tr bgcolor="#31B404">                         
                 <td colspan="2" align="center">                             
                     <input type="submit" value="OK" name="log_OK" /></td>                     
             </tr>                                  
@@ -97,26 +97,26 @@ if(isset($_POST["log_OK"])) {
 }
 ?>                                        
     <form method="post" name="registration" onsubmit="return walidator()"><br />                 
-        <table border="0" class="register_table">                                 
-            <tr>                         
-                <td class="bold" colspan="2">REJESTRACJA</td>                     
+        <table border="1">                                 
+            <tr bgcolor="#31B404">                         
+                <td colspan="2"><center><b><font size="4" color="yellow">REJESTRACJA</font></b></center></td>                     
             </tr>                              
-            <tr><td>Nazwa użytkownika</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Nazwa użytkownika</i></td><td>                             
                     <input type="text" name="register_login" /></td>                     
             </tr>                        
-            <tr><td>Email</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Email</i></td><td>                             
                     <input type="text" name="register_email" /></td>                     
             </tr>                     
-            <tr><td>Powtórz email</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Powtórz email</i></td><td>                             
                     <input type="text" name="register_email_2" /></td>                     
             </tr>                     
-            <tr><td>Hasło</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Hasło</i></td><td>                             
                     <input type="password" name="register_password" /></td>                     
             </tr>                            
-            <tr><td>Powtórz hasło</td><td>                             
+            <tr bgcolor="#31B404"><td><i>Powtórz hasło</i></td><td>                             
                     <input type="password" name="register_password_2" /></td>                     
             </tr>                              
-            <tr>                         
+            <tr bgcolor="#31B404">                         
                 <td colspan="2" align="center">                             
                     <input type="submit" value="OK" name="register_OK" /></td>                     
             </tr>                                  
