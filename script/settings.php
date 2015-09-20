@@ -1,6 +1,12 @@
 <?php
 include "db_connect.php";
 include "style.php";
+
+function validate_login($data) {
+    if(strlen($data) > 3 && strlen($data) < 20 && ereg('^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ _]+$', $data)) return true;
+    else return false;
+} 
+
 $Connect = new mysqli($db_host, $db_user, $db_password, $db_name);
 $ID_Campus = $_SESSION['id_campus'];
 if (!$ID_Campus) header('Location: index.php');
@@ -29,24 +35,26 @@ $Changed_Desc = 0;
 if (isset($_POST['New_Login']))
 {
 	$New_Login = $_POST['New_Login'];
-	$SQL_String = "SELECT * FROM gs_users WHERE login='$New_Login'";
-	$Query = $Connect->Query($SQL_String);
-	$Record = $Query->fetch_assoc();
-	if ($Record)
-	{
-		$Changed_Login = 2;
-	}
-	else
-	{
-		$SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_User";
-		$Query = $Connect->Query($SQL_String);
-		$Record = $Query->fetch_assoc();
-		$Old_Login = $Record['login'];
-		$SQL_String = "UPDATE gs_users SET login='$New_Login' WHERE login='$Old_Login'";
-    $_SESSION['login'] = $New_Login;
-		$Query = $Connect->Query($SQL_String);
-		$Changed_Login = 1;
-	}
+    if(validate_login($New_Login)) {
+    	$SQL_String = "SELECT * FROM gs_users WHERE login='$New_Login'";
+    	$Query = $Connect->Query($SQL_String);
+    	$Record = $Query->fetch_assoc();
+    	if ($Record)
+    	{
+    		$Changed_Login = 2;
+    	}
+    	else
+    	{
+    		$SQL_String = "SELECT login FROM gs_users WHERE id_user=$ID_User";
+    		$Query = $Connect->Query($SQL_String);
+    		$Record = $Query->fetch_assoc();
+    		$Old_Login = $Record['login'];
+    		$SQL_String = "UPDATE gs_users SET login='$New_Login' WHERE login='$Old_Login'";
+            $_SESSION['login'] = $New_Login;
+    		$Query = $Connect->Query($SQL_String);
+    		$Changed_Login = 1;
+    	}
+    } else echo '<font size=4 color="yellow"><b>Niepoprawny login</b></font><br/>';
 }
 
 if (isset($_POST['Change_Password']))

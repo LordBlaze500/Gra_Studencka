@@ -122,9 +122,14 @@ if(isset($_POST["log_OK"])) {
             </tr>                                  
         </table>                     
     </form>   
-<?php     
+<?php   
+function validate_login($data) {
+    if(strlen($data) > 3 && strlen($data) < 20 && ereg('^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ _]+$', $data)) return true;
+    else return false;
+} 
+  
 if(isset($_POST["register_OK"])) {
-    $login              = $_POST["register_login"];
+    $login              = $_POST["register_login"]; 
     $email              = $_POST["register_email"];
     $haslo              = md5($_POST["register_password"]);
     $k                  = rand(1, 9999).$login;
@@ -143,7 +148,7 @@ if(isset($_POST["register_OK"])) {
     else {        
         if($connect->query("SELECT * FROM gs_users WHERE login = '$login'")->num_rows != 0) echo "<span class=\"false\">Nick jest zajęty!!</span>"; else
         if($connect->query("SELECT * FROM gs_users WHERE email = '$email'")->num_rows != 0) echo "<span class=\"false\">Podany email jest już wykorzystany!!</span>"; else
-        if(strlen($login) < 3 || strlen($login) > 16) echo "<span id=\"false\">Niepoprawny nick!!</span>"; else {
+        if(!validate_login($login)) echo "<span id=\"false\">Niepoprawny login!!</span>"; else {
             // Konto
             $Date_Time = new DateTime(); 
             $Date_String = $Date_Time->format('Y-m-d H:i:00');
@@ -201,7 +206,7 @@ if(isset($_POST["register_OK"])) {
         }
         
         $connect->close();
-    }
+    } 
 }
 if(@$_GET["action"] == "activation") 
     require "activation.php";
