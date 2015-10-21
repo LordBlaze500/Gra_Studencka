@@ -121,7 +121,8 @@ if(isset($_POST["log_OK"])) {
                     <input type="submit" value="OK" name="register_OK" /></td>                     
             </tr>                                  
         </table>                     
-    </form>   
+    </form> 
+    <center><b><font size=4 color="yellow">Gra stworzona w celach humorystyczno-satyrycznych; nie ma na celu obrażenia żadnych osób ani grup społecznych</font></b></center>  
 <?php   
 function validate_login($data) {
     if(strlen($data) > 3 && strlen($data) < 20 && ereg('^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ _]+$', $data)) return true;
